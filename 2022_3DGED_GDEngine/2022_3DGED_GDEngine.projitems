@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>c20cf0a4-39c7-45eb-ad9c-d76981bd61f9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>_2022_3DGED_GDEngine</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\Component.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\Transform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Camera\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Renderer\MeshRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Renderer\Renderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Mesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Objects\GameObject.cs" />
+  </ItemGroup>
+</Project>
