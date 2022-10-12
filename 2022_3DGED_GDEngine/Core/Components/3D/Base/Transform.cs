@@ -3,7 +3,7 @@
 namespace GD.Engine
 {
     /// <summary>
-    /// Store and manage transform values (position, rotation, scale) and provides transform operations e.g. translation, rotation and scale
+    /// Store and manage transform values (position, rotation, scale)
     /// </summary>
     public class Transform : Component
     {
@@ -22,7 +22,7 @@ namespace GD.Engine
         /// </summary>
         public Vector3 translation;
 
-        public Matrix World
+        public Matrix World //ISRoT
         {
             get
             {

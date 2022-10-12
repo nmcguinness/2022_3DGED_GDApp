@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace GD.App
 {
@@ -9,6 +10,8 @@ namespace GD.App
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private BasicEffect effect;
+        private Camera camera;
 
         public Main()
         {
@@ -20,6 +23,19 @@ namespace GD.App
         protected override void Initialize()
         {
             SetGraphics(640, 480, false);
+
+            //effect
+            effect = new BasicEffect(_graphics.GraphicsDevice);
+
+            //camera
+            camera = new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+                0.1f, 1000);
+
+            //game object
+            GameObject firstQuad = new GameObject("my first quad");
+            firstQuad.Transform = new Transform(null, null, new Vector3(1, 0, 0));  //World
+            firstQuad.AddComponent(new QuadMesh(_graphics.GraphicsDevice));         //Vertices & Indices
+                                                                                    //Material - color, texture
 
             base.Initialize();
         }

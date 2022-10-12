@@ -10,9 +10,9 @@ This repository contains code for the game engine
 
 
 ### To Do - Week 5
-- [ ] Explain two project setup (one app, one engine)
-- [ ] Explain Camera, Transform, Component
-- [ ] Explain abstract classes and methods
+- [x] Explain two project setup (one app, one engine)
+- [x] Explain Camera, Transform, Component
+- [x] Explain abstract classes and methods
 - [ ] Explain Mesh
 - [ ] Explain GameObject, Component
 - [ ] Explain how to extend a class (see Extensions)

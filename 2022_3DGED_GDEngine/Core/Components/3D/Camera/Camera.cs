@@ -9,6 +9,7 @@ namespace GD.Engine
     {
         #region Fields
 
+        // private Matrix view;
         private float fieldOfView;
         private float aspectRatio;
         private float nearPlaneDistance;
@@ -27,6 +28,7 @@ namespace GD.Engine
         {
             get
             {
+                //TODO - improve so not always calculated
                 return Matrix.CreateLookAt(transform.translation, transform.translation + transform.World.Forward, transform.World.Up);
             }
         }
@@ -35,6 +37,7 @@ namespace GD.Engine
         {
             get
             {
+                //TODO - improve so not always calculated
                 return Matrix.CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance);
             }
         }
@@ -45,10 +48,10 @@ namespace GD.Engine
 
         public Camera(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
         {
-            this.fieldOfView = fieldOfView;
-            this.aspectRatio = aspectRatio;
-            this.nearPlaneDistance = nearPlaneDistance;
-            this.farPlaneDistance = farPlaneDistance;
+            FieldOfView = fieldOfView;
+            AspectRatio = aspectRatio;
+            NearPlaneDistance = nearPlaneDistance;
+            FarPlaneDistance = farPlaneDistance;
         }
 
         #endregion Constructors

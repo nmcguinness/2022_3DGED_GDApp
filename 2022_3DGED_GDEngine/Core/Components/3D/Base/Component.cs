@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GD.Engine
+﻿namespace GD.Engine
 {
     /// <summary>
     /// A part of a game object e.g. Mesh, MeshRenderer, Camera, FirstPersonController

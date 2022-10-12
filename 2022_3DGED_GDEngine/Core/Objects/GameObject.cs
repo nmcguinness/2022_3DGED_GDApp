@@ -26,6 +26,8 @@ namespace GD.Engine
         /// </summary>
         protected List<Component> components;
 
+        //protected List<Behaviour> behaviours;
+
         #endregion Fields
 
         #region Properties

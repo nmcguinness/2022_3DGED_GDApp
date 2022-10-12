@@ -5,11 +5,11 @@ namespace GD.Engine
     /// <summary>
     /// Stores the vertices and indices and creates the vertexbuffer and indexbuffer for a mesh
     /// </summary>
-    public abstract class Mesh
+    public abstract class Mesh : Component
     {
         #region Fields
 
-        protected VertexPositionColor[] vertices;
+        protected VertexPositionNormalTexture[] vertices;
         protected ushort[] indices;
         protected VertexBuffer vertexBuffer;
         protected IndexBuffer indexBuffer;
