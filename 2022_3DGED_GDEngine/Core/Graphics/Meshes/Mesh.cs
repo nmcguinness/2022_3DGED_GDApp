@@ -20,7 +20,7 @@ namespace GD.Engine
 
         public Mesh(GraphicsDevice graphicsDevice)
         {
-            //set up the position, color, normal, texture UVs etc
+            //set up the position, normal, texture UVs etc
             CreateGeometry();
 
             //set up the buffers on VRAM with the vertex array and index array
@@ -31,9 +31,13 @@ namespace GD.Engine
 
         protected abstract void CreateGeometry();
 
+        /// <summary>
+        /// Reserve space on VRAM and move the vertex and index data to VRAM before first Draw()
+        /// </summary>
+        /// <param name="graphicsDevice"></param>
         private void CreateBuffers(GraphicsDevice graphicsDevice)
         {
-            vertexBuffer = new VertexBuffer(graphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
+            vertexBuffer = new VertexBuffer(graphicsDevice, typeof(VertexPositionNormalTexture), vertices.Length, BufferUsage.WriteOnly);
             vertexBuffer.SetData(vertices);
 
             indexBuffer = new IndexBuffer(graphicsDevice, typeof(ushort), indices.Length, BufferUsage.WriteOnly);

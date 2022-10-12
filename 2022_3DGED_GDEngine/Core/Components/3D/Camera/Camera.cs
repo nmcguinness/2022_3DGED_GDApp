@@ -7,15 +7,50 @@ namespace GD.Engine
     /// </summary>
     public class Camera : Component
     {
-        private Matrix view;
-        private Matrix projection;
-        public Matrix View => view;
-        public Matrix Projection => projection;
+        #region Fields
 
-        public Camera()
+        private float fieldOfView;
+        private float aspectRatio;
+        private float nearPlaneDistance;
+        private float farPlaneDistance;
+
+        #endregion Fields
+
+        #region Properties
+
+        public float FieldOfView { get => fieldOfView; set => fieldOfView = value; }
+        public float AspectRatio { get => aspectRatio; set => aspectRatio = value; }
+        public float NearPlaneDistance { get => nearPlaneDistance; set => nearPlaneDistance = value >= 0 ? value : 0.1f; }
+        public float FarPlaneDistance { get => farPlaneDistance; set => farPlaneDistance = value >= 0 ? value : 100; }
+
+        public Matrix View
         {
-            // view = Matrix.CreateLookAt(/*where do we get transform parameters from?*/);
-            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi / 2, 16 / 10.0f, 0.1f, 1000);
+            get
+            {
+                return Matrix.CreateLookAt(transform.translation, transform.translation + transform.World.Forward, transform.World.Up);
+            }
         }
+
+        public Matrix Projection
+        {
+            get
+            {
+                return Matrix.CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance);
+            }
+        }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public Camera(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
+        {
+            this.fieldOfView = fieldOfView;
+            this.aspectRatio = aspectRatio;
+            this.nearPlaneDistance = nearPlaneDistance;
+            this.farPlaneDistance = farPlaneDistance;
+        }
+
+        #endregion Constructors
     }
 }

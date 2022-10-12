@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
 
 namespace GD.Engine
 {
@@ -54,6 +56,64 @@ namespace GD.Engine
 
         #endregion Constructors
 
-        //TODO - AddComponent, RemoveComponent
+        #region Actions - Add, Remove, Get Component
+
+        /// <summary>
+        /// Adds a component to the game object
+        /// </summary>
+        /// <param name="component"></param>
+        public void AddComponent(Component component)
+        {
+            //set the component to have access to game object and transform
+            if (component.transform == null)
+                component.transform = transform;
+
+            if (component.gameObject == null)
+                component.gameObject = this;
+
+            //add to the list of components
+            components.Add(component);
+        }
+
+        /// <summary>
+        /// Gets a component by type e.g. Camera
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public Component GetComponent<T>()
+        {
+            for (int i = 0; i < components.Count; i++)
+            {
+                if (components[i].GetType().Equals(typeof(T)))
+                    return components[i];
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Removes a component by predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public bool RemoveComponent(Predicate<Component> predicate)
+        {
+            Component target = components.Find(predicate);
+            components.Remove(target);
+            return target != null;
+        }
+
+        /// <summary>
+        /// Removes a component by type e.g. Camera
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public bool RemoveComponent<T>()
+        {
+            Component target = GetComponent<T>();
+            components.Remove(target);
+            return target != null;
+        }
+
+        #endregion Actions - Add, Remove, Get Component
     }
 }
