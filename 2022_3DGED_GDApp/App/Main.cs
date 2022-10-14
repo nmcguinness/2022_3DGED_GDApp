@@ -53,6 +53,8 @@ namespace GD.App
             //effect
             effect = new BasicEffect(_graphics.GraphicsDevice);
             effect.TextureEnabled = true;
+            //effect.LightingEnabled = true;
+            //effect.EnableDefaultLighting();
         }
 
         private void InitializeCameras()
@@ -71,7 +73,7 @@ namespace GD.App
             firstQuadGameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             firstQuadGameObject.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
-            //firstQuadGameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(5 / 16.0f)));
+            firstQuadGameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
         }
 
         private void InitializeSkyBoxAndGround(float worldScale)
