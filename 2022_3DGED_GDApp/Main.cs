@@ -33,7 +33,7 @@ namespace GD.App
             cameraGameObject = new GameObject("static camera");
             cameraGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 5));
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
-            cameraGameObject.AddComponent(new FirstPersonCameraController(0.006f));
+            cameraGameObject.AddComponent(new FirstPersonCameraController(0.009f, 0.006f));
 
             //game object
             firstQuadGameObject = new GameObject("my first quad");

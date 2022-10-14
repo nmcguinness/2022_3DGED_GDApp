@@ -18,7 +18,7 @@ This repository contains code for the game engine
 - [x] Create QuadMesh
 - [x] Explain Material, IEffect, Renderer
 - [x] Add RotationBehaviour on Quad
-- [ ] Add FirstPersonCameraController for camera
+- [x] Add simple (first pass) FirstPersonCameraController for camera
 - [ ] Finish CubeMesh
 - [ ] Explain how to extend a class (see Extensions)
 
