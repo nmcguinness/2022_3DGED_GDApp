@@ -2,11 +2,14 @@
 
 namespace GD.Engine
 {
+    /// <summary>
+    /// Orchestrates the drawing/rendering of an object
+    /// </summary>
     public class Renderer : Component
     {
-        private IEffect effect;
-        private Material material;
-        private Mesh mesh;
+        private IEffect effect; //effect
+        private Material material;  //textures, alpha
+        private Mesh mesh;  //vertices and indices
 
         public Renderer(IEffect effect, Material material, Mesh mesh)
         {

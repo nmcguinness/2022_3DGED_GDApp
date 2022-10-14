@@ -26,6 +26,7 @@ namespace GD.App
 
             //effect
             effect = new BasicEffect(_graphics.GraphicsDevice);
+            effect.TextureEnabled = true;
 
             //camera
             cameraGameObject = new GameObject("static camera");
@@ -35,6 +36,9 @@ namespace GD.App
             //game object
             firstQuadGameObject = new GameObject("my first quad");
             firstQuadGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 0));  //World
+
+            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
+            firstQuadGameObject.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
 
             base.Initialize();
         }
@@ -77,6 +81,10 @@ namespace GD.App
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your draw logic here
+            var renderer = firstQuadGameObject.GetComponent<Renderer>();
+            var camera = cameraGameObject.GetComponent<Camera>();
+
+            renderer.Draw(_graphics.GraphicsDevice, camera);
 
             base.Draw(gameTime);
         }
