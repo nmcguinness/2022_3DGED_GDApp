@@ -33,13 +33,15 @@ namespace GD.App
             cameraGameObject = new GameObject("static camera");
             cameraGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 5));
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+            cameraGameObject.AddComponent(new FirstPersonCameraController(0.006f));
 
             //game object
             firstQuadGameObject = new GameObject("my first quad");
             firstQuadGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 0));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             firstQuadGameObject.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
-            firstQuadGameObject.AddComponent(new RotationBehaviour(new Vector3(0, 1, 0), MathHelper.ToRadians(1 / 16.0f)));
+            //firstQuadGameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(5 / 16.0f)));
+
             base.Initialize();
         }
 
@@ -73,6 +75,9 @@ namespace GD.App
 
             // TODO: Add your update logic here
             firstQuadGameObject.Update(gameTime);
+
+            //in order for us to call update on FirstPersonCameraController
+            cameraGameObject.Update(gameTime);
 
             base.Update(gameTime);
         }
