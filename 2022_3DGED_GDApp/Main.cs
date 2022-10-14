@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
 
 namespace GD.App
 {
@@ -11,7 +10,8 @@ namespace GD.App
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private BasicEffect effect;
-        private Camera camera;
+        private GameObject cameraGameObject;
+        private GameObject firstQuadGameObject;
 
         public Main()
         {
@@ -28,14 +28,13 @@ namespace GD.App
             effect = new BasicEffect(_graphics.GraphicsDevice);
 
             //camera
-            camera = new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
-                0.1f, 1000);
+            cameraGameObject = new GameObject("static camera");
+            cameraGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 5));
+            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
 
             //game object
-            GameObject firstQuad = new GameObject("my first quad");
-            firstQuad.Transform = new Transform(null, null, new Vector3(1, 0, 0));  //World
-            firstQuad.AddComponent(new QuadMesh(_graphics.GraphicsDevice));         //Vertices & Indices
-                                                                                    //Material - color, texture
+            firstQuadGameObject = new GameObject("my first quad");
+            firstQuadGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 0));  //World
 
             base.Initialize();
         }
@@ -77,7 +76,7 @@ namespace GD.App
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // TODO: Add your draw logic here
 
             base.Draw(gameTime);
         }

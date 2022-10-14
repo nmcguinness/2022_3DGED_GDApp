@@ -5,7 +5,7 @@ namespace GD.Engine
     /// <summary>
     /// Stores the vertices and indices and creates the vertexbuffer and indexbuffer for a mesh
     /// </summary>
-    public abstract class Mesh : Component
+    public abstract class Mesh
     {
         #region Fields
 
@@ -42,6 +42,17 @@ namespace GD.Engine
 
             indexBuffer = new IndexBuffer(graphicsDevice, typeof(ushort), indices.Length, BufferUsage.WriteOnly);
             indexBuffer.SetData(indices);
+        }
+
+        /// <summary>
+        /// Called to draw the mesh
+        /// </summary>
+        /// <param name="graphicsDevice"></param>
+        public virtual void Draw(GraphicsDevice graphicsDevice)
+        {
+            graphicsDevice.SetVertexBuffer(vertexBuffer);
+            graphicsDevice.Indices = indexBuffer;
+            graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, indexBuffer.IndexCount / 3);
         }
     }
 }

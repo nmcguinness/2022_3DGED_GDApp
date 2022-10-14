@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct3D11;
+﻿using Microsoft.Xna.Framework;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 
@@ -26,8 +27,6 @@ namespace GD.Engine
         /// </summary>
         protected List<Component> components;
 
-        //protected List<Behaviour> behaviours;
-
         #endregion Fields
 
         #region Properties
@@ -54,6 +53,7 @@ namespace GD.Engine
         public GameObject(string name)
         {
             Name = name;
+            components = new List<Component>();
         }
 
         #endregion Constructors
@@ -82,12 +82,12 @@ namespace GD.Engine
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Component GetComponent<T>()
+        public T GetComponent<T>() where T : Component
         {
             for (int i = 0; i < components.Count; i++)
             {
                 if (components[i].GetType().Equals(typeof(T)))
-                    return components[i];
+                    return components[i] as T;
             }
             return null;
         }
@@ -104,18 +104,32 @@ namespace GD.Engine
             return target != null;
         }
 
-        /// <summary>
-        /// Removes a component by type e.g. Camera
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public bool RemoveComponent<T>()
-        {
-            Component target = GetComponent<T>();
-            components.Remove(target);
-            return target != null;
-        }
+        ///// <summary>
+        ///// Removes a component by type e.g. Camera
+        ///// </summary>
+        ///// <param name="predicate"></param>
+        ///// <returns></returns>
+        //public bool RemoveComponent<T>()
+        //{
+        //    Component target = GetComponent<T>() as Component;
+        //    components.Remove(target);
+        //    return target != null;
+        //}
 
         #endregion Actions - Add, Remove, Get Component
+
+        #region Actions - Update
+
+        /// <summary>
+        /// Called each update to call an update on all components of the game object
+        /// </summary>
+        public virtual void Update(GameTime gameTime)
+        {
+            //TODO - Add check for IsUpdateable
+            for (int i = 0; i < components.Count; i++)
+                components[i].Update(gameTime);
+        }
+
+        #endregion Actions - Update
     }
 }
