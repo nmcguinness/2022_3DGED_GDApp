@@ -22,6 +22,7 @@ This repository contains code for the game engine
 - [x] Added AppData to abstract and centralise hard-coded magic numbers and improve readability
 - [ ] Finish CubeMesh
 - [ ] Explain how to extend a class (see Extensions)
+- [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
 
 
  
