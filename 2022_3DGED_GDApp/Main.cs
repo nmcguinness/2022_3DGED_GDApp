@@ -12,6 +12,7 @@ namespace GD.App
         private BasicEffect effect;
         private GameObject cameraGameObject;
         private GameObject firstQuadGameObject;
+        private GameObject secondQuadGameObject;
 
         public Main()
         {
@@ -36,10 +37,9 @@ namespace GD.App
             //game object
             firstQuadGameObject = new GameObject("my first quad");
             firstQuadGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 0));  //World
-
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             firstQuadGameObject.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
-
+            firstQuadGameObject.AddComponent(new RotationBehaviour(new Vector3(0, 1, 0), MathHelper.ToRadians(1 / 16.0f)));
             base.Initialize();
         }
 
@@ -72,6 +72,7 @@ namespace GD.App
                 Exit();
 
             // TODO: Add your update logic here
+            firstQuadGameObject.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -83,7 +84,6 @@ namespace GD.App
             // TODO: Add your draw logic here
             var renderer = firstQuadGameObject.GetComponent<Renderer>();
             var camera = cameraGameObject.GetComponent<Camera>();
-
             renderer.Draw(_graphics.GraphicsDevice, camera);
 
             base.Draw(gameTime);
