@@ -20,8 +20,12 @@ This repository contains code for the game engine
 - [x] Add RotationBehaviour on Quad
 - [x] Add simple (first pass) FirstPersonCameraController for camera
 - [x] Added AppData to abstract and centralise hard-coded magic numbers and improve readability
+- [x] Added skybox and grass plane
+- [x] Tidied Main::Initialize
+- [x] Added SamplerState setting to remove artifacts between skybox planes
+- [x] Explain how to extend a class (see Extensions)
+- [ ] Practice extension of a class (see Extensions)
 - [ ] Finish CubeMesh
-- [ ] Explain how to extend a class (see Extensions)
 - [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
 
 
