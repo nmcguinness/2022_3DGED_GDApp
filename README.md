@@ -19,6 +19,7 @@ This repository contains code for the game engine
 - [x] Explain Material, IEffect, Renderer
 - [x] Add RotationBehaviour on Quad
 - [x] Add simple (first pass) FirstPersonCameraController for camera
+- [x] Added AppData to abstract and centralise hard-coded magic numbers and improve readability
 - [ ] Finish CubeMesh
 - [ ] Explain how to extend a class (see Extensions)
 
