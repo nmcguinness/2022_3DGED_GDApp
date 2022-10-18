@@ -127,7 +127,8 @@ namespace GD.App
             gameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
-                new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+                new Material(texture, 1), new CubeMesh(_graphics.GraphicsDevice)));
+
             gameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
 
             scene.Add(gameObject);
