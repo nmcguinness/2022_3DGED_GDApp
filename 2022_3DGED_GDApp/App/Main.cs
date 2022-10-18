@@ -1,4 +1,6 @@
 ﻿using GD.Engine;
+using GD.Globals;
+using GD.Inputs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,16 +12,10 @@ namespace GD.App
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private BasicEffect skyBoxEffect;
         private BasicEffect effect;
-
-        private GameObject cameraGameObject;
-        private GameObject firstQuadGameObject;
-        private GameObject skyBoxBackFaceGO;
-        private GameObject skyBoxLeftFaceGO;
-        private GameObject skyBoxRightFaceGO;
-        public GameObject skyBoxTopFaceGO;
-        private GameObject skyBoxFrontFaceGO;
-        private GameObject groundGO;
+        private Scene scene;
+        private CameraManager cameraManager;
 
         public Main()
         {
@@ -30,14 +26,23 @@ namespace GD.App
 
         protected override void Initialize()
         {
+            //share some core references
+            InitializeGlobals();
+
             //set screen resolution and show/hide mouse
             InitializeGraphics(AppData.APP_RESOLUTION, false);
 
             //add game effects
             InitializeEffects();
 
+            //add camera manager
+            InitializeManagers();
+
             //add game cameras
             InitializeCameras();
+
+            //add scene manager and starting scenes
+            InitializeScenes();
 
             //create sky
             InitializeSkyBoxAndGround(AppData.SKYBOX_WORLD_SCALE);
@@ -48,73 +53,135 @@ namespace GD.App
             base.Initialize();
         }
 
+        private void InitializeManagers()
+        {
+            cameraManager = new CameraManager();
+
+            //TODO - sound manager
+        }
+
+        private void InitializeScenes()
+        {
+            //initialize scene manager
+
+            //add scene to the scene manager
+            scene = new Scene("labyrinth");
+        }
+
+        private void InitializeGlobals()
+        {
+            Application.Main = this;
+            Application.GraphicsDevice = _graphics.GraphicsDevice;
+            Application.Content = Content;
+
+            //TODO - setup Input
+            Input.Keys = new KeyboardComponent(this);
+            Components.Add(Input.Keys);
+
+            Input.Mouse = new MouseComponent(this);
+            Components.Add(Input.Mouse);
+
+            Input.Gamepad = new GamepadComponent(this);
+            Components.Add(Input.Gamepad);
+        }
+
         private void InitializeEffects()
         {
-            //effect
+            //only for skybox with lighting disabled
+            skyBoxEffect = new BasicEffect(_graphics.GraphicsDevice);
+            skyBoxEffect.TextureEnabled = true;
+
+            //all other drawn objects
             effect = new BasicEffect(_graphics.GraphicsDevice);
             effect.TextureEnabled = true;
-            //effect.LightingEnabled = true;
-            //effect.EnableDefaultLighting();
+            effect.LightingEnabled = true;
+            effect.EnableDefaultLighting();
         }
 
         private void InitializeCameras()
         {
             //camera
-            cameraGameObject = new GameObject("static camera");
+            GameObject cameraGameObject = null;
+
+            //camera 1
+            cameraGameObject = new GameObject("first person camera 1");
             cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
             cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
+            //camera 1
+            cameraGameObject = new GameObject("first person camera 2");
+            cameraGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 100));
+            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+            cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
+            cameraManager.SetActiveCamera("first person camera 1");
         }
 
         private void InitializeDemoQuad()
         {
             //game object
-            firstQuadGameObject = new GameObject("my first quad");
-            firstQuadGameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
+            var gameObject = new GameObject("my first quad");
+            gameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
-            firstQuadGameObject.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
-            firstQuadGameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
+            gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
+                new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            gameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
+
+            scene.Add(gameObject);
         }
 
         private void InitializeSkyBoxAndGround(float worldScale)
         {
             float halfWorldScale = worldScale / 2.0f;
 
+            GameObject quad = null;
+            var gdBasicEffect = new GDBasicEffect(skyBoxEffect);
+            var quadMesh = new QuadMesh(_graphics.GraphicsDevice);
+
             //skybox - back face
-            skyBoxBackFaceGO = new GameObject("skybox back face");
-            skyBoxBackFaceGO.Transform = new Transform(new Vector3(worldScale, worldScale, 1), null, new Vector3(0, 0, -halfWorldScale));
+            quad = new GameObject("skybox back face");
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), null, new Vector3(0, 0, -halfWorldScale));
             var texture = Content.Load<Texture2D>("Assets/Textures/Skybox/back");
-            skyBoxBackFaceGO.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+            scene.Add(quad);
 
             //skybox - left face
-            skyBoxLeftFaceGO = new GameObject("skybox left face");
-            skyBoxLeftFaceGO.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(90), 0), new Vector3(-halfWorldScale, 0, 0));
+            quad = new GameObject("skybox left face");
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(90), 0), new Vector3(-halfWorldScale, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/left");
-            skyBoxLeftFaceGO.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+            scene.Add(quad);
 
             //skybox - right face
-            skyBoxRightFaceGO = new GameObject("skybox right face");
-            skyBoxRightFaceGO.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-90), 0), new Vector3(halfWorldScale, 0, 0));
+            quad = new GameObject("skybox right face");
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-90), 0), new Vector3(halfWorldScale, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/right");
-            skyBoxRightFaceGO.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+            scene.Add(quad);
 
             //skybox - top face
-            skyBoxTopFaceGO = new GameObject("skybox top face");
-            skyBoxTopFaceGO.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(90), MathHelper.ToRadians(-90), 0), new Vector3(0, halfWorldScale, 0));
+            quad = new GameObject("skybox top face");
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(90), MathHelper.ToRadians(-90), 0), new Vector3(0, halfWorldScale, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/sky");
-            skyBoxTopFaceGO.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+            scene.Add(quad);
 
             //skybox - front face
-            skyBoxFrontFaceGO = new GameObject("skybox front face");
-            skyBoxFrontFaceGO.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-180), 0), new Vector3(0, 0, halfWorldScale));
+            quad = new GameObject("skybox front face");
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-180), 0), new Vector3(0, 0, halfWorldScale));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/front");
-            skyBoxFrontFaceGO.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+            scene.Add(quad);
 
             //ground
-            groundGO = new GameObject("ground");
-            groundGO.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(-90), 0, 0), new Vector3(0, 0, 0));
+            quad = new GameObject("ground");
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(-90), 0, 0), new Vector3(0, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1");
-            groundGO.AddComponent(new Renderer(new GDBasicEffect(effect), new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
+            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+            scene.Add(quad);
         }
 
         /// <summary>
@@ -151,11 +218,16 @@ namespace GD.App
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            firstQuadGameObject.Update(gameTime);
+            //update all drawn game objects
+            scene.Update(gameTime);
 
-            //in order for us to call update on FirstPersonCameraController
-            cameraGameObject.Update(gameTime);
+            //update active camera
+            cameraManager.Update(gameTime);
+
+            if (Input.Keys.IsPressed(Keys.F1))
+                cameraManager.SetActiveCamera("first person camera 1");
+            else if (Input.Keys.IsPressed(Keys.F2))
+                cameraManager.SetActiveCamera("first person camera 2");
 
             base.Update(gameTime);
         }
@@ -164,21 +236,8 @@ namespace GD.App
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //get camera
-            var camera = cameraGameObject.GetComponent<Camera>();
-
-            //draw quad
-            firstQuadGameObject.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
-
-            //draw skybox
-            skyBoxBackFaceGO.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
-            skyBoxLeftFaceGO.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
-            skyBoxRightFaceGO.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
-            skyBoxTopFaceGO.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
-            skyBoxFrontFaceGO.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
-
-            //draw ground
-            groundGO.GetComponent<Renderer>().Draw(_graphics.GraphicsDevice, camera);
+            //get camera and call the draw
+            scene.Draw(gameTime, cameraManager.ActiveCamera);
 
             base.Draw(gameTime);
         }

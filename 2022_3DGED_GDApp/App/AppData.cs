@@ -4,9 +4,9 @@ namespace GD.App
 {
     public class AppData
     {
-        public static readonly Vector2 APP_RESOLUTION = new Vector2(1024, 768);
+        public static readonly Vector2 APP_RESOLUTION = new Vector2(640, 480);
 
-        public static readonly float SKYBOX_WORLD_SCALE = 400;
+        public static readonly float SKYBOX_WORLD_SCALE = 20;
 
         #region Camera - First Person
 
