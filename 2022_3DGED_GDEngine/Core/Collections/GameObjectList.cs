@@ -1,6 +1,7 @@
-﻿using System;
+﻿using GD.Globals;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GD.Engine
 {
@@ -14,13 +15,17 @@ namespace GD.Engine
         /// Stores any object which persists during game
         /// </summary>
         private List<GameObject> staticList;
+
         /// <summary>
         /// Stores any object which can be added/removed (e.g. pickup)
         /// </summary>
         private List<GameObject> dynamicList;
 
-        public List<GameObject> StaticList { get { return staticList; } }
-        public List<GameObject> DynamicList { get { return staticList; } }
+        public List<GameObject> StaticList
+        { get { return staticList; } }
+
+        public List<GameObject> DynamicList
+        { get { return staticList; } }
 
         public GameObjectList()
         {
@@ -35,6 +40,7 @@ namespace GD.Engine
             else
                 dynamicList.Add(gameObject);
         }
+
         public GameObject Find(bool isStatic, Predicate<GameObject> predicate)
         {
             GameObject found = null;
@@ -45,6 +51,7 @@ namespace GD.Engine
 
             return found;
         }
+
         public bool Remove(bool isStatic, Predicate<GameObject> predicate)
         {
             GameObject found = Find(isStatic, predicate);
@@ -57,6 +64,25 @@ namespace GD.Engine
                 dynamicList.Remove(found);
 
             return true;
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            foreach (GameObject gameObject in staticList)
+                gameObject.Update(gameTime);
+
+            foreach (GameObject gameObject in dynamicList)
+                gameObject.Update(gameTime);
+        }
+
+        public virtual void Draw(GameTime gameTime, Camera camera)
+        {
+            //TODO - add inefficiency with GetComponent
+            foreach (GameObject gameObject in staticList)
+                gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
+
+            foreach (GameObject gameObject in staticList)
+                gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
         }
 
         //TODO - Clear, FindAll, RemoveAll, Size

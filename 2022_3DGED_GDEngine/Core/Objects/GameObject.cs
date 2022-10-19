@@ -27,9 +27,27 @@ namespace GD.Engine
         /// </summary>
         protected List<Component> components;
 
+        /// <summary>
+        /// Set this to true, if object persists for game lifetime (e.g. wall)
+        /// Set this to false, if object is added/removed during game lifetime (e.g. pickup)
+        /// </summary>
+        private bool isStatic;
+
+        /// <summary>
+        /// Set this to true, if object is not see through
+        /// Set this to false, if object is semi-transparent or totally transparent
+        /// </summary>
+        private bool isOpaque;
+
         #endregion Fields
 
         #region Properties
+
+        public bool IsStatic
+        { get { return isStatic; } }
+
+        public bool IsOpaque
+        { get { return isOpaque; } }
 
         /// <summary>
         /// Gets/sets the game object name
@@ -51,9 +69,17 @@ namespace GD.Engine
         #region Constructors
 
         public GameObject(string name)
+            : this(name, true, true)
+        {
+            //RISK - Any object made with this constructor will be static!
+        }
+
+        public GameObject(string name, bool isStatic, bool isOpaque)
         {
             Name = name;
             components = new List<Component>();
+            this.isStatic = isStatic;
+            this.isOpaque = isOpaque;
         }
 
         #endregion Constructors
