@@ -13,6 +13,7 @@ namespace GD.Engine
         protected ushort[] indices;
         protected VertexBuffer vertexBuffer;
         protected IndexBuffer indexBuffer;
+        protected GraphicsDevice graphicsDevice;
 
         #endregion Fields
 
@@ -20,6 +21,8 @@ namespace GD.Engine
 
         public Mesh(GraphicsDevice graphicsDevice)
         {
+            this.graphicsDevice = graphicsDevice;
+
             //set up the position, normal, texture UVs etc
             CreateGeometry();
 

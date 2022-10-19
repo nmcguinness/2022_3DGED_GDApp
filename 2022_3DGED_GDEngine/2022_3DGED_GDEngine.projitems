@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Materials\Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\CubeMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Mesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\ModelMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\QuadMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Renderers\Renderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Inputs\GamepadComponent.cs" />
