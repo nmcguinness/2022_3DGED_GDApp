@@ -27,6 +27,8 @@ namespace GD.Engine
         public List<GameObject> DynamicList
         { get { return dynamicList; } }
 
+        //TODO - List<Renderers> for static and dynamic objects
+
         public GameObjectList()
         {
             staticList = new List<GameObject>();
@@ -81,7 +83,7 @@ namespace GD.Engine
             foreach (GameObject gameObject in staticList)
                 gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
 
-            foreach (GameObject gameObject in staticList)
+            foreach (GameObject gameObject in dynamicList)
                 gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
         }
 
