@@ -25,7 +25,7 @@ namespace GD.Engine
         { get { return staticList; } }
 
         public List<GameObject> DynamicList
-        { get { return staticList; } }
+        { get { return dynamicList; } }
 
         public GameObjectList()
         {

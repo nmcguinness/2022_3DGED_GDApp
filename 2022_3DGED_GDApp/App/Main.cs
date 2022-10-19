@@ -123,7 +123,7 @@ namespace GD.App
         private void InitializeDemoQuad()
         {
             //game object
-            var gameObject = new GameObject("my first quad");
+            var gameObject = new GameObject("my first quad", true, false);
             gameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
