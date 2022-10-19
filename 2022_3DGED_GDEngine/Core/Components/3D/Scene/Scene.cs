@@ -39,6 +39,7 @@ namespace GD.Engine
 
         public virtual void Draw(GameTime gameTime, Camera camera)
         {
+            //TODO - add inefficiency with GetComponent
             foreach (GameObject gameObject in gameObjects)
                 gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
         }
