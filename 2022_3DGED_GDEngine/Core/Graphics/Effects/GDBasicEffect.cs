@@ -8,12 +8,22 @@ namespace GD.Engine
     /// </summary>
     public class GDBasicEffect : IEffect
     {
+        #region Fields
+
         private BasicEffect effect;
+
+        #endregion Fields
+
+        #region Constructors
 
         public GDBasicEffect(Effect effect)
         {
             this.effect = effect as BasicEffect;
         }
+
+        #endregion Constructors
+
+        #region Actions - SetWorld, Apply etc
 
         public void SetWorld(Matrix world)
         {
@@ -36,5 +46,7 @@ namespace GD.Engine
         {
             effect.CurrentTechnique.Passes[0].Apply();
         }
+
+        #endregion Actions - SetWorld, Apply etc
     }
 }

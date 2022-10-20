@@ -5,7 +5,7 @@ using System;
 namespace GD.Inputs
 {
     /// <summary>
-    /// Provides methods to obtain input from anyof the 4 connected game pads
+    /// Provides methods to obtain input from any of the 4 connected game pads
     /// </summary>
     public class GamepadComponent : GameComponent
     {

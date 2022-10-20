@@ -9,6 +9,8 @@ namespace GD.Globals
     /// </summary>
     public class Application  //TODO - : IDisposable
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the main game
         /// </summary>
@@ -24,9 +26,6 @@ namespace GD.Globals
         /// </summary>
         public static GraphicsDevice GraphicsDevice { get; set; }
 
-        /// <summary>
-        /// Gets or sets the graphics device manager.
-        /// </summary>
-        public static GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+        #endregion Properties
     }
 }

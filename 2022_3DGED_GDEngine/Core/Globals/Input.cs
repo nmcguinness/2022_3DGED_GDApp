@@ -8,6 +8,8 @@ namespace GD.Globals
     /// </summary>
     public class Input //TODO - : IDisposable
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets keyboard inputs
         /// </summary>
@@ -22,5 +24,7 @@ namespace GD.Globals
         /// Gets or sets gamepad inputs.
         /// </summary>
         public static GamepadComponent Gamepad { get; set; }
+
+        #endregion Properties
     }
 }

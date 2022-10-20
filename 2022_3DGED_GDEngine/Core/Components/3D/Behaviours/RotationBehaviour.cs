@@ -4,14 +4,24 @@ namespace GD.Engine
 {
     public class RotationBehaviour : Component
     {
+        #region Fields
+
         private Vector3 rotationAxis = Vector3.UnitY;
         private float rotationSpeedInRadians;
+
+        #endregion Fields
+
+        #region Constructors
 
         public RotationBehaviour(Vector3 rotationAxis, float rotationSpeedInRadians)
         {
             this.rotationAxis = rotationAxis;
             this.rotationSpeedInRadians = rotationSpeedInRadians;
         }
+
+        #endregion Constructors
+
+        #region Actions - Update
 
         public override void Update(GameTime gameTime)
         {
@@ -23,5 +33,7 @@ namespace GD.Engine
             //dont call parent since its Update does nothing
             //base.Update(gameTime);
         }
+
+        #endregion Actions - Update
     }
 }

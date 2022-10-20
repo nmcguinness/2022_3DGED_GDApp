@@ -26,6 +26,8 @@ namespace GD.Engine
 
         #endregion Constructors
 
+        #region Actions - Initialize, CreateGeometry, CreateBuffers, Draw
+
         protected virtual void Initialize()
         {
             //set up the position, normal, texture UVs etc
@@ -60,5 +62,7 @@ namespace GD.Engine
             graphicsDevice.Indices = indexBuffer;
             graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, indexBuffer.IndexCount / 3);
         }
+
+        #endregion Actions - Initialize, CreateGeometry, CreateBuffers, Draw
     }
 }

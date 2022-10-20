@@ -1,20 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace GD.Engine
 {
     public class FirstPersonCameraController : Component
     {
+        #region Fields
+
         private float moveSpeed;
         private float strafeSpeed;
         private KeyboardState kbState;
+
+        #endregion Fields
+
+        #region Constructors
 
         public FirstPersonCameraController(float moveSpeed, float strafeSpeed)
         {
             this.moveSpeed = moveSpeed;
             this.strafeSpeed = strafeSpeed;
         }
+
+        #endregion Constructors
+
+        #region Actions - Update, HandleInput
 
         public override void Update(GameTime gameTime)
         {
@@ -42,5 +51,7 @@ namespace GD.Engine
             else if (kbState.IsKeyDown(Keys.S))
                 transform.Translate(new Vector3(0, 0, moveIncrement));
         }
+
+        #endregion Actions - Update, HandleInput
     }
 }

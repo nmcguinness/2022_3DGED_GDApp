@@ -7,9 +7,15 @@ namespace GD.Engine
     /// </summary>
     public class Renderer : Component
     {
+        #region Fields
+
         private IEffect effect; //effect
         private Material material;  //textures, alpha
         private Mesh mesh;  //vertices and indices
+
+        #endregion Fields
+
+        #region Constructors
 
         public Renderer(IEffect effect, Material material, Mesh mesh)
         {
@@ -17,6 +23,10 @@ namespace GD.Engine
             this.material = material;
             this.mesh = mesh;
         }
+
+        #endregion Constructors
+
+        #region Actions - Draw
 
         public virtual void Draw(GraphicsDevice graphicsDevice, Camera camera)
         {
@@ -31,5 +41,7 @@ namespace GD.Engine
             //draw the object
             mesh.Draw(graphicsDevice);
         }
+
+        #endregion Actions - Draw
     }
 }

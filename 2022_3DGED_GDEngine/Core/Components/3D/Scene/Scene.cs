@@ -1,8 +1,4 @@
-﻿using GD.Globals;
-using Microsoft.Xna.Framework;
-using SharpDX.Direct3D11;
-using SharpDX.DirectWrite;
-using SharpDX.MediaFoundation;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
