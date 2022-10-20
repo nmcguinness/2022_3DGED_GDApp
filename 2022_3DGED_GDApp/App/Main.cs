@@ -280,10 +280,14 @@ namespace GD.App
             //update active camera
             cameraManager.Update(gameTime);
 
+            #region Demo - Camera switching
+
             if (Input.Keys.IsPressed(Keys.F1))
                 cameraManager.SetActiveCamera("first person camera 1");
             else if (Input.Keys.IsPressed(Keys.F2))
                 cameraManager.SetActiveCamera("first person camera 2");
+
+            #endregion Demo - Camera switching
 
             base.Update(gameTime);
         }
