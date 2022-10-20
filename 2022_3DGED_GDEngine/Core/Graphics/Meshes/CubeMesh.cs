@@ -8,6 +8,7 @@ namespace GD.Engine
         public CubeMesh(GraphicsDevice graphicsDevice)
             : base(graphicsDevice)
         {
+            Initialize();
         }
 
         protected override void CreateGeometry()

@@ -24,8 +24,20 @@ This repository contains code for the game engine
 - [x] Tidied Main::Initialize
 - [x] Added SamplerState setting to remove artifacts between skybox planes
 - [x] Explain how to extend a class (see Extensions)
+- [x] Finish CubeMesh
+
+### To Do - Week 6
+- [x] Added Scene to store List<GameObject>
+- [x] Added GameObjectList to support splitting GameObjects into two lists - static (persists for game duration) and dynamic (add/remove during gameplay)
+- [x] Refactored Scene to support opaque and transparent GameObjectLists
+- [x] Added ObjectType and RenderType enums to GameObject to prevent passing in two hard-to-understand booleans
+- [x] Added Add, Remove, Find, Size, Clear to Scene and GameObjectList
+- [x] Added ModelMesh to support loading FBX meshes
+- [x] Refactored Mesh, CubeMesh, QuadMesh and ModelMesh to solve constructor problem with model == null
+- [x] Added SceneManager to support switching between scenes
+- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
+- [ ] Add support for cloning GameObjects
 - [ ] Practice extension of a class (see Extensions)
-- [ ] Finish CubeMesh
 - [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
 
 

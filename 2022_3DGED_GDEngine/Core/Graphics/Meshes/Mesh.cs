@@ -22,7 +22,12 @@ namespace GD.Engine
         public Mesh(GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
+        }
 
+        #endregion Constructors
+
+        protected virtual void Initialize()
+        {
             //set up the position, normal, texture UVs etc
             CreateGeometry();
 
@@ -30,15 +35,13 @@ namespace GD.Engine
             CreateBuffers(graphicsDevice);
         }
 
-        #endregion Constructors
-
         protected abstract void CreateGeometry();
 
         /// <summary>
         /// Reserve space on VRAM and move the vertex and index data to VRAM before first Draw()
         /// </summary>
         /// <param name="graphicsDevice"></param>
-        private void CreateBuffers(GraphicsDevice graphicsDevice)
+        protected virtual void CreateBuffers(GraphicsDevice graphicsDevice)
         {
             vertexBuffer = new VertexBuffer(graphicsDevice, typeof(VertexPositionNormalTexture), vertices.Length, BufferUsage.WriteOnly);
             vertexBuffer.SetData(vertices);

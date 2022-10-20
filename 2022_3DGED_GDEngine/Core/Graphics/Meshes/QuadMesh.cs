@@ -8,6 +8,7 @@ namespace GD.Engine
         public QuadMesh(GraphicsDevice graphicsDevice)
             : base(graphicsDevice)
         {
+            Initialize();
         }
 
         protected override void CreateGeometry()

@@ -10,6 +10,8 @@ namespace GD.Engine
             : base(graphicsDevice)
         {
             this.model = model;
+
+            Initialize();
         }
 
         protected override void CreateGeometry()

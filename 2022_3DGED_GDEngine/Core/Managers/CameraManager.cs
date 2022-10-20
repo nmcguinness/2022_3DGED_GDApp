@@ -1,19 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
-using SharpDX.MediaFoundation;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GD.Engine
 {
     /// <summary>
-    /// Stores and updates all active cameras
+    /// Stores all cameras and updates the active camera
     /// </summary>
     public class CameraManager
     {
+        #region Fields
+
         private Camera activeCamera = null;
         private GameObject activeGameObject;
         private Dictionary<string, GameObject> cameras;
+
+        #endregion Fields
+
+        #region Properties
 
         public Camera ActiveCamera
         {
@@ -26,10 +30,18 @@ namespace GD.Engine
             }
         }
 
+        #endregion Properties
+
+        #region Constructors
+
         public CameraManager()
         {
             cameras = new Dictionary<string, GameObject>();
         }
+
+        #endregion Constructors
+
+        #region Actions - Add, SetActiveCamera
 
         public bool Add(string id, GameObject camera)
         {
@@ -60,9 +72,15 @@ namespace GD.Engine
             return activeCamera;
         }
 
+        #endregion Actions - Add, SetActiveCamera
+
+        #region Actions - Update
+
         public virtual void Update(GameTime gameTime)
         {
             activeGameObject.Update(gameTime);
         }
+
+        #endregion Actions - Update
     }
 }

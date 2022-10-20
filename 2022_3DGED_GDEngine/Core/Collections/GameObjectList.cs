@@ -7,10 +7,13 @@ namespace GD.Engine
 {
     /// <summary>
     /// Stores all static and dynamic game objects
-    /// There will be two in the scene (opaque, transparent)
+    /// There will be two GameObjectList in the scene (opaque, transparent)
     /// </summary>
+    /// <see cref="Scene"/>
     public class GameObjectList
     {
+        #region Fields
+
         /// <summary>
         /// Stores any object which persists during game
         /// </summary>
@@ -21,13 +24,21 @@ namespace GD.Engine
         /// </summary>
         private List<GameObject> dynamicList;
 
+        //TODO - List<Renderers> for static and dynamic objects
+
+        #endregion Fields
+
+        #region Properties
+
         public List<GameObject> StaticList
         { get { return staticList; } }
 
         public List<GameObject> DynamicList
         { get { return dynamicList; } }
 
-        //TODO - List<Renderers> for static and dynamic objects
+        #endregion Properties
+
+        #region Constructors
 
         public GameObjectList()
         {
@@ -35,38 +46,91 @@ namespace GD.Engine
             dynamicList = new List<GameObject>();
         }
 
+        #endregion Constructors
+
+        #region Actions - Add, Find, FindAll, Remove, RemoveAll, Size, Clear
+
         public void Add(GameObject gameObject)
         {
-            if (gameObject.IsStatic)
+            if (gameObject.ObjectType == ObjectType.Static)
                 staticList.Add(gameObject);
             else
                 dynamicList.Add(gameObject);
         }
 
-        public GameObject Find(bool isStatic, Predicate<GameObject> predicate)
+        public GameObject Find(ObjectType objectType, Predicate<GameObject> predicate)
         {
             GameObject found = null;
-            if (isStatic)
+
+            if (objectType == ObjectType.Static)
                 found = staticList.Find(predicate);
             else
-                found = dynamicList.Find(predicate);
+                found = dynamicList.Find(predicate); ;
 
             return found;
         }
 
-        public bool Remove(bool isStatic, Predicate<GameObject> predicate)
+        public bool Remove(ObjectType objectType, Predicate<GameObject> predicate)
         {
-            GameObject found = Find(isStatic, predicate);
+            GameObject found = Find(objectType, predicate);
+
             if (found == null)
                 return false;
 
-            if (isStatic)
+            if (objectType == ObjectType.Static)
                 staticList.Remove(found);
             else
                 dynamicList.Remove(found);
 
             return true;
         }
+
+        public List<GameObject> FindAll(ObjectType objectType, Predicate<GameObject> predicate)
+        {
+            List<GameObject> foundList = null;
+
+            if (objectType == ObjectType.Static)
+                foundList = staticList.FindAll(predicate);
+            else
+                foundList = dynamicList.FindAll(predicate);
+
+            return foundList;
+        }
+
+        public int RemoveAll(ObjectType objectType, Predicate<GameObject> predicate)
+        {
+            int removeCount = 0;
+
+            if (objectType == ObjectType.Static)
+                removeCount = staticList.RemoveAll(predicate);
+            else
+                removeCount = dynamicList.RemoveAll(predicate);
+
+            return removeCount;
+        }
+
+        public void Size(out int sizeStaticList, out int sizeDynamicList)
+        {
+            sizeStaticList = staticList.Count;
+            sizeDynamicList = dynamicList.Count;
+        }
+
+        public int TotalSize()
+        {
+            return staticList.Count + dynamicList.Count;
+        }
+
+        public void Clear(ObjectType objectType)
+        {
+            if (objectType == ObjectType.Static)
+                staticList.Clear();
+            else
+                dynamicList.Clear();
+        }
+
+        #endregion Actions - Add, Find, FindAll, Remove, RemoveAll, Size, Clear
+
+        #region Actions - Update, Draw
 
         public virtual void Update(GameTime gameTime)
         {
@@ -87,6 +151,6 @@ namespace GD.Engine
                 gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
         }
 
-        //TODO - Clear, FindAll, RemoveAll, Size
+        #endregion Actions - Update, Draw
     }
 }

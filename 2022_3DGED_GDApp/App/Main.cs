@@ -4,18 +4,24 @@ using GD.Inputs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace GD.App
 {
     public class Main : Game
     {
+        #region Fields
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private BasicEffect skyBoxEffect;
         private BasicEffect effect;
-        private Scene scene;
+
         private CameraManager cameraManager;
+        private SceneManager sceneManager;
+
+        #endregion Fields
+
+        #region Constructors
 
         public Main()
         {
@@ -24,20 +30,24 @@ namespace GD.App
             IsMouseVisible = true;
         }
 
+        #endregion Constructors
+
+        #region Actions - Initialize core components
+
         protected override void Initialize()
         {
-            #region Demo
+            //#region Demo
 
-            var sphereModel = Content.Load<Model>("Assets/Models/sphere");
+            //var sphereModel = Content.Load<Model>("Assets/Models/sphere");
 
-            VertexBuffer vertexBuffer;
-            IndexBuffer indexBuffer;
-            GraphicsDevice graphicsDevice = _graphics.GraphicsDevice;
+            //VertexBuffer vertexBuffer;
+            //IndexBuffer indexBuffer;
+            //GraphicsDevice graphicsDevice = _graphics.GraphicsDevice;
 
-            sphereModel.ExtractData<VertexPositionNormalTexture>(ref graphicsDevice,
-                out vertexBuffer, out indexBuffer);
+            //sphereModel.ExtractData<VertexPositionNormalTexture>(ref graphicsDevice,
+            //    out vertexBuffer, out indexBuffer);
 
-            #endregion Demo
+            //#endregion Demo
 
             //share some core references
             InitializeGlobals();
@@ -63,22 +73,60 @@ namespace GD.App
             //quad with crate texture
             InitializeDemoQuad();
 
+            //load an FBX and draw
+            InitializeDemoModel();
+
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+        }
+
+        /// <summary>
+        /// Sets game window dimensions and shows/hides the mouse
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="isMouseVisible"></param>
+        private void InitializeGraphics(
+           Vector2 resolution, bool isMouseVisible)
+        {
+            //calling set property
+            _graphics.PreferredBackBufferWidth = (int)resolution.X;
+            _graphics.PreferredBackBufferHeight = (int)resolution.Y;
+            IsMouseVisible = isMouseVisible;
+            _graphics.ApplyChanges();
+
+            //fix the line issue at boundary between skybox textures
+            SamplerState samplerState = new SamplerState();
+            samplerState.AddressU = TextureAddressMode.Mirror;
+            samplerState.AddressV = TextureAddressMode.Mirror;
+            _graphics.GraphicsDevice.SamplerStates[0] = samplerState;
+
+            //TODO - consider for later
+            //  System.Windows.Forms.Application.SetHighDpiMode(System.Windows.Forms.HighDpiMode.PerMonitor);
         }
 
         private void InitializeManagers()
         {
             cameraManager = new CameraManager();
+            sceneManager = new SceneManager();
 
             //TODO - sound manager
         }
 
         private void InitializeScenes()
         {
-            //initialize scene manager
+            //initialize a scene
+            var scene = new Scene("labyrinth");
 
             //add scene to the scene manager
-            scene = new Scene("labyrinth");
+            sceneManager.Add(scene.ID, scene);
+
+            //don't forget to set active scene
+            sceneManager.SetActiveScene("labyrinth");
         }
 
         private void InitializeGlobals()
@@ -133,10 +181,28 @@ namespace GD.App
             cameraManager.SetActiveCamera("first person camera 1");
         }
 
+        #endregion Actions - Initialize core components
+
+        #region Actions - Add GameObjects
+
+        private void InitializeDemoModel()
+        {
+            //game object
+            var gameObject = new GameObject("my first sphere - wahoo!", ObjectType.Static, RenderType.Opaque);
+            gameObject.Transform = new Transform(0.5f * Vector3.One, null, new Vector3(-2, 2, 0));
+            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+            var model = Content.Load<Model>("Assets/Models/sphere");
+            gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
+                new Material(texture, 1),
+                new GD.Engine.ModelMesh(_graphics.GraphicsDevice, model)));
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
         private void InitializeDemoQuad()
         {
             //game object
-            var gameObject = new GameObject("my first quad", true, false);
+            var gameObject = new GameObject("my first quad", ObjectType.Static, RenderType.Opaque);
             gameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
@@ -144,7 +210,7 @@ namespace GD.App
 
             gameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
 
-            scene.Add(gameObject);
+            sceneManager.ActiveScene.Add(gameObject);
         }
 
         private void InitializeSkyBoxAndGround(float worldScale)
@@ -160,80 +226,56 @@ namespace GD.App
             quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), null, new Vector3(0, 0, -halfWorldScale));
             var texture = Content.Load<Texture2D>("Assets/Textures/Skybox/back");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            scene.Add(quad);
+            sceneManager.ActiveScene.Add(quad);
 
             //skybox - left face
             quad = new GameObject("skybox left face");
             quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(90), 0), new Vector3(-halfWorldScale, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/left");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            scene.Add(quad);
+            sceneManager.ActiveScene.Add(quad);
 
             //skybox - right face
             quad = new GameObject("skybox right face");
             quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-90), 0), new Vector3(halfWorldScale, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/right");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            scene.Add(quad);
+            sceneManager.ActiveScene.Add(quad);
 
             //skybox - top face
             quad = new GameObject("skybox top face");
             quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(90), MathHelper.ToRadians(-90), 0), new Vector3(0, halfWorldScale, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/sky");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            scene.Add(quad);
+            sceneManager.ActiveScene.Add(quad);
 
             //skybox - front face
             quad = new GameObject("skybox front face");
             quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-180), 0), new Vector3(0, 0, halfWorldScale));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/front");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            scene.Add(quad);
+            sceneManager.ActiveScene.Add(quad);
 
             //ground
             quad = new GameObject("ground");
             quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(-90), 0, 0), new Vector3(0, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            scene.Add(quad);
+            sceneManager.ActiveScene.Add(quad);
         }
 
-        /// <summary>
-        /// Sets game window dimensions and shows/hides the mouse
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="isMouseVisible"></param>
-        private void InitializeGraphics(
-           Vector2 resolution, bool isMouseVisible)
-        {
-            //calling set property
-            _graphics.PreferredBackBufferWidth = (int)resolution.X;
-            _graphics.PreferredBackBufferHeight = (int)resolution.Y;
-            IsMouseVisible = isMouseVisible;
-            _graphics.ApplyChanges();
+        #endregion Actions - Add GameObjects
 
-            //fix the line issue at boundary between skybox textures
-            SamplerState samplerState = new SamplerState();
-            samplerState.AddressU = TextureAddressMode.Mirror;
-            samplerState.AddressV = TextureAddressMode.Mirror;
-            _graphics.GraphicsDevice.SamplerStates[0] = samplerState;
-        }
-
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-        }
+        #region Actions - Update, Draw
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //update all drawn game objects
-            scene.Update(gameTime);
+            //update all drawn game objects in the active scene
+            sceneManager.Update(gameTime);
+            //scene.Update(gameTime);
 
             //update active camera
             cameraManager.Update(gameTime);
@@ -250,10 +292,12 @@ namespace GD.App
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //get camera and call the draw
-            scene.Draw(gameTime, cameraManager.ActiveCamera);
+            //get active scene, get camera, and call the draw on the active scene
+            sceneManager.ActiveScene.Draw(gameTime, cameraManager.ActiveCamera);
 
             base.Draw(gameTime);
         }
+
+        #endregion Actions - Update, Draw
     }
 }

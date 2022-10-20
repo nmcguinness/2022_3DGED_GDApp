@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +7,8 @@ namespace GD.Engine
     /// <summary>
     /// Base object in the game
     /// </summary>
+    /// <see cref="GameObjectList"/>
+    /// <seealso cref="Scene"/>
     public class GameObject
     {
         #region Fields
@@ -28,26 +29,26 @@ namespace GD.Engine
         protected List<Component> components;
 
         /// <summary>
-        /// Set this to true, if object persists for game lifetime (e.g. wall)
-        /// Set this to false, if object is added/removed during game lifetime (e.g. pickup)
+        /// Static (persists for scene) or Dynamic (add/remove during game)
         /// </summary>
-        private bool isStatic;
+        /// <see cref="Scene"/>
+        private ObjectType objectType;
 
         /// <summary>
-        /// Set this to true, if object is not see through
-        /// Set this to false, if object is semi-transparent or totally transparent
+        /// Opaque or transparent
         /// </summary>
-        private bool isOpaque;
+        /// <see cref="Scene"/>
+        private RenderType renderType;
 
         #endregion Fields
 
         #region Properties
 
-        public bool IsStatic
-        { get { return isStatic; } }
+        public ObjectType ObjectType
+        { get { return objectType; } }
 
-        public bool IsOpaque
-        { get { return isOpaque; } }
+        public RenderType RenderType
+        { get { return renderType; } }
 
         /// <summary>
         /// Gets/sets the game object name
@@ -69,17 +70,17 @@ namespace GD.Engine
         #region Constructors
 
         public GameObject(string name)
-            : this(name, true, true)
+            : this(name, ObjectType.Static, RenderType.Opaque)
         {
-            //RISK - Any object made with this constructor will be static!
+            //RISK - Any object made with this constructor will be static and opaque!
         }
 
-        public GameObject(string name, bool isStatic, bool isOpaque)
+        public GameObject(string name, ObjectType objectType, RenderType renderType)
         {
             Name = name;
             components = new List<Component>();
-            this.isStatic = isStatic;
-            this.isOpaque = isOpaque;
+            this.objectType = objectType;
+            this.renderType = renderType;
         }
 
         #endregion Constructors
