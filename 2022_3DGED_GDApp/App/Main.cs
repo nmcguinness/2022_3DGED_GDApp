@@ -141,7 +141,9 @@ namespace GD.App
             cameraGameObject = new GameObject("curve camera 1");
             cameraGameObject.Transform =
                 new Transform(null, null, null);
-            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+            cameraGameObject.AddComponent(new Camera(
+                MathHelper.PiOver2 / 2,
+                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
             cameraGameObject.AddComponent(
                 new CurveBehaviour(curve3D));
 

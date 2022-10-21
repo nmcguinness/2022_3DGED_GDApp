@@ -6,20 +6,19 @@ namespace GD.App
 {
     public class CurveBehaviour : Component
     {
-        private Curve3D curve3D;
+        private Curve3D translationCurve;
 
-        public CurveBehaviour(Curve3D curve3D)
+        public CurveBehaviour(Curve3D translationCurve)
         {
-            this.curve3D = curve3D;
+            this.translationCurve = translationCurve;
         }
 
         public override void Update(GameTime gameTime)
         {
             double time = gameTime.TotalGameTime.TotalMilliseconds;
 
-            Vector3 newTranslation = curve3D.Evaluate(time, 4);
-
-            transform.SetTranslation(newTranslation);
+            transform.SetTranslation(translationCurve.Evaluate(time, 4));
+            // transform.SetRotation(rotationCurve.Evaluate(time, 4));
 
             base.Update(gameTime);
         }
