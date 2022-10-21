@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace GD.Inputs
+namespace GD.Engine.Inputs
 {
     /// <summary>
     /// Provides methods to obtain input from any of the 4 connected game pads

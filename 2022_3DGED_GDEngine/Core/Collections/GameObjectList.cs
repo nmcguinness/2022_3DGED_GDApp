@@ -1,9 +1,9 @@
-﻿using GD.Globals;
+﻿using GD.Engine.Globals;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace GD.Engine
+namespace GD.Engine.Collections
 {
     /// <summary>
     /// Stores all static and dynamic game objects

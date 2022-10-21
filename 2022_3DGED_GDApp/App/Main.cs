@@ -1,6 +1,7 @@
 ﻿using GD.Engine;
-using GD.Globals;
-using GD.Inputs;
+using GD.Engine.Globals;
+using GD.Engine.Inputs;
+using GD.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,38 +33,30 @@ namespace GD.App
 
         #endregion Constructors
 
-        #region Actions - Initialize core components
+        #region Actions - Initialize
 
         protected override void Initialize()
         {
-            //#region Demo
+            //core engine - common across any game
+            InitializeEngine();
 
-            //var sphereModel = Content.Load<Model>("Assets/Models/sphere");
+            //game specific content
+            InitializeLevel();
 
-            //VertexBuffer vertexBuffer;
-            //IndexBuffer indexBuffer;
-            //GraphicsDevice graphicsDevice = _graphics.GraphicsDevice;
+            base.Initialize();
+        }
 
-            //sphereModel.ExtractData<VertexPositionNormalTexture>(ref graphicsDevice,
-            //    out vertexBuffer, out indexBuffer);
+        #endregion Actions - Initialize
 
-            //#endregion Demo
+        #region Actions - Level Specific
 
-            //share some core references
-            InitializeGlobals();
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+        }
 
-            //set screen resolution and show/hide mouse
-            InitializeGraphics(AppData.APP_RESOLUTION, false);
-
-            //add game effects
-            InitializeEffects();
-
-            //add camera manager
-            InitializeManagers();
-
-            //add game cameras
-            InitializeCameras();
-
+        private void InitializeLevel()
+        {
             //add scene manager and starting scenes
             InitializeScenes();
 
@@ -75,46 +68,6 @@ namespace GD.App
 
             //load an FBX and draw
             InitializeDemoModel();
-
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-        }
-
-        /// <summary>
-        /// Sets game window dimensions and shows/hides the mouse
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="isMouseVisible"></param>
-        private void InitializeGraphics(
-           Vector2 resolution, bool isMouseVisible)
-        {
-            //calling set property
-            _graphics.PreferredBackBufferWidth = (int)resolution.X;
-            _graphics.PreferredBackBufferHeight = (int)resolution.Y;
-            IsMouseVisible = isMouseVisible;
-            _graphics.ApplyChanges();
-
-            //fix the line issue at boundary between skybox textures
-            SamplerState samplerState = new SamplerState();
-            samplerState.AddressU = TextureAddressMode.Mirror;
-            samplerState.AddressV = TextureAddressMode.Mirror;
-            _graphics.GraphicsDevice.SamplerStates[0] = samplerState;
-
-            //TODO - consider for later
-            //  System.Windows.Forms.Application.SetHighDpiMode(System.Windows.Forms.HighDpiMode.PerMonitor);
-        }
-
-        private void InitializeManagers()
-        {
-            cameraManager = new CameraManager();
-            sceneManager = new SceneManager();
-
-            //TODO - sound manager
         }
 
         private void InitializeScenes()
@@ -127,23 +80,6 @@ namespace GD.App
 
             //don't forget to set active scene
             sceneManager.SetActiveScene("labyrinth");
-        }
-
-        private void InitializeGlobals()
-        {
-            Application.Main = this;
-            Application.GraphicsDevice = _graphics.GraphicsDevice;
-            Application.Content = Content;
-
-            //TODO - setup Input
-            Input.Keys = new KeyboardComponent(this);
-            Components.Add(Input.Keys);
-
-            Input.Mouse = new MouseComponent(this);
-            Components.Add(Input.Mouse);
-
-            Input.Gamepad = new GamepadComponent(this);
-            Components.Add(Input.Gamepad);
         }
 
         private void InitializeEffects()
@@ -180,10 +116,6 @@ namespace GD.App
 
             cameraManager.SetActiveCamera("first person camera 1");
         }
-
-        #endregion Actions - Initialize core components
-
-        #region Actions - Add GameObjects
 
         private void InitializeDemoModel()
         {
@@ -264,7 +196,87 @@ namespace GD.App
             sceneManager.ActiveScene.Add(quad);
         }
 
-        #endregion Actions - Add GameObjects
+        #endregion Actions - Level Specific
+
+        #region Actions - Engine Specific
+
+        private void InitializeEngine()
+        {
+            //share some core references
+            InitializeGlobals();
+
+            //set screen resolution and show/hide mouse
+            InitializeGraphics(AppData.APP_RESOLUTION, false);
+
+            //add game effects
+            InitializeEffects();
+
+            //add camera, scene manager
+            InitializeManagers();
+
+            //add dictionaries to store and access content
+            InitializeDictionaries();
+
+            //add game cameras
+            InitializeCameras();
+        }
+
+        private void InitializeGlobals()
+        {
+            Application.Main = this;
+            Application.GraphicsDevice = _graphics.GraphicsDevice;
+            Application.Content = Content;
+
+            //TODO - setup Input
+            Input.Keys = new KeyboardComponent(this);
+            Components.Add(Input.Keys);
+
+            Input.Mouse = new MouseComponent(this);
+            Components.Add(Input.Mouse);
+
+            Input.Gamepad = new GamepadComponent(this);
+            Components.Add(Input.Gamepad);
+        }
+
+        /// <summary>
+        /// Sets game window dimensions and shows/hides the mouse
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="isMouseVisible"></param>
+        private void InitializeGraphics(
+           Vector2 resolution, bool isMouseVisible)
+        {
+            //calling set property
+            _graphics.PreferredBackBufferWidth = (int)resolution.X;
+            _graphics.PreferredBackBufferHeight = (int)resolution.Y;
+            IsMouseVisible = isMouseVisible;
+            _graphics.ApplyChanges();
+
+            //fix the line issue at boundary between skybox textures
+            SamplerState samplerState = new SamplerState();
+            samplerState.AddressU = TextureAddressMode.Mirror;
+            samplerState.AddressV = TextureAddressMode.Mirror;
+            _graphics.GraphicsDevice.SamplerStates[0] = samplerState;
+
+            //TODO - consider for later
+            //  System.Windows.Forms.Application.SetHighDpiMode(System.Windows.Forms.HighDpiMode.PerMonitor);
+        }
+
+        private void InitializeManagers()
+        {
+            cameraManager = new CameraManager();
+            sceneManager = new SceneManager();
+
+            //TODO - sound manager
+        }
+
+        private void InitializeDictionaries()
+        {
+            //TODO - add texture dictionary
+        }
+
+        #endregion Actions - Engine Specific
 
         #region Actions - Update, Draw
 

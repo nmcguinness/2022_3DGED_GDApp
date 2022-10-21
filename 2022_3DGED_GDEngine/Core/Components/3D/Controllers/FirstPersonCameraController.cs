@@ -32,7 +32,7 @@ namespace GD.Engine
             base.Update(gameTime);
         }
 
-        private void HandleKeyboardInput(GameTime gameTime)
+        protected virtual void HandleKeyboardInput(GameTime gameTime)
         {
             //we have to get state new each update
             kbState = Keyboard.GetState();

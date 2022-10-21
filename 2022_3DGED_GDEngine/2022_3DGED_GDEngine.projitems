@@ -9,17 +9,21 @@
     <Import_RootNamespace>_2022_3DGED_GDEngine</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Collections\ContentDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Collections\GameObjectList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Base\Transform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Behaviours\RotationBehaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Controllers\FirstPersonCameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Controllers\FirstPersonController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Scene\Scene.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Enums\Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ColorExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ModelExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Vector2Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Vector3Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Globals\Application.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Globals\Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Effects\GDBasicEffect.cs" />
@@ -36,5 +40,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\CameraManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\SceneManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Objects\GameObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Parameters\Curve\Curve.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Performance\PerfUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Serialization\SerializationUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\String\StringUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Enums\" />
   </ItemGroup>
 </Project>

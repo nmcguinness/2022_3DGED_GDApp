@@ -1,7 +1,6 @@
-﻿using GD.Inputs;
-using System;
+﻿using GD.Engine.Inputs;
 
-namespace GD.Globals
+namespace GD.Engine.Globals
 {
     /// <summary>
     /// Static class that contains input objects used in the engine.

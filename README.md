@@ -35,6 +35,11 @@ This repository contains code for the game engine
 - [x] Added ModelMesh to support loading FBX meshes
 - [x] Refactored Mesh, CubeMesh, QuadMesh and ModelMesh to solve constructor problem with model == null
 - [x] Added SceneManager to support switching between scenes
+- [x] Added Color and Viewport extensions for future use
+- [x] Added Perf, Serialization, and String -Utility classes
+- [x] Added ContentDictionary
+- [x] Added methods in Scene to support transparent game objects
+- [x] Added Curve classes for camera controller
 - [ ] Add camera types and finish 1st Person Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Add support for cloning GameObjects

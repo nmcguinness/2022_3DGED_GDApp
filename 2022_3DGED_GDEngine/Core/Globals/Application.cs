@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GD.Globals
+namespace GD.Engine.Globals
 {
     /// <summary>
     /// Static class that contains global objects used in the engine.

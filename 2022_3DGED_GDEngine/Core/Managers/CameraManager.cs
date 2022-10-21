@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GD.Engine
+namespace GD.Engine.Managers
 {
     /// <summary>
     /// Stores all cameras and updates the active camera

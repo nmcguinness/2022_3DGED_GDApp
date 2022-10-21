@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GD.Engine
+namespace GD.Engine.Managers
 {
     /// <summary>
     /// Stores all scenes and updates the active scene

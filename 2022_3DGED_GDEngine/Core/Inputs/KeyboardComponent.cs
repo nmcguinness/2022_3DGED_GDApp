@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace GD.Inputs
+namespace GD.Engine.Inputs
 {
     /// <summary>
     /// Provides methods to obtain input from the keyboard
