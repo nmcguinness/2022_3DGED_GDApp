@@ -2,6 +2,7 @@
 using GD.Engine.Globals;
 using GD.Engine.Inputs;
 using GD.Engine.Managers;
+using GD.Engine.Parameters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -100,12 +101,18 @@ namespace GD.App
             //camera
             GameObject cameraGameObject = null;
 
+            #region First Person
+
             //camera 1
             cameraGameObject = new GameObject("first person camera 1");
             cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
             cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
+            #endregion First Person
+
+            #region Security
 
             //camera 2
             cameraGameObject = new GameObject("security camera 1");
@@ -123,7 +130,24 @@ namespace GD.App
                 TurnDirectionType.Right));
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
-            cameraManager.SetActiveCamera("security camera 1");
+            #endregion Security
+
+            Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
+            curve3D.Add(new Vector3(0, 2, 5), 0);
+            curve3D.Add(new Vector3(0, 5, 10), 1000);
+            curve3D.Add(new Vector3(0, 8, 25), 2500);
+            curve3D.Add(new Vector3(0, 5, 5), 4000);
+
+            cameraGameObject = new GameObject("curve camera 1");
+            cameraGameObject.Transform =
+                new Transform(null, null, null);
+            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+            cameraGameObject.AddComponent(
+                new CurveBehaviour(curve3D));
+
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
+            cameraManager.SetActiveCamera("curve camera 1");
         }
 
         private void InitializeDemoModel()
