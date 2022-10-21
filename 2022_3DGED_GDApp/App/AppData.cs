@@ -30,6 +30,13 @@ namespace GD.App
 
         #endregion Camera - First Person
 
+        #region Camera - Security Camera
+
+        public static readonly float SECURITY_CAMERA_MAX_ANGLE = 45;
+        public static readonly float SECURITY_CAMERA_ANGULAR_SPEED_MUL = 50;
+
+        #endregion Camera - Security Camera
+
         #region Input Key Mappings
 
         public static readonly Keys[] KEYS_ONE = { Keys.W, Keys.S, Keys.A, Keys.D };

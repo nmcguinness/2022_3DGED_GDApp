@@ -1,14 +1,22 @@
 ﻿namespace GD.Engine
 {
+    public enum TurnDirectionType : sbyte
+    {
+        Left = 1,
+        Right = -1
+    }
+
     /// <summary>
     /// Used to define static (lifetime of game) or dynamic (transient) game objects
     /// </summary>
     /// <see cref="GameObject"/>
     public enum ObjectType : sbyte
     {
-        Static = 1,
-        Dynamic = 0
+        Static,
+        Dynamic
+        //TODO
     }
+
     /// <summary>
     /// Used to define if gameobject is opaque or transparent. doh!
     /// </summary>

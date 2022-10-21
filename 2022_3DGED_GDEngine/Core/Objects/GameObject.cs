@@ -75,7 +75,8 @@ namespace GD.Engine
             //RISK - Any object made with this constructor will be static and opaque!
         }
 
-        public GameObject(string name, ObjectType objectType, RenderType renderType)
+        public GameObject(string name,
+            ObjectType objectType, RenderType renderType)
         {
             Name = name;
             components = new List<Component>();

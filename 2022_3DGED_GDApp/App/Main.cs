@@ -107,14 +107,23 @@ namespace GD.App
             cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
-            //camera 1
-            cameraGameObject = new GameObject("first person camera 2");
-            cameraGameObject.Transform = new Transform(null, null, new Vector3(0, 0, 100));
-            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
-            cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
+            //camera 2
+            cameraGameObject = new GameObject("security camera 1");
+            cameraGameObject.Transform
+                = new Transform(null,
+                null,
+                //  new Vector3(0, MathHelper.ToRadians(-45), 0),
+                new Vector3(0, 2, 5));
+            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2,
+                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+
+            cameraGameObject.AddComponent(new SecurityCameraBehaviour(
+                AppData.SECURITY_CAMERA_MAX_ANGLE,
+                AppData.SECURITY_CAMERA_ANGULAR_SPEED_MUL,
+                TurnDirectionType.Right));
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
-            cameraManager.SetActiveCamera("first person camera 1");
+            cameraManager.SetActiveCamera("security camera 1");
         }
 
         private void InitializeDemoModel()
@@ -134,7 +143,8 @@ namespace GD.App
         private void InitializeDemoQuad()
         {
             //game object
-            var gameObject = new GameObject("my first quad", ObjectType.Static, RenderType.Opaque);
+            var gameObject = new GameObject("my first quad",
+                ObjectType.Static, RenderType.Opaque);
             gameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
