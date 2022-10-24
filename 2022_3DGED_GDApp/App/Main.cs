@@ -1,4 +1,6 @@
-﻿using GD.Engine;
+﻿//#define DEMO
+
+using GD.Engine;
 using GD.Engine.Globals;
 using GD.Engine.Inputs;
 using GD.Engine.Managers;
@@ -132,11 +134,13 @@ namespace GD.App
 
             #endregion Security
 
+            #region Curve
+
             Curve3D curve3D = new Curve3D(CurveLoopType.Oscillate);
             curve3D.Add(new Vector3(0, 2, 5), 0);
             curve3D.Add(new Vector3(0, 5, 10), 1000);
             curve3D.Add(new Vector3(0, 8, 25), 2500);
-            curve3D.Add(new Vector3(0, 5, 5), 4000);
+            curve3D.Add(new Vector3(0, 5, 35), 4000);
 
             cameraGameObject = new GameObject("curve camera 1");
             cameraGameObject.Transform =
@@ -148,6 +152,8 @@ namespace GD.App
                 new CurveBehaviour(curve3D));
 
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
+            #endregion Curve
 
             cameraManager.SetActiveCamera("curve camera 1");
         }
@@ -328,6 +334,8 @@ namespace GD.App
             //update active camera
             cameraManager.Update(gameTime);
 
+#if DEMO
+
             #region Demo - Camera switching
 
             if (Input.Keys.IsPressed(Keys.F1))
@@ -337,7 +345,19 @@ namespace GD.App
 
             #endregion Demo - Camera switching
 
-            base.Update(gameTime);
+            #region Demo - Gamepad
+
+            var thumbsL = Input.Gamepad.ThumbSticks(false);
+            System.Diagnostics.Debug.WriteLine(thumbsL);
+
+            var thumbsR = Input.Gamepad.ThumbSticks(false);
+            System.Diagnostics.Debug.WriteLine(thumbsR);
+
+            System.Diagnostics.Debug.WriteLine($"A: {Input.Gamepad.IsPressed(Buttons.A)}");
+
+            #endregion Demo - Gamepad
+
+#endif
         }
 
         protected override void Draw(GameTime gameTime)
