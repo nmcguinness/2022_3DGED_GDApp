@@ -4,9 +4,24 @@
 This repository contains code for the game engine
 
 ## Table of Contents ##
-| Topic | Description | See (Source Code) | Additional Reading |
+| Topic | See (Source Code) | Additional Reading |
 | :---------------- | :--------------- | :--------------- | :--------------- | 
-|||||
+| Encapsulating translation, rotation, and scale of an object|Transform|None|
+| Encapsulating View and Projection |Camera|[Basic Matrices](http://rbwhitaker.wikidot.com/monogame-basic-matrices)|
+| Representing drawn objects and non-drawn objects |GameObject, Component|None|
+| Encapsulating vertex and index data |Mesh, Renderer|[Rendering from Vertex and Index Buffers](https://learn.microsoft.com/en-us/windows/win32/direct3d9/rendering-from-vertex-and-index-buffers)|
+| Supporting the addition of components to a GameObject |GameObject, Component|None|
+| Storing 3D rendered object's surface properties in a material | Material |None|
+| Rendering FBX models and integrating into Mesh hierarchy |Mesh, ModelMesh|None|
+| Using AppData to remove hard-coded magic numbers from our code |AppData|(Static Classes & Static Members)[https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members]|
+| Adding behaviours (no user-input) and controllers (user-input) as components of a GameObject |RotationBehaviour, FirstPersonController |None|
+| Storing drawn GameObjects in a list in the Scene class |Scene |[C# - List](https://www.tutorialsteacher.com/csharp/csharp-list)|
+| Storing static (i.e. exist for all of gameplay) and dynamic (i.e. added/removed during gameplay) drawn GameObjects in a GameObjectList |GameObjectList, ObjectType |None|
+| Using enums to de-mystify crytic parameters |ObjectType, RenderType |(C# - Enums)[https://www.tutorialsteacher.com/csharp/csharp-enum]|
+| Re-factoring Scene to store opaque and transparent GameObjectLists |Scene, RenderType |None|
+| Adding utility and extension classes to include useful secondary functionality (e.g. Vector3::Round) |Vector3Extension, PerfUtility, SerializationUtility |None|
+| Adding support for multiple scenes and multiple cameras | CameraManager, SceneManager |None|
+| Create behaviours (i.e. GameObject components) to add simple camera types | SecurityCameraBehaviour, CurveBehaviour, Curve|None|
 
 
 ### To Do - Week 5
@@ -40,6 +55,10 @@ This repository contains code for the game engine
 - [x] Added ContentDictionary
 - [x] Added methods in Scene to support transparent game objects
 - [x] Added Curve classes for camera controller
+
+### To Do - Week 7
+- [x] Added pre-processor directives (i.e. #if...) to set HIRES and DEMO in Main and AppData
+- [ ] Refactor SecurityCameraBehaviour and RotationBehaviour 
 - [ ] Add camera types and finish 1st Person Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Add support for cloning GameObjects
