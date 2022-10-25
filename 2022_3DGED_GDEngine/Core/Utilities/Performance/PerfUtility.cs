@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GD.Engine.Globals;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GD.Engine.Utilities
@@ -68,6 +69,16 @@ namespace GD.Engine.Utilities
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null);
             spriteBatch.DrawString(spriteFont, $"FPS [{fpsCountToShow}]", fpsTextStartPosition, fpsTextColor);
+
+            var camPos = Application.CameraManager.ActiveCamera.transform.translation;
+            camPos.Round(1);
+            spriteBatch.DrawString(spriteFont, $"{camPos}", fpsTextStartPosition + new Vector2(0, 20), Color.Yellow);
+
+            var camRot = Application.CameraManager.ActiveCamera.transform.rotation;
+            camRot.Round(1);
+
+            spriteBatch.DrawString(spriteFont, $"{camRot}", fpsTextStartPosition + new Vector2(0, 40), Color.Yellow);
+
             //TODO - add more here
             spriteBatch.End();
         }

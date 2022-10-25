@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿//#define HI_RES
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GD.App

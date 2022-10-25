@@ -13,6 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Assets/Fonts/Perf.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Assets/Fonts/Perf.spritefont
+
 #begin Assets/Models/cube.FBX
 /importer:FbxImporter
 /processor:ModelProcessor

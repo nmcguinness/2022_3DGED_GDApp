@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GD.Engine.Managers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -25,6 +26,10 @@ namespace GD.Engine.Globals
         /// Gets or sets the graphics device.
         /// </summary>
         public static GraphicsDevice GraphicsDevice { get; set; }
+
+        public static CameraManager CameraManager { get; set; }
+
+        public static SceneManager SceneManager { get; set; }
 
         #endregion Properties
     }

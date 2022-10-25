@@ -1,13 +1,17 @@
-﻿//#define DEMO
+﻿#define DEMO
+//#define SHOW_DEBUG_INFO
 
 using GD.Engine;
 using GD.Engine.Globals;
 using GD.Engine.Inputs;
 using GD.Engine.Managers;
 using GD.Engine.Parameters;
+using GD.Engine.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Drawing.Drawing2D;
 
 namespace GD.App
 {
@@ -40,13 +44,29 @@ namespace GD.App
 
         protected override void Initialize()
         {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
             //core engine - common across any game
             InitializeEngine();
 
             //game specific content
             InitializeLevel();
 
+#if SHOW_DEBUG_INFO
+            InitializeDebug();
+#endif
+
             base.Initialize();
+        }
+
+        private void InitializeDebug()
+        {
+            var perfUtility = new PerfUtility(this,
+                _spriteBatch,
+                Content.Load<SpriteFont>("Assets/Fonts/Perf"),
+                new Vector2(10, 10),
+                Color.Red);
+            Components.Add(perfUtility);
         }
 
         #endregion Actions - Initialize
@@ -55,7 +75,6 @@ namespace GD.App
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         private void InitializeLevel()
@@ -244,9 +263,6 @@ namespace GD.App
 
         private void InitializeEngine()
         {
-            //share some core references
-            InitializeGlobals();
-
             //set screen resolution and show/hide mouse
             InitializeGraphics(AppData.APP_RESOLUTION, false);
 
@@ -261,6 +277,9 @@ namespace GD.App
 
             //add game cameras
             InitializeCameras();
+
+            //share some core references
+            InitializeGlobals();
         }
 
         private void InitializeGlobals()
@@ -268,6 +287,8 @@ namespace GD.App
             Application.Main = this;
             Application.GraphicsDevice = _graphics.GraphicsDevice;
             Application.Content = Content;
+            Application.CameraManager = cameraManager;
+            Application.SceneManager = sceneManager;
 
             //TODO - setup Input
             Input.Keys = new KeyboardComponent(this);
