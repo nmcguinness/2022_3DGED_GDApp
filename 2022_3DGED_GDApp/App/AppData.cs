@@ -1,6 +1,6 @@
 ﻿#region Pre-compiler directives
 
-#define HI_RES
+//#define HI_RES
 
 #endregion
 

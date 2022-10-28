@@ -196,6 +196,7 @@ namespace GD.Engine.Inputs
 
             return clicked;
         }
+
         public void SetMouseVisible(bool isMouseVisible)
         {
             Game.IsMouseVisible = isMouseVisible;

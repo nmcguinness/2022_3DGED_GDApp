@@ -4,21 +4,24 @@ using System;
 namespace GD.Engine
 {
     /// <summary>
-    /// Causes the attached camera to rotate at a user defined
-    /// speed to a max and min angle in degrees
+    /// Causes the attached GameObject to rotate at a user defined
+    /// speed to a max and min angle in degrees along a user-defined axis
     /// </summary>
-    public class SecurityCameraBehaviour : Component
+    public class CycledRotationBehaviour : Component
     {
         private static readonly int ROUND_PRECISION = 4;
-
+        private Vector3 rotationAxis;
         private float maxAngleInDegrees;
         private float angularSpeedMultiplier;
         private TurnDirectionType turnDirectionType;
 
-        public SecurityCameraBehaviour(float maxAngleInDegrees,
+        public CycledRotationBehaviour(
+            Vector3 rotationAxis,
+            float maxAngleInDegrees,
             float angularSpeedMultiplier,
             TurnDirectionType turnDirectionType)
         {
+            this.rotationAxis = Vector3.Normalize(rotationAxis);
             this.maxAngleInDegrees = maxAngleInDegrees;
             this.angularSpeedMultiplier = angularSpeedMultiplier;
             this.turnDirectionType = turnDirectionType;
@@ -32,7 +35,8 @@ namespace GD.Engine
                 Math.Sin(MathHelper.ToRadians((float)
                ((int)turnDirectionType * angularSpeedMultiplier * t))), ROUND_PRECISION);
 
-            transform.SetRotation(0, MathHelper.ToRadians((float)angleInDegrees), 0);
+            var rotation = rotationAxis * MathHelper.ToRadians((float)angleInDegrees);
+            transform.SetRotation(rotation);
 
             base.Update(gameTime);
         }

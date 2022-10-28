@@ -192,17 +192,26 @@ namespace GD.App
 
             //camera 2
             cameraGameObject = new GameObject("security camera 1");
+
             cameraGameObject.Transform
                 = new Transform(null,
                 null,
                 new Vector3(0, 2, 5));
+
+            //add camera (view, projection)
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
 
-            cameraGameObject.AddComponent(new SecurityCameraBehaviour(
+            //add rotation
+            cameraGameObject.AddComponent(new CycledRotationBehaviour(
+                AppData.SECURITY_CAMERA_ROTATION_AXIS,
                 AppData.SECURITY_CAMERA_MAX_ANGLE,
                 AppData.SECURITY_CAMERA_ANGULAR_SPEED_MUL,
                 TurnDirectionType.Right));
+
+            //adds FOV change on mouse scroll
+            cameraGameObject.AddComponent(new CameraFOVController(1));
+
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
             #endregion Security
@@ -228,7 +237,7 @@ namespace GD.App
 
             #endregion Curve
 
-            cameraManager.SetActiveCamera("first person camera 1");
+            cameraManager.SetActiveCamera("security camera 1");
         }
 
         private void InitializeDrawnContent(float worldScale)
@@ -432,7 +441,8 @@ namespace GD.App
                 _spriteBatch,
                 Content.Load<SpriteFont>("Assets/Fonts/Perf"),
                 new Vector2(10, 10),
-                Color.Red);
+                Color.Yellow);
+
             Components.Add(perfUtility);
         }
 
@@ -455,7 +465,7 @@ namespace GD.App
 
             #region Demo - Camera switching
 
-            if (Input.Keys.IsPressed(Keys.P))
+            if (Input.Keys.IsPressed(Keys.F1))
                 cameraManager.SetActiveCamera("first person camera 1");
             else if (Input.Keys.IsPressed(Keys.F2))
                 cameraManager.SetActiveCamera("security camera 1");
@@ -467,12 +477,12 @@ namespace GD.App
             #region Demo - Gamepad
 
             var thumbsL = Input.Gamepad.ThumbSticks(false);
-            System.Diagnostics.Debug.WriteLine(thumbsL);
+            //   System.Diagnostics.Debug.WriteLine(thumbsL);
 
             var thumbsR = Input.Gamepad.ThumbSticks(false);
-            System.Diagnostics.Debug.WriteLine(thumbsR);
+            //     System.Diagnostics.Debug.WriteLine(thumbsR);
 
-            System.Diagnostics.Debug.WriteLine($"A: {Input.Gamepad.IsPressed(Buttons.A)}");
+            //    System.Diagnostics.Debug.WriteLine($"A: {Input.Gamepad.IsPressed(Buttons.A)}");
 
             #endregion Demo - Gamepad
 
