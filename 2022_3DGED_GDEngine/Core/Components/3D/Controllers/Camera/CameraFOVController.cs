@@ -5,14 +5,13 @@ namespace GD.Engine
 {
     public class CameraFOVController : Component
     {
-        private float scrollWheelMultiplier;
+        private float scrollWheelIncrement;
         private Camera camera;
 
-        public CameraFOVController(float scrollWheelMultiplier)
+        public CameraFOVController(float scrollWheelIncrement)
         {
             //let's use ternary operator to validate the input
-            this.scrollWheelMultiplier
-                = (scrollWheelMultiplier == 0) ? 1 : scrollWheelMultiplier;
+            this.scrollWheelIncrement = (scrollWheelIncrement == 0) ? 1 : scrollWheelIncrement;
 
             //BUG
             //camera = gameObject.GetComponent<Camera>();
@@ -28,10 +27,10 @@ namespace GD.Engine
 
             //if positive, increase camera FOV by scrollWheelMultiplier
             if (delta > 0)
-                camera.FieldOfView += MathHelper.ToRadians(scrollWheelMultiplier);
+                camera.FieldOfView += MathHelper.ToRadians(scrollWheelIncrement);
             //if negative, decrease camera FOV by scrollWheelMultiplier
             else if (delta < 0)
-                camera.FieldOfView -= MathHelper.ToRadians(scrollWheelMultiplier);
+                camera.FieldOfView -= MathHelper.ToRadians(scrollWheelIncrement);
 
             base.Update(gameTime);
         }

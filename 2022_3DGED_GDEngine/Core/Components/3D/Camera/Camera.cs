@@ -11,6 +11,7 @@ namespace GD.Engine
 
         // private Matrix view;
         private float fieldOfView;
+
         private float aspectRatio;
         private float nearPlaneDistance;
         private float farPlaneDistance;
@@ -19,7 +20,19 @@ namespace GD.Engine
 
         #region Properties
 
-        public float FieldOfView { get => fieldOfView; set => fieldOfView = value; }
+        public float FieldOfView
+        {
+            get
+            {
+                return fieldOfView;
+            }
+            set
+            {
+                //added validation on FOV to ensure its never set <= zero
+                fieldOfView = value >= 0 ? value : MathHelper.PiOver2 / 2;
+            }
+        }
+
         public float AspectRatio { get => aspectRatio; set => aspectRatio = value; }
         public float NearPlaneDistance { get => nearPlaneDistance; set => nearPlaneDistance = value >= 0 ? value : 0.1f; }
         public float FarPlaneDistance { get => farPlaneDistance; set => farPlaneDistance = value >= 0 ? value : 100; }

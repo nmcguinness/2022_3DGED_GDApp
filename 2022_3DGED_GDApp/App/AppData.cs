@@ -28,6 +28,14 @@ namespace GD.App
 
         #endregion World Scale
 
+        #region Camera - General
+
+        public static readonly float CAMERA_FOV_INCREMENT_LOW = 1;
+        public static readonly float CAMERA_FOV_INCREMENT_MEDIUM = 2;
+        public static readonly float CAMERA_FOV_INCREMENT_HIGH = 4;
+
+        #endregion
+
         #region Camera - First Person
 
         public static readonly float FIRST_PERSON_MOVE_SPEED = 0.009f;
