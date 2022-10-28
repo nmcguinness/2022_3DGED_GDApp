@@ -13,12 +13,12 @@ namespace GD.Engine
             //let's use ternary operator to validate the input
             this.scrollWheelMultiplier
                 = (scrollWheelMultiplier == 0) ? 1 : scrollWheelMultiplier;
-
-            camera = gameObject.GetComponent<Camera>();
         }
 
         public override void Update(GameTime gameTime)
         {
+            camera = gameObject.GetComponent<Camera>();
+
             //listen for mouse scroll wheel
             int delta = Input.Mouse.GetDeltaFromScrollWheel();
 

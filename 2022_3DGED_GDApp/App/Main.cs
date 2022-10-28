@@ -210,7 +210,7 @@ namespace GD.App
                 TurnDirectionType.Right));
 
             //adds FOV change on mouse scroll
-            cameraGameObject.AddComponent(new CameraFOVController(1));
+            cameraGameObject.AddComponent(new CameraFOVController(2));
 
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
