@@ -17,8 +17,7 @@ namespace GD.Engine
         protected override void CreateGeometry()
         {
             //extracts from the model the vertices and indices
-            model.ExtractData<VertexPositionNormalTexture>(ref graphicsDevice,
-                out vertices, out indices);
+            model.ExtractData(ref graphicsDevice, out vertices, out indices);
         }
     }
 }

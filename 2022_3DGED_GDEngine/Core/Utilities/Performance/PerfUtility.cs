@@ -70,14 +70,18 @@ namespace GD.Engine.Utilities
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null);
             spriteBatch.DrawString(spriteFont, $"FPS [{fpsCountToShow}]", fpsTextStartPosition, fpsTextColor);
 
+            //name
+            spriteBatch.DrawString(spriteFont, $"Name:{Application.CameraManager.ActiveCameraName}", fpsTextStartPosition + new Vector2(0, 20), Color.Yellow);
+
+            //position
             var camPos = Application.CameraManager.ActiveCamera.transform.translation;
             camPos.Round(1);
-            spriteBatch.DrawString(spriteFont, $"{camPos}", fpsTextStartPosition + new Vector2(0, 20), Color.Yellow);
+            spriteBatch.DrawString(spriteFont, $"Pos:{camPos}", fpsTextStartPosition + new Vector2(0, 40), Color.Yellow);
 
+            //rotation
             var camRot = Application.CameraManager.ActiveCamera.transform.rotation;
             camRot.Round(1);
-
-            spriteBatch.DrawString(spriteFont, $"{camRot}", fpsTextStartPosition + new Vector2(0, 40), Color.Yellow);
+            spriteBatch.DrawString(spriteFont, $"Rot:{camRot}", fpsTextStartPosition + new Vector2(0, 60), Color.Yellow);
 
             //TODO - add more here
             spriteBatch.End();

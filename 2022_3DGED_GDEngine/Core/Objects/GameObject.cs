@@ -132,17 +132,17 @@ namespace GD.Engine
             return target != null;
         }
 
-        ///// <summary>
-        ///// Removes a component by type e.g. Camera
-        ///// </summary>
-        ///// <param name="predicate"></param>
-        ///// <returns></returns>
-        //public bool RemoveComponent<T>()
-        //{
-        //    Component target = GetComponent<T>() as Component;
-        //    components.Remove(target);
-        //    return target != null;
-        //}
+        /// <summary>
+        /// Removes a component by type e.g. Camera
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public bool RemoveComponent<T>() where T : Component
+        {
+            Component target = GetComponent<T>();
+            components.Remove(target);
+            return target != null;
+        }
 
         #endregion Actions - Add, Remove, Get Component
 

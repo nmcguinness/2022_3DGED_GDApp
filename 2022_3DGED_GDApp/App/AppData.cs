@@ -1,5 +1,10 @@
-﻿//#define HI_RES
+﻿#region Pre-compiler directives
 
+#define HI_RES
+
+#endregion
+
+using GD.Engine.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,10 +15,9 @@ namespace GD.App
         #region Graphics
 
 #if HI_RES
-        public static readonly Vector2 APP_RESOLUTION = new Vector2(1920, 1080);
-
+        public static readonly Vector2 APP_RESOLUTION = Resolutions.SixteenNine.HD;
 #else
-        public static readonly Vector2 APP_RESOLUTION = new Vector2(640, 480);
+        public static readonly Vector2 APP_RESOLUTION = Resolutions.FourThree.VGA;
 #endif
 
         #endregion Graphics
@@ -36,6 +40,7 @@ namespace GD.App
 
         public static readonly float SECURITY_CAMERA_MAX_ANGLE = 45;
         public static readonly float SECURITY_CAMERA_ANGULAR_SPEED_MUL = 50;
+        public static readonly Vector3 SECURITY_CAMERA_ROTATION_AXIS = new Vector3(0, 1, 0);
 
         #endregion Camera - Security Camera
 
@@ -51,7 +56,7 @@ namespace GD.App
         public static readonly float PLAYER_MOVE_SPEED = 0.1f;
         private static readonly float PLAYER_STRAFE_SPEED_MULTIPLIER = 0.75f;
         public static readonly float PLAYER_STRAFE_SPEED = PLAYER_STRAFE_SPEED_MULTIPLIER * PLAYER_MOVE_SPEED;
-        public static readonly float PLAYER_ROTATE_SPEED = 0.01f;
+        public static readonly float PLAYER_ROTATE_SPEED = 0.001f;
 
         #endregion Movement Constants
     }

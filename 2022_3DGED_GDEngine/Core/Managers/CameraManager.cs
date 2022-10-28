@@ -19,6 +19,17 @@ namespace GD.Engine.Managers
 
         #region Properties
 
+        public string ActiveCameraName
+        {
+            get
+            {
+                if (activeGameObject == null)
+                    throw new NullReferenceException("ActiveCamera not set! Call SetActiveCamera()");
+
+                return activeGameObject.Name;
+            }
+        }
+
         public Camera ActiveCamera
         {
             get

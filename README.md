@@ -23,6 +23,8 @@ This repository contains code for the game engine
 | Adding support for multiple scenes and multiple cameras | CameraManager, SceneManager |None|
 | Create behaviours (i.e. GameObject components) to add simple camera types | SecurityCameraBehaviour, CurveBehaviour, Curve|None|
 
+### Bugs
+- [ ] FirstPersonController rotation
 
 ### To Do - Week 5
 - [x] Explain two project setup (one app, one engine)
@@ -58,12 +60,26 @@ This repository contains code for the game engine
 
 ### To Do - Week 7
 - [x] Added pre-processor directives (i.e. #if...) to set HIRES and DEMO in Main and AppData
-- [ ] Refactor SecurityCameraBehaviour and RotationBehaviour 
+- [x] Re-added GameObject::RemoveComponent<T>() to support removal of components by type
+- [x] Added Resolutions to clarify and standardize setting screen resolutions
+- [x] Added Rail for RailBehaviour
+- [x] Added CameraManager::ActiveCameraName for use in PerfUtility
+- [x] Added ILoadLevel interface in preparation for moving level specific code out of Main
+- [x] Added TestUpdateableOnlyComponent and TestUpdateableDrawableComponent to demo Component concept
+- [ ] Move level-specific methods to Level class
+- [ ] Re-factor SecurityCameraBehaviour to add axis and re-name since it can be applied to any GameObject
+- [ ] Add CameraFOVController
+- [ ] Demo SoundManager
 - [ ] Add camera types and finish 1st Person Camera
-- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
+- [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
+- [ ] Demo EventDispatcher
+- [ ] PerfUtility is not updating FPS
 - [ ] Add support for cloning GameObjects
+- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
+
+### To Do - Week 8
 - [ ] Practice extension of a class (see Extensions)
 - [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
-
+- [ ] Refactor SecurityCameraBehaviour and RotationBehaviour 
 
  

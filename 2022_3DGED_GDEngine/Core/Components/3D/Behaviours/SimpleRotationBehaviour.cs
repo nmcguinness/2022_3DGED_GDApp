@@ -2,7 +2,7 @@
 
 namespace GD.Engine
 {
-    public class RotationBehaviour : Component
+    public class SimpleRotationBehaviour : Component
     {
         #region Fields
 
@@ -13,7 +13,7 @@ namespace GD.Engine
 
         #region Constructors
 
-        public RotationBehaviour(Vector3 rotationAxis, float rotationSpeedInRadians)
+        public SimpleRotationBehaviour(Vector3 rotationAxis, float rotationSpeedInRadians)
         {
             this.rotationAxis = rotationAxis;
             this.rotationSpeedInRadians = rotationSpeedInRadians;

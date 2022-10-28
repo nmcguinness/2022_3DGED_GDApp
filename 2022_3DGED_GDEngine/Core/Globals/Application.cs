@@ -31,6 +31,8 @@ namespace GD.Engine.Globals
 
         public static SceneManager SceneManager { get; set; }
 
+        public static SoundManager SoundManager { get; set; }
+
         #endregion Properties
     }
 }

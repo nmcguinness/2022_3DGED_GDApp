@@ -1,7 +1,12 @@
-﻿#define DEMO
-//#define SHOW_DEBUG_INFO
+﻿#region Pre-compiler directives
+
+#define DEMO
+#define SHOW_DEBUG_INFO
+
+#endregion
 
 using GD.Engine;
+using GD.Engine.Events;
 using GD.Engine.Globals;
 using GD.Engine.Inputs;
 using GD.Engine.Managers;
@@ -11,7 +16,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Drawing.Drawing2D;
+using System.ComponentModel;
+using System.Windows.Forms;
+using Application = GD.Engine.Globals.Application;
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace GD.App
 {
@@ -26,6 +35,8 @@ namespace GD.App
 
         private CameraManager cameraManager;
         private SceneManager sceneManager;
+        private SoundManager soundManager;
+        private EventDispatcher eventDispatcher;
 
         #endregion Fields
 
@@ -44,13 +55,14 @@ namespace GD.App
 
         protected override void Initialize()
         {
+            //moved spritebatch initialization here because we need it in InitializeDebug() below
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //core engine - common across any game
             InitializeEngine();
 
             //game specific content
-            InitializeLevel();
+            InitializeLevel("My Amazing Game", AppData.SKYBOX_WORLD_SCALE);
 
 #if SHOW_DEBUG_INFO
             InitializeDebug();
@@ -59,37 +71,73 @@ namespace GD.App
             base.Initialize();
         }
 
-        private void InitializeDebug()
-        {
-            var perfUtility = new PerfUtility(this,
-                _spriteBatch,
-                Content.Load<SpriteFont>("Assets/Fonts/Perf"),
-                new Vector2(10, 10),
-                Color.Red);
-            Components.Add(perfUtility);
-        }
-
         #endregion Actions - Initialize
 
         #region Actions - Level Specific
 
         protected override void LoadContent()
         {
+            //moved spritebatch initialization to Main::Initialize() because we need it in InitializeDebug()
+            //_spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
-        private void InitializeLevel()
+        private void InitializeLevel(string title, float worldScale)
         {
+            //set game title
+            SetTitle(title);
+
+            //load sounds, textures, models etc
+            LoadMediaAssets();
+
+            //initialize curves used by cameras
+            InitializeCurves();
+
+            //initialize rails used by cameras
+            InitializeRails();
+
             //add scene manager and starting scenes
             InitializeScenes();
 
-            //create sky
-            InitializeSkyBoxAndGround(AppData.SKYBOX_WORLD_SCALE);
+            //add drawn stuff
+            InitializeDrawnContent(worldScale);
+        }
 
-            //quad with crate texture
-            InitializeDemoQuad();
+        private void SetTitle(string title)
+        {
+            Window.Title = title.Trim();
+        }
 
-            //load an FBX and draw
-            InitializeDemoModel();
+        private void LoadMediaAssets()
+        {
+            //sounds, models, textures
+            LoadSounds();
+            LoadTextures();
+            LoadModels();
+        }
+
+        private void LoadSounds()
+        {
+            //load and add to dictionary
+        }
+
+        private void LoadTextures()
+        {
+            //load and add to dictionary
+        }
+
+        private void LoadModels()
+        {
+            //load and add to dictionary
+        }
+
+        private void InitializeCurves()
+        {
+            //load and add to dictionary
+        }
+
+        private void InitializeRails()
+        {
+            //load and add to dictionary
         }
 
         private void InitializeScenes()
@@ -128,7 +176,14 @@ namespace GD.App
             cameraGameObject = new GameObject("first person camera 1");
             cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
-            cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
+
+            //OLD
+            //cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
+
+            //NEW
+            cameraGameObject.AddComponent(new FirstPersonController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
+                AppData.PLAYER_ROTATE_SPEED, true));
+
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
             #endregion First Person
@@ -140,7 +195,6 @@ namespace GD.App
             cameraGameObject.Transform
                 = new Transform(null,
                 null,
-                //  new Vector3(0, MathHelper.ToRadians(-45), 0),
                 new Vector3(0, 2, 5));
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
@@ -174,7 +228,19 @@ namespace GD.App
 
             #endregion Curve
 
-            cameraManager.SetActiveCamera("curve camera 1");
+            cameraManager.SetActiveCamera("first person camera 1");
+        }
+
+        private void InitializeDrawnContent(float worldScale)
+        {
+            //create sky
+            InitializeSkyBoxAndGround(worldScale);
+
+            //quad with crate texture
+            InitializeDemoQuad();
+
+            //load an FBX and draw
+            InitializeDemoModel();
         }
 
         private void InitializeDemoModel()
@@ -186,7 +252,7 @@ namespace GD.App
             var model = Content.Load<Model>("Assets/Models/sphere");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
                 new Material(texture, 1),
-                new GD.Engine.ModelMesh(_graphics.GraphicsDevice, model)));
+                new Engine.ModelMesh(_graphics.GraphicsDevice, model)));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -201,7 +267,7 @@ namespace GD.App
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
                 new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
 
-            gameObject.AddComponent(new RotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
+            gameObject.AddComponent(new SimpleRotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -263,6 +329,9 @@ namespace GD.App
 
         private void InitializeEngine()
         {
+            //add support for mouse etc
+            InitializeInput();
+
             //set screen resolution and show/hide mouse
             InitializeGraphics(AppData.APP_RESOLUTION, false);
 
@@ -284,21 +353,30 @@ namespace GD.App
 
         private void InitializeGlobals()
         {
+            //Globally shared commonly accessed variables
             Application.Main = this;
             Application.GraphicsDevice = _graphics.GraphicsDevice;
             Application.Content = Content;
+
+            //Add access to managers from anywhere in the code
             Application.CameraManager = cameraManager;
             Application.SceneManager = sceneManager;
+            Application.SoundManager = soundManager;
+        }
 
-            //TODO - setup Input
+        private void InitializeInput()
+        {
+            //Globally accessible inputs
             Input.Keys = new KeyboardComponent(this);
             Components.Add(Input.Keys);
-
             Input.Mouse = new MouseComponent(this);
             Components.Add(Input.Mouse);
-
             Input.Gamepad = new GamepadComponent(this);
             Components.Add(Input.Gamepad);
+
+            //set mouse in centre at startup
+            Input.Mouse.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2.0f,
+                _graphics.PreferredBackBufferHeight / 2.0f);
         }
 
         /// <summary>
@@ -328,15 +406,34 @@ namespace GD.App
 
         private void InitializeManagers()
         {
+            //add event dispatcher for system events - the most important element!!!!!!
+            //eventDispatcher = new EventDispatcher(this);
+
+            //add support for multiple cameras and camera switching
             cameraManager = new CameraManager();
+
+            //add support for multiple scenes and scene switching
             sceneManager = new SceneManager();
 
-            //TODO - sound manager
+            //add support for playing sounds
+            //soundManager = new SoundManager();
+
+            //TODO - add other managers
         }
 
         private void InitializeDictionaries()
         {
-            //TODO - add texture dictionary
+            //TODO - add texture dictionary, soundeffect dictionary, model dictionary
+        }
+
+        private void InitializeDebug()
+        {
+            var perfUtility = new PerfUtility(this,
+                _spriteBatch,
+                Content.Load<SpriteFont>("Assets/Fonts/Perf"),
+                new Vector2(10, 10),
+                Color.Red);
+            Components.Add(perfUtility);
         }
 
         #endregion Actions - Engine Specific
@@ -350,7 +447,6 @@ namespace GD.App
 
             //update all drawn game objects in the active scene
             sceneManager.Update(gameTime);
-            //scene.Update(gameTime);
 
             //update active camera
             cameraManager.Update(gameTime);
@@ -359,10 +455,12 @@ namespace GD.App
 
             #region Demo - Camera switching
 
-            if (Input.Keys.IsPressed(Keys.F1))
+            if (Input.Keys.IsPressed(Keys.P))
                 cameraManager.SetActiveCamera("first person camera 1");
             else if (Input.Keys.IsPressed(Keys.F2))
-                cameraManager.SetActiveCamera("first person camera 2");
+                cameraManager.SetActiveCamera("security camera 1");
+            else if (Input.Keys.IsPressed(Keys.F3))
+                cameraManager.SetActiveCamera("curve camera 1");
 
             #endregion Demo - Camera switching
 
@@ -379,6 +477,8 @@ namespace GD.App
             #endregion Demo - Gamepad
 
 #endif
+            //fixed a bug with components not getting Update called
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)

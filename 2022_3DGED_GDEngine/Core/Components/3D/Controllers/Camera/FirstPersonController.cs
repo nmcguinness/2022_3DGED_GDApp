@@ -76,11 +76,12 @@ namespace GD.Engine
         {
             rotation = Vector3.Zero;
             var delta = Input.Mouse.Delta;
-            rotation.Y -= delta.X * rotationSpeed.X * gameTime.ElapsedGameTime.Milliseconds;
-            rotation.X -= delta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
-
             if (delta.Length() != 0)
+            {
+                rotation.Y -= delta.X * rotationSpeed.X * gameTime.ElapsedGameTime.Milliseconds;
+                rotation.X -= delta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
                 transform.SetRotation(rotation);
+            }
         }
 
         #endregion Actions - Update, Input
