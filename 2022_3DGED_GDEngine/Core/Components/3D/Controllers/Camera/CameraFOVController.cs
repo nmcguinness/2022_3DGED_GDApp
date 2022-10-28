@@ -13,10 +13,14 @@ namespace GD.Engine
             //let's use ternary operator to validate the input
             this.scrollWheelMultiplier
                 = (scrollWheelMultiplier == 0) ? 1 : scrollWheelMultiplier;
+
+            //BUG
+            //camera = gameObject.GetComponent<Camera>();
         }
 
         public override void Update(GameTime gameTime)
         {
+            //NMCG - remove and call in constructor - see BUG above
             camera = gameObject.GetComponent<Camera>();
 
             //listen for mouse scroll wheel

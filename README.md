@@ -25,6 +25,7 @@ This repository contains code for the game engine
 
 ### Bugs
 - [ ] FirstPersonController rotation
+- [ ] Bug on GameObject::GetComponent<>() see FOVCameraController
 
 ### To Do - Week 5
 - [x] Explain two project setup (one app, one engine)
