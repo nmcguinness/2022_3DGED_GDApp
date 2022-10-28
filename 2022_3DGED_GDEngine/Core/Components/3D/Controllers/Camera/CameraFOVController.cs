@@ -15,6 +15,8 @@ namespace GD.Engine
 
             //BUG
             //camera = gameObject.GetComponent<Camera>();
+
+            //    Application.SoundManager.Play2D("boom");
         }
 
         public override void Update(GameTime gameTime)

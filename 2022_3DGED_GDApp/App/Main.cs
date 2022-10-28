@@ -13,13 +13,16 @@ using GD.Engine.Managers;
 using GD.Engine.Parameters;
 using GD.Engine.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Cue = GD.Engine.Managers.Cue;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace GD.App
@@ -117,7 +120,16 @@ namespace GD.App
 
         private void LoadSounds()
         {
-            //load and add to dictionary
+            var soundEffect =
+                Content.Load<SoundEffect>("Assets/Audio/Diegetic/explode1");
+
+            //add the new sound effect
+            soundManager.Add(new Cue(
+                "boom1",
+                soundEffect,
+                SoundCategoryType.Alarm,
+                new Vector3(1, 1, 0),
+                false));
         }
 
         private void LoadTextures()
@@ -196,18 +208,18 @@ namespace GD.App
             cameraGameObject.Transform
                 = new Transform(null,
                 null,
-                new Vector3(0, 2, 5));
+                new Vector3(0, 2, 25));
 
             //add camera (view, projection)
             cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
 
             //add rotation
-            cameraGameObject.AddComponent(new CycledRotationBehaviour(
-                AppData.SECURITY_CAMERA_ROTATION_AXIS,
-                AppData.SECURITY_CAMERA_MAX_ANGLE,
-                AppData.SECURITY_CAMERA_ANGULAR_SPEED_MUL,
-                TurnDirectionType.Right));
+            //cameraGameObject.AddComponent(new CycledRotationBehaviour(
+            //    AppData.SECURITY_CAMERA_ROTATION_AXIS,
+            //    AppData.SECURITY_CAMERA_MAX_ANGLE,
+            //    AppData.SECURITY_CAMERA_ANGULAR_SPEED_MUL,
+            //    TurnDirectionType.Right));
 
             //adds FOV change on mouse scroll
             cameraGameObject.AddComponent(new CameraFOVController(AppData.CAMERA_FOV_INCREMENT_LOW));
@@ -259,9 +271,13 @@ namespace GD.App
             gameObject.Transform = new Transform(0.5f * Vector3.One, null, new Vector3(-2, 2, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
             var model = Content.Load<Model>("Assets/Models/sphere");
+
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
                 new Material(texture, 1),
                 new Engine.ModelMesh(_graphics.GraphicsDevice, model)));
+
+            //lets try out our CycleTranslationBehaviour
+            gameObject.AddComponent(new CycledTranslationBehaviour(0.1f, 10));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -425,7 +441,7 @@ namespace GD.App
             sceneManager = new SceneManager();
 
             //add support for playing sounds
-            //soundManager = new SoundManager();
+            soundManager = new SoundManager();
 
             //TODO - add other managers
         }
@@ -462,6 +478,9 @@ namespace GD.App
             cameraManager.Update(gameTime);
 
 #if DEMO
+
+            if (Input.Keys.WasJustPressed(Keys.S))
+                Application.SoundManager.Play2D("boom1");
 
             #region Demo - Camera switching
 

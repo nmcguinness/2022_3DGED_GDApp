@@ -68,8 +68,8 @@ This repository contains code for the game engine
 - [x] Added ILoadLevel interface in preparation for moving level specific code out of Main
 - [x] Added TestUpdateableOnlyComponent and TestUpdateableDrawableComponent to demo Component concept
 - [ ] Move level-specific methods to Level class
-- [ ] Re-factor SecurityCameraBehaviour to add axis and re-name since it can be applied to any GameObject
-- [ ] Add CameraFOVController with validation on Camera::FieldOfView setter to ensure its never set <= zero
+- [x] Re-factor SecurityCameraBehaviour to add axis and re-name since it can be applied to any GameObject
+- [x] Add CameraFOVController with validation on Camera::FieldOfView setter to ensure its never set <= zero
 - [ ] Demo SoundManager
 - [ ] Add camera types and finish 1st Person Camera
 - [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
