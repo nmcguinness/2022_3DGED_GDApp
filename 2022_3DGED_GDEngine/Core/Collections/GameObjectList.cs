@@ -151,6 +151,19 @@ namespace GD.Engine.Collections
                 gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
         }
 
+        #region DEBUG
+
+#if DEBUG
+
+        public string GetPerfStats()
+        {
+            return $"[S:{staticList.Count},D:{dynamicList.Count}]";
+        }
+
+#endif
+
+        #endregion DEBUG
+
         #endregion Actions - Update, Draw
     }
 }

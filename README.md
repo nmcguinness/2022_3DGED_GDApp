@@ -26,7 +26,7 @@ This repository contains code for the game engine
 ### Bugs
 - [ ] FirstPersonController rotation
 - [ ] Bug on GameObject::GetComponent<>() see FOVCameraController
-
+- [x] PerfUtility is not updating FPS - Fixed - base.Update() was accidentally removed
 ### To Do - Week 5
 - [x] Explain two project setup (one app, one engine)
 - [x] Explain Camera, Transform, Component
@@ -70,15 +70,19 @@ This repository contains code for the game engine
 - [ ] Move level-specific methods to Level class
 - [x] Re-factor SecurityCameraBehaviour to add axis and re-name since it can be applied to any GameObject
 - [x] Add CameraFOVController with validation on Camera::FieldOfView setter to ensure its never set <= zero
-- [ ] Demo SoundManager
-- [ ] Add camera types and finish 1st Person Camera
-- [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
-- [ ] Demo EventDispatcher
-- [ ] PerfUtility is not updating FPS
-- [ ] Add support for cloning GameObjects
-- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
+- [x] Demo SoundManager
+- [x] Add camera types
+- [x] Added GetPerfStats to Scene and GameObjectList
+- [x] Improved PerfUtility to support component based information elements
+- [x] Reduced font size on PerfUtility - it was a bit big - do this by opening the spritefont file in MGCB, setting Size in the XML file and re-building in MGCB
 
 ### To Do - Week 8
+- [ ] Finish 1st Person Camera
+- [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
+- [ ] Demo EventDispatcher
+- [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
+- [ ] Add support for cloning GameObjects
+- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Practice extension of a class (see Extensions)
 - [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
 - [ ] Refactor SecurityCameraBehaviour and RotationBehaviour 

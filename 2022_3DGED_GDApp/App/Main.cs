@@ -16,10 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using System;
-using System.ComponentModel;
-using System.Windows.Forms;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
@@ -268,16 +265,19 @@ namespace GD.App
         {
             //game object
             var gameObject = new GameObject("my first sphere - wahoo!", ObjectType.Static, RenderType.Opaque);
-            gameObject.Transform = new Transform(0.5f * Vector3.One, null, new Vector3(-2, 2, 0));
+            gameObject.Transform = new Transform(2 * Vector3.One,
+                null, new Vector3(-2, 0, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+
             var model = Content.Load<Model>("Assets/Models/sphere");
 
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
                 new Material(texture, 1),
-                new Engine.ModelMesh(_graphics.GraphicsDevice, model)));
+                mesh));
 
             //lets try out our CycleTranslationBehaviour
-            gameObject.AddComponent(new CycledTranslationBehaviour(0.1f, 10));
+            // gameObject.AddComponent(new CycledTranslationBehaviour(0.1f, 10));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -453,12 +453,23 @@ namespace GD.App
 
         private void InitializeDebug()
         {
-            var perfUtility = new PerfUtility(this,
-                _spriteBatch,
-                Content.Load<SpriteFont>("Assets/Fonts/Perf"),
-                new Vector2(10, 10),
-                Color.Yellow);
+            //intialize the utility component
+            var perfUtility = new PerfUtility(this, _spriteBatch, new Vector2(10, 10), new Vector2(0, 20));
 
+            //set the font to be used
+            var spriteFont = Content.Load<SpriteFont>("Assets/Fonts/Perf");
+
+            //add components to the info list to add UI information
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Performance ------------------------------", Color.Yellow));
+            perfUtility.infoList.Add(new FPSInfo(_spriteBatch, spriteFont, "FPS:", Color.White));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Camera -----------------------------------", Color.Yellow));
+            perfUtility.infoList.Add(new CameraNameInfo(_spriteBatch, spriteFont, "Name:", Color.White));
+            perfUtility.infoList.Add(new CameraPositionInfo(_spriteBatch, spriteFont, "Pos:", Color.White));
+            perfUtility.infoList.Add(new CameraRotationInfo(_spriteBatch, spriteFont, "Rot:", Color.White));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Object -----------------------------------", Color.Yellow));
+            perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White));
+
+            //add to the component list otherwise it wont have its Update or Draw called!
             Components.Add(perfUtility);
         }
 

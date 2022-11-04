@@ -165,6 +165,7 @@ namespace GD.Engine
             //rasterizerStateTransparent = new RasterizerState();
             //rasterizerStateTransparent.CullMode = CullMode.None;
         }
+
         public virtual void SetGraphicsStates(bool isOpaque, RasterizerState rasterizerState)
         {
             if (isOpaque)
@@ -189,51 +190,18 @@ namespace GD.Engine
         }
 
         #endregion Actions - Update, Draw
+
+        #region DEBUG
+
+#if DEBUG
+
+        public string GetPerfStats()
+        {
+            return $"Op: {opaqueList.GetPerfStats()}, Tr:{transparentList.GetPerfStats()}";
+        }
+
+#endif
+
+        #endregion DEBUG
     }
 }
-
-/*
- namespace GD.Engine
-{
-    /// <summary>
-    /// Store all the drawn and updateable GameOjects and call Update and Draw
-    /// </summary>
-    public class Scene
-    {
-        private string name;
-        private List<GameObject> gameObjects;
-
-        public Scene(string name)
-        {
-            this.name = name.Trim();
-            gameObjects = new List<GameObject>();
-        }
-
-        public void Add(GameObject gameObject)
-        {
-            gameObjects.Add(gameObject);
-        }
-
-        public GameObject Find(Predicate<GameObject> predicate)
-        {
-            return gameObjects.Find(predicate);
-        }
-
-        //Remove, Clear, Size
-
-        public virtual void Update(GameTime gameTime)
-        {
-            foreach (GameObject gameObject in gameObjects)
-                gameObject.Update(gameTime);
-        }
-
-        public virtual void Draw(GameTime gameTime, Camera camera)
-        {
-            //TODO - add inefficiency with GetComponent
-            foreach (GameObject gameObject in gameObjects)
-                gameObject.GetComponent<Renderer>().Draw(Application.GraphicsDevice, camera);
-        }
-    }
-}
-
- */

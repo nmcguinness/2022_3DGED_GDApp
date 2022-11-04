@@ -52,6 +52,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Objects\GameObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Parameters\Curve\Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Parameters\Rail\Rail.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\SpriteBatchInfo\SpriteBatchInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Performance\PerfUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Serialization\SerializationUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\String\StringUtility.cs" />
