@@ -473,14 +473,18 @@ namespace GD.App
         private void InitializeDebug()
         {
             //intialize the utility component
-            var perfUtility = new PerfUtility(this, _spriteBatch, new Vector2(10, 10), new Vector2(0, 20));
+            var perfUtility = new PerfUtility(this, _spriteBatch,
+                new Vector2(10, 10),
+                new Vector2(0, 20));
 
             //set the font to be used
             var spriteFont = Content.Load<SpriteFont>("Assets/Fonts/Perf");
 
             //add components to the info list to add UI information
             float headingScale = 1f;
-            float contentScale = 1f;
+            float contentScale = 0.9f;
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Performance ------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new FPSInfo(_spriteBatch, spriteFont, "FPS:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Camera -----------------------------------", Color.Yellow, headingScale * Vector2.One));
@@ -489,8 +493,6 @@ namespace GD.App
             perfUtility.infoList.Add(new CameraRotationInfo(_spriteBatch, spriteFont, "Rot:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Object -----------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White, contentScale * Vector2.One));
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV", Color.White, contentScale * Vector2.One));
 
             //add to the component list otherwise it wont have its Update or Draw called!
             Components.Add(perfUtility);
@@ -519,7 +521,7 @@ namespace GD.App
             #region Demo - Camera switching
 
             if (Input.Keys.IsPressed(Keys.F1))
-                cameraManager.SetActiveCamera("first person camera 1");
+                cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
             else if (Input.Keys.IsPressed(Keys.F2))
                 cameraManager.SetActiveCamera("security camera 1");
             else if (Input.Keys.IsPressed(Keys.F3))

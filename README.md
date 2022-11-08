@@ -3,7 +3,7 @@
 ## Overview ##
 This repository contains code for the game engine
 
-## Table of Contents ##
+## Table of Necessary Knowledge ##
 | Topic | See (Source Code) | Additional Reading |
 | :---------------- | :--------------- | :--------------- | :--------------- | 
 | Encapsulating translation, rotation, and scale of an object|Transform|None|
@@ -23,12 +23,16 @@ This repository contains code for the game engine
 | Adding support for multiple scenes and multiple cameras | CameraManager, SceneManager |None|
 | Create behaviours (i.e. GameObject components) to add simple camera types | SecurityCameraBehaviour, CurveBehaviour, Curve|None|
 
+### Add To Table
+- [ ] Overload operators - Integer2
+
 ### Exercises
 - [ ] Add Integer2 to demo operator overloading in C#
 
 ### Demo/Comment
-- [ ] Demo [git emojis](https://gitmoji.dev/) for begin, feature, bug, fix, refactor, remove
-- [ ] Relationship between world scale and movement speed
+- [x] Demo [git emojis](https://gitmoji.dev/) for begin, feature, bug, fix, refactor, remove
+- [x] Relationship between world scale and movement speed
+- [x] Demo PerfUtility updates re SpriteBatchInfo
 - [ ] Demo EventDispatcher
 
 ### Bugs

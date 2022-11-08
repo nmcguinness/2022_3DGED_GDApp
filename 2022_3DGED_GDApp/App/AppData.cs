@@ -10,6 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GD.App
 {
+    public enum CameraIDType : sbyte
+    {
+        First,
+        Third,
+        Security
+    }
+
     public class AppData
     {
         #region Graphics
