@@ -182,9 +182,14 @@ namespace GD.App
             #region First Person
 
             //camera 1
-            cameraGameObject = new GameObject("first person camera 1");
+            cameraGameObject = new GameObject(AppData.FIRST_PERSON_CAMERA_NAME);
             cameraGameObject.Transform = new Transform(null, null, AppData.FIRST_PERSON_DEFAULT_CAMERA_POSITION);
-            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2, (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+            cameraGameObject.AddComponent(
+                new Camera(
+                AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
+                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+                AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
+                AppData.FIRST_PERSON_CAMERA_FCP)); // 3000
 
             //OLD
             //cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
@@ -246,7 +251,7 @@ namespace GD.App
 
             #endregion Curve
 
-            cameraManager.SetActiveCamera("first person camera 1");
+            cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
         }
 
         private void InitializeDrawnContent(float worldScale)

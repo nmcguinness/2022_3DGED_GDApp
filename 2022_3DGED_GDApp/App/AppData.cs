@@ -1,6 +1,6 @@
 ﻿#region Pre-compiler directives
 
-#define HI_RES
+//#define HI_RES
 
 #endregion
 
@@ -24,7 +24,7 @@ namespace GD.App
 
         #region World Scale
 
-        public static readonly float SKYBOX_WORLD_SCALE = 250;
+        public static readonly float SKYBOX_WORLD_SCALE = 2000;
 
         #endregion World Scale
 
@@ -38,9 +38,16 @@ namespace GD.App
 
         #region Camera - First Person
 
+        public static readonly string FIRST_PERSON_CAMERA_NAME = "fpc 1";
         public static readonly float FIRST_PERSON_MOVE_SPEED = 0.009f;
         public static readonly float FIRST_PERSON_STRAFE_SPEED = 0.6f * FIRST_PERSON_MOVE_SPEED;
         public static readonly Vector3 FIRST_PERSON_DEFAULT_CAMERA_POSITION = new Vector3(0, 2, 5);
+
+        public static readonly float FIRST_PERSON_CAMERA_FCP = 3000;
+        public static readonly float FIRST_PERSON_CAMERA_NCP = 0.1f;
+
+        public static readonly float FIRST_PERSON_HALF_FOV
+             = MathHelper.PiOver2 / 2.0f;
 
         #endregion Camera - First Person
 
