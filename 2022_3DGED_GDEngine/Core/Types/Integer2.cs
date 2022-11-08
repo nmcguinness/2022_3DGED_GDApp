@@ -13,7 +13,16 @@ namespace GD.Core.Types
             this.x = x; this.y = y;
         }
 
-        //TODO - operators(==,!=,<,<=), ToString, Equals, GetHashCode, Clone
+        public static bool operator ==(Integer2 lhs, Integer2 rhs)
+        {
+            return lhs.x == rhs.X && lhs.y == rhs.Y;
+        }
+
+        public static bool operator !=(Integer2 lhs, Integer2 rhs)
+        {
+            return lhs.x != rhs.X || lhs.y != rhs.Y;
+        }
+
         public new string ToString()
         {
             return $"[{x}, {y}]";
@@ -31,6 +40,28 @@ namespace GD.Core.Types
         {
             //shallow returns a reference to the existing object
             return this;
+        }
+
+        public override bool Equals(object obj)
+        {
+            //this typecast will cause runtime exception
+            //Integer2 theInt = (Integer2)obj;
+
+            //this typecast will set theInt to null if it fails
+            Integer2 theInt = obj as Integer2;
+            if (theInt == null)
+                return false;
+
+            return x == theInt.X && y == theInt.Y;
+
+            //return obj is Integer2 integer &&
+            //       x == integer.x &&
+            //       y == integer.y;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
         }
     }
 }
