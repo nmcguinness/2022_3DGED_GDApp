@@ -5,6 +5,7 @@
 
 #endregion
 
+using GD.Core;
 using GD.Engine;
 using GD.Engine.Events;
 using GD.Engine.Globals;
@@ -16,7 +17,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
@@ -59,7 +59,7 @@ namespace GD.App
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //core engine - common across any game
-            InitializeEngine();
+            InitializeEngine(AppData.APP_RESOLUTION, true, true);
 
             //game specific content
             InitializeLevel("My Amazing Game", AppData.SKYBOX_WORLD_SCALE);
@@ -191,7 +191,7 @@ namespace GD.App
 
             //NEW
             cameraGameObject.AddComponent(new FirstPersonController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
-                AppData.PLAYER_ROTATE_SPEED, true));
+                AppData.PLAYER_ROTATE_SPEED_VECTOR2, true));
 
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
@@ -212,11 +212,11 @@ namespace GD.App
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
 
             //add rotation
-            //cameraGameObject.AddComponent(new CycledRotationBehaviour(
-            //    AppData.SECURITY_CAMERA_ROTATION_AXIS,
-            //    AppData.SECURITY_CAMERA_MAX_ANGLE,
-            //    AppData.SECURITY_CAMERA_ANGULAR_SPEED_MUL,
-            //    TurnDirectionType.Right));
+            cameraGameObject.AddComponent(new CycledRotationBehaviour(
+                AppData.SECURITY_CAMERA_ROTATION_AXIS,
+                AppData.SECURITY_CAMERA_MAX_ANGLE,
+                AppData.SECURITY_CAMERA_ANGULAR_SPEED_MUL,
+                TurnDirectionType.Right));
 
             //adds FOV change on mouse scroll
             cameraGameObject.AddComponent(new CameraFOVController(AppData.CAMERA_FOV_INCREMENT_LOW));
@@ -246,7 +246,7 @@ namespace GD.App
 
             #endregion Curve
 
-            cameraManager.SetActiveCamera("security camera 1");
+            cameraManager.SetActiveCamera("first person camera 1");
         }
 
         private void InitializeDrawnContent(float worldScale)
@@ -352,13 +352,13 @@ namespace GD.App
 
         #region Actions - Engine Specific
 
-        private void InitializeEngine()
+        private void InitializeEngine(Vector2 resolution, bool isMouseVisible, bool isCursorLocked)
         {
             //add support for mouse etc
             InitializeInput();
 
             //set screen resolution and show/hide mouse
-            InitializeGraphics(AppData.APP_RESOLUTION, false);
+            InitializeGraphics();
 
             //add game effects
             InitializeEffects();
@@ -374,12 +374,16 @@ namespace GD.App
 
             //share some core references
             InitializeGlobals();
+
+            //set screen properties (incl mouse)
+            InitializeScreen(resolution, isMouseVisible, isCursorLocked);
         }
 
         private void InitializeGlobals()
         {
             //Globally shared commonly accessed variables
             Application.Main = this;
+            Application.GraphicsDeviceManager = _graphics;
             Application.GraphicsDevice = _graphics.GraphicsDevice;
             Application.Content = Content;
 
@@ -398,35 +402,45 @@ namespace GD.App
             Components.Add(Input.Mouse);
             Input.Gamepad = new GamepadComponent(this);
             Components.Add(Input.Gamepad);
-
-            //set mouse in centre at startup
-            Input.Mouse.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2.0f,
-                _graphics.PreferredBackBufferHeight / 2.0f);
         }
 
         /// <summary>
         /// Sets game window dimensions and shows/hides the mouse
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="resolution"></param>
         /// <param name="isMouseVisible"></param>
-        private void InitializeGraphics(
-           Vector2 resolution, bool isMouseVisible)
+        /// <param name="isCursorLocked"></param>
+        private void InitializeScreen(Vector2 resolution, bool isMouseVisible, bool isCursorLocked)
         {
-            //calling set property
-            _graphics.PreferredBackBufferWidth = (int)resolution.X;
-            _graphics.PreferredBackBufferHeight = (int)resolution.Y;
-            IsMouseVisible = isMouseVisible;
-            _graphics.ApplyChanges();
+            Screen screen = new Screen();
 
-            //fix the line issue at boundary between skybox textures
+            //set resolution
+            screen.Set(resolution, isMouseVisible, isCursorLocked);
+
+            //set global for re-use by other entities
+            Application.Screen = screen;
+
+            //set starting mouse position i.e. set mouse in centre at startup
+            Input.Mouse.Position = screen.ScreenCentre;
+
+            ////calling set property
+            //_graphics.PreferredBackBufferWidth = (int)resolution.X;
+            //_graphics.PreferredBackBufferHeight = (int)resolution.Y;
+            //IsMouseVisible = isMouseVisible;
+            //_graphics.ApplyChanges();
+        }
+
+        /// <summary>
+        /// Sets the sampler states etc
+        /// </summary>
+        private void InitializeGraphics()
+        {
+            //TODO - move later to something like RenderManager
+            //sets the sampler states which defines how textures are drawn when surface has UV values outside the range [0,1] - fixes the line issue at boundary between skybox textures
             SamplerState samplerState = new SamplerState();
             samplerState.AddressU = TextureAddressMode.Mirror;
             samplerState.AddressV = TextureAddressMode.Mirror;
             _graphics.GraphicsDevice.SamplerStates[0] = samplerState;
-
-            //TODO - consider for later
-            //  System.Windows.Forms.Application.SetHighDpiMode(System.Windows.Forms.HighDpiMode.PerMonitor);
         }
 
         private void InitializeManagers()
@@ -460,14 +474,18 @@ namespace GD.App
             var spriteFont = Content.Load<SpriteFont>("Assets/Fonts/Perf");
 
             //add components to the info list to add UI information
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Performance ------------------------------", Color.Yellow));
-            perfUtility.infoList.Add(new FPSInfo(_spriteBatch, spriteFont, "FPS:", Color.White));
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Camera -----------------------------------", Color.Yellow));
-            perfUtility.infoList.Add(new CameraNameInfo(_spriteBatch, spriteFont, "Name:", Color.White));
-            perfUtility.infoList.Add(new CameraPositionInfo(_spriteBatch, spriteFont, "Pos:", Color.White));
-            perfUtility.infoList.Add(new CameraRotationInfo(_spriteBatch, spriteFont, "Rot:", Color.White));
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Object -----------------------------------", Color.Yellow));
-            perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White));
+            float headingScale = 1f;
+            float contentScale = 1f;
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Performance ------------------------------", Color.Yellow, headingScale * Vector2.One));
+            perfUtility.infoList.Add(new FPSInfo(_spriteBatch, spriteFont, "FPS:", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Camera -----------------------------------", Color.Yellow, headingScale * Vector2.One));
+            perfUtility.infoList.Add(new CameraNameInfo(_spriteBatch, spriteFont, "Name:", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new CameraPositionInfo(_spriteBatch, spriteFont, "Pos:", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new CameraRotationInfo(_spriteBatch, spriteFont, "Rot:", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Object -----------------------------------", Color.Yellow, headingScale * Vector2.One));
+            perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV", Color.White, contentScale * Vector2.One));
 
             //add to the component list otherwise it wont have its Update or Draw called!
             Components.Add(perfUtility);
@@ -490,7 +508,7 @@ namespace GD.App
 
 #if DEMO
 
-            if (Input.Keys.WasJustPressed(Keys.S))
+            if (Input.Keys.WasJustPressed(Keys.B))
                 Application.SoundManager.Play2D("boom1");
 
             #region Demo - Camera switching

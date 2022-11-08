@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GD.Engine.Globals;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GD.Engine.Inputs
@@ -98,16 +99,16 @@ namespace GD.Engine.Inputs
             previousState = currentState;
             currentState = Mouse.GetState();
 
-            //if (Screen.Instance.IsCursorLocked)
-            //{
-            //    mouseDelta.X = (currentState.X - Screen.Instance.ScreenCentre.X);
-            //    mouseDelta.Y = (currentState.Y - Screen.Instance.ScreenCentre.Y);
-            //}
-            //else
-            //{
-            mouseDelta.X = (currentState.X - previousState.X);
-            mouseDelta.Y = (currentState.Y - previousState.Y);
-            //}
+            if (Application.Screen.IsCursorLocked)
+            {
+                mouseDelta.X = (currentState.X - Application.Screen.ScreenCentre.X);
+                mouseDelta.Y = (currentState.Y - Application.Screen.ScreenCentre.Y);
+            }
+            else
+            {
+                mouseDelta.X = (currentState.X - previousState.X);
+                mouseDelta.Y = (currentState.Y - previousState.Y);
+            }
 
             base.Update(gameTime);
         }

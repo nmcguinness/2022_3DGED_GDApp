@@ -32,9 +32,7 @@ namespace GD.Engine
         {
         }
 
-        public FirstPersonController(float moveSpeed, float strafeSpeed,
-            Vector2 rotationSpeed,
-            bool isGrounded = true)
+        public FirstPersonController(float moveSpeed, float strafeSpeed, Vector2 rotationSpeed, bool isGrounded = true)
         {
             this.moveSpeed = moveSpeed;
             this.strafeSpeed = strafeSpeed;
@@ -76,12 +74,13 @@ namespace GD.Engine
         {
             rotation = Vector3.Zero;
             var delta = Input.Mouse.Delta;
+
+            //Q - where are X and Y reversed?
+            rotation.Y -= delta.X * rotationSpeed.X * gameTime.ElapsedGameTime.Milliseconds;
+            rotation.X -= delta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
+
             if (delta.Length() != 0)
-            {
-                rotation.Y -= delta.X * rotationSpeed.X * gameTime.ElapsedGameTime.Milliseconds;
-                rotation.X -= delta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
                 transform.SetRotation(rotation);
-            }
         }
 
         #endregion Actions - Update, Input

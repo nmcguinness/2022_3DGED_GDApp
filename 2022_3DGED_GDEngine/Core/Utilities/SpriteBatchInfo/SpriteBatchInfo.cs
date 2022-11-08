@@ -12,12 +12,20 @@ namespace GD.Engine.Utilities
         protected string label;
         protected Color color;
 
-        protected SpriteBatchInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color)
+        protected float rotation = 0;
+        protected Vector2 origin = Vector2.Zero;
+        protected Vector2 scale;
+        protected SpriteEffects effects = SpriteEffects.None;
+        protected float layerDepth = 0;
+
+        protected SpriteBatchInfo(SpriteBatch spriteBatch,
+            SpriteFont spriteFont, string label, Color color, Vector2 scale)
         {
             this.spriteBatch = spriteBatch;
             this.spriteFont = spriteFont;
             this.label = label;
             this.color = color;
+            this.scale = scale;
         }
 
         public virtual void Draw(string text, Vector2 position)
@@ -34,13 +42,13 @@ namespace GD.Engine.Utilities
     /// </summary>
     public class TextInfo : SpriteBatchInfo
     {
-        public TextInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color) : base(spriteBatch, spriteFont, label, color)
+        public TextInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color, Vector2 scale) : base(spriteBatch, spriteFont, label, color, scale)
         {
         }
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}", position, color);
+            spriteBatch.DrawString(spriteFont, $"{label}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 
@@ -49,13 +57,13 @@ namespace GD.Engine.Utilities
     /// </summary>
     public class FPSInfo : SpriteBatchInfo
     {
-        public FPSInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color) : base(spriteBatch, spriteFont, label, color)
+        public FPSInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color, Vector2 scale) : base(spriteBatch, spriteFont, label, color, scale)
         {
         }
 
         public override void Draw(string text, Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{text}", position, color);
+            spriteBatch.DrawString(spriteFont, $"{label}{text}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 
@@ -64,13 +72,13 @@ namespace GD.Engine.Utilities
     /// </summary>
     public class CameraPositionInfo : SpriteBatchInfo
     {
-        public CameraPositionInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color) : base(spriteBatch, spriteFont, label, color)
+        public CameraPositionInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color, Vector2 scale) : base(spriteBatch, spriteFont, label, color, scale)
         {
         }
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.translation.GetNewRounded(1)}", position, color);
+            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.translation.GetNewRounded(1)}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 
@@ -79,13 +87,13 @@ namespace GD.Engine.Utilities
     /// </summary>
     public class CameraRotationInfo : SpriteBatchInfo
     {
-        public CameraRotationInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color) : base(spriteBatch, spriteFont, label, color)
+        public CameraRotationInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color, Vector2 scale) : base(spriteBatch, spriteFont, label, color, scale)
         {
         }
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.rotation.GetNewRounded(1)}", position, color);
+            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.rotation.GetNewRounded(1)}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 
@@ -94,13 +102,13 @@ namespace GD.Engine.Utilities
     /// </summary>
     public class CameraNameInfo : SpriteBatchInfo
     {
-        public CameraNameInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color) : base(spriteBatch, spriteFont, label, color)
+        public CameraNameInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color, Vector2 scale) : base(spriteBatch, spriteFont, label, color, scale)
         {
         }
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCameraName}", position, color);
+            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCameraName}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 
@@ -109,13 +117,13 @@ namespace GD.Engine.Utilities
     /// </summary>
     public class ObjectInfo : SpriteBatchInfo
     {
-        public ObjectInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color) : base(spriteBatch, spriteFont, label, color)
+        public ObjectInfo(SpriteBatch spriteBatch, SpriteFont spriteFont, string label, Color color, Vector2 scale) : base(spriteBatch, spriteFont, label, color, scale)
         {
         }
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{Application.SceneManager.ActiveScene.GetPerfStats()}", position, color);
+            spriteBatch.DrawString(spriteFont, $"{label}{Application.SceneManager.ActiveScene.GetPerfStats()}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region Pre-compiler directives
 
-//#define HI_RES
+#define HI_RES
 
 #endregion
 
@@ -24,7 +24,7 @@ namespace GD.App
 
         #region World Scale
 
-        public static readonly float SKYBOX_WORLD_SCALE = 100;
+        public static readonly float SKYBOX_WORLD_SCALE = 250;
 
         #endregion World Scale
 
@@ -64,7 +64,12 @@ namespace GD.App
         public static readonly float PLAYER_MOVE_SPEED = 0.1f;
         private static readonly float PLAYER_STRAFE_SPEED_MULTIPLIER = 0.75f;
         public static readonly float PLAYER_STRAFE_SPEED = PLAYER_STRAFE_SPEED_MULTIPLIER * PLAYER_MOVE_SPEED;
-        public static readonly float PLAYER_ROTATE_SPEED = 0.001f;
+
+        //can use either same X-Y rotation for camera controller or different
+        public static readonly float PLAYER_ROTATE_SPEED_SINGLE = 0.001f;
+
+        //why bother? can you tilt your head at the same speed as you rotate it?
+        public static readonly Vector2 PLAYER_ROTATE_SPEED_VECTOR2 = new Vector2(0.0004f, 0.0004f);
 
         #endregion Movement Constants
     }

@@ -23,10 +23,22 @@ This repository contains code for the game engine
 | Adding support for multiple scenes and multiple cameras | CameraManager, SceneManager |None|
 | Create behaviours (i.e. GameObject components) to add simple camera types | SecurityCameraBehaviour, CurveBehaviour, Curve|None|
 
+### Exercises
+- [ ] Add Integer2 to demo operator overloading in C#
+
+### Demo/Comment
+- [ ] Relationship between world scale and movement speed
+- [ ] Demo EventDispatcher
+
 ### Bugs
-- [ ] FirstPersonController rotation
-- [ ] Bug on GameObject::GetComponent<>() see FOVCameraController
+- [x] Fix FirstPersonController rotation
+- [x] Fix GameObject::GetComponent<>() - see FOVCameraController
 - [x] PerfUtility is not updating FPS - Fixed - base.Update() was accidentally removed
+- [ ] Fix CycledTranslationBehaviour
+
+### Possible Improvements
+- [ ] Add InputDevice to separate input from keyboard or gamepad and allow mappings
+
 ### To Do - Week 5
 - [x] Explain two project setup (one app, one engine)
 - [x] Explain Camera, Transform, Component
@@ -67,7 +79,6 @@ This repository contains code for the game engine
 - [x] Added CameraManager::ActiveCameraName for use in PerfUtility
 - [x] Added ILoadLevel interface in preparation for moving level specific code out of Main
 - [x] Added TestUpdateableOnlyComponent and TestUpdateableDrawableComponent to demo Component concept
-- [ ] Move level-specific methods to Level class
 - [x] Re-factor SecurityCameraBehaviour to add axis and re-name since it can be applied to any GameObject
 - [x] Add CameraFOVController with validation on Camera::FieldOfView setter to ensure its never set <= zero
 - [x] Demo SoundManager
@@ -75,16 +86,21 @@ This repository contains code for the game engine
 - [x] Added GetPerfStats to Scene and GameObjectList
 - [x] Improved PerfUtility to support component based information elements
 - [x] Reduced font size on PerfUtility - it was a bit big - do this by opening the spritefont file in MGCB, setting Size in the XML file and re-building in MGCB
+- [x] Refactor SecurityCameraBehaviour
+- [x] Changed boom sound to play on B and not S key as it clashed with WASD for camera
 
 ### To Do - Week 8
-- [ ] Finish 1st Person Camera
+- [x] Finish 1st Person Camera
 - [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
-- [ ] Demo EventDispatcher
+- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
 - [ ] Add support for cloning GameObjects
-- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
+- [ ] Add Camera::Viewport
+- [ ] Add clean/dirty flag to Transform on change
+- [ ] Add event notification on Transform change
 - [ ] Practice extension of a class (see Extensions)
 - [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
-- [ ] Refactor SecurityCameraBehaviour and RotationBehaviour 
+- [ ] Refactor RotationBehaviour 
+- [ ] Move level-specific methods to Level class
 
  

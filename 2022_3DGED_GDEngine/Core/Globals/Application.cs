@@ -1,4 +1,5 @@
-﻿using GD.Engine.Managers;
+﻿using GD.Core;
+using GD.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,11 +28,30 @@ namespace GD.Engine.Globals
         /// </summary>
         public static GraphicsDevice GraphicsDevice { get; set; }
 
+        /// <summary>
+        /// Gets or sets the graphics device manager
+        /// </summary>
+        public static GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+
+        /// <summary>
+        /// Gets or sets the camera manager.
+        /// </summary>
         public static CameraManager CameraManager { get; set; }
 
+        /// <summary>
+        /// Gets or sets the scene manager.
+        /// </summary>
         public static SceneManager SceneManager { get; set; }
 
+        /// <summary>
+        /// Gets or sets the scene manager.
+        /// </summary>
         public static SoundManager SoundManager { get; set; }
+
+        /// <summary>
+        /// Gets or sets the screen object that allows us to change resolution
+        /// </summary>
+        public static Screen Screen { get; set; }
 
         #endregion Properties
     }
