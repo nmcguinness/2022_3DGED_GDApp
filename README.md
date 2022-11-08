@@ -27,6 +27,7 @@ This repository contains code for the game engine
 - [ ] Add Integer2 to demo operator overloading in C#
 
 ### Demo/Comment
+- [ ] Demo [git emojis](https://gitmoji.dev/) for begin, feature, bug, fix, refactor, remove
 - [ ] Relationship between world scale and movement speed
 - [ ] Demo EventDispatcher
 
