@@ -1,11 +1,12 @@
 ﻿#region Pre-compiler directives
 
-#define DEMO
+//#define DEMO
 #define SHOW_DEBUG_INFO
 
 #endregion
 
 using GD.Core;
+using GD.Core.Types;
 using GD.Engine;
 using GD.Engine.Events;
 using GD.Engine.Globals;
@@ -55,6 +56,19 @@ namespace GD.App
 
         protected override void Initialize()
         {
+#if DEMO
+            Integer2 myInt = new Integer2(1, 2);
+            Integer2 cloneMyInt = myInt.GetShallowCopy() as Integer2;
+            //hmm...is this a deep or shallow copy?
+            System.Diagnostics.Debug.WriteLine(myInt.ToString());
+            System.Diagnostics.Debug.WriteLine(cloneMyInt.ToString());
+            myInt.X = -999999;
+            System.Diagnostics.Debug.WriteLine("After...");
+            System.Diagnostics.Debug.WriteLine(myInt.ToString());
+            System.Diagnostics.Debug.WriteLine(cloneMyInt.ToString());
+            Integer2 myOtherInt = Integer2.One;
+#endif
+
             //moved spritebatch initialization here because we need it in InitializeDebug() below
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 

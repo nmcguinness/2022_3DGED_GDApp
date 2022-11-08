@@ -27,7 +27,7 @@ This repository contains code for the game engine
 - [ ] Overload operators - Integer2
 
 ### Exercises
-- [ ] Add Integer2 to demo operator overloading in C#
+- [ ] Add Integer2 to demo operator overloading in C# and add [expression bodied members](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/expression-bodied-members)
 
 ### Demo/Comment
 - [x] Demo [git emojis](https://gitmoji.dev/) for begin, feature, bug, fix, refactor, remove
