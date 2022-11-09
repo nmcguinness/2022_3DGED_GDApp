@@ -22,7 +22,7 @@ namespace GD.Engine
             {
                 //use target position + offset to generate new camera position
                 var newPosition = target.Transform.translation
-                    + new Vector3(0, 1, 5);
+                    + new Vector3(0, 2, 10);
 
                 //set new camera position
                 transform.SetTranslation(newPosition);

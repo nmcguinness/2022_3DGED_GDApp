@@ -209,6 +209,8 @@ namespace GD.App
 
             cameraGameObject.AddComponent(new ThirdPersonController());
 
+            cameraManager.Add(cameraGameObject.Name, cameraGameObject);
+
             #endregion
 
             #region First Person
@@ -343,9 +345,13 @@ namespace GD.App
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
             var model = Content.Load<Model>("Assets/Models/sphere");
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
             playerGameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
                 new Material(texture, 1),
                 mesh));
+
+            playerGameObject.AddComponent(new PlayerController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
+                AppData.PLAYER_ROTATE_SPEED_VECTOR2, true));
 
             sceneManager.ActiveScene.Add(playerGameObject);
 

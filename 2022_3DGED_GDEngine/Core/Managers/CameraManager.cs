@@ -89,6 +89,12 @@ namespace GD.Engine.Managers
 
         public virtual void Update(GameTime gameTime)
         {
+            if (activeGameObject == null)
+                throw new ArgumentNullException("Active object not set. " +
+                    "Did you add camera in Main::InitializeLevel()? " +
+                    "Did you call SetActiveCamera() in Main::InitializeLevel()? " +
+                    "Is the camera name correct in SetActiveCamera()?");
+
             activeGameObject.Update(gameTime);
         }
 
