@@ -115,6 +115,9 @@ namespace GD.App
 
             //add drawn stuff
             InitializeDrawnContent(worldScale);
+
+            //add the player
+            InitializePlayer();
         }
 
         private void SetTitle(string title)
@@ -194,6 +197,8 @@ namespace GD.App
             //camera
             GameObject cameraGameObject = null;
 
+            #region Third Person
+
             cameraGameObject = new GameObject(AppData.THIRD_PERSON_CAMERA_NAME);
             cameraGameObject.Transform = new Transform(null, null, null);
             cameraGameObject.AddComponent(new Camera(
@@ -202,7 +207,9 @@ namespace GD.App
                 AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
                 AppData.FIRST_PERSON_CAMERA_FCP)); // 3000
 
-            cameraGameObject.AddComponent(new ThirdPersonController(playerGameObject));
+            cameraGameObject.AddComponent(new ThirdPersonController());
+
+            #endregion
 
             #region First Person
 
@@ -329,9 +336,21 @@ namespace GD.App
 
         private void InitializePlayer()
         {
-            playerGameObject = new GameObject("player 1");
-            //...
-            //...
+            playerGameObject = new GameObject("player 1", ObjectType.Static, RenderType.Opaque);
+
+            playerGameObject.Transform = new Transform(new Vector3(0.4f, 0.4f, 1),
+                null, new Vector3(0, 0.2f, -2));
+            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+            var model = Content.Load<Model>("Assets/Models/sphere");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+            playerGameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
+                new Material(texture, 1),
+                mesh));
+
+            sceneManager.ActiveScene.Add(playerGameObject);
+
+            //set this as active player
+            Application.Player = playerGameObject;
         }
 
         private void InitializeSkyBoxAndGround(float worldScale)
@@ -536,6 +555,11 @@ namespace GD.App
 
         protected override void Update(GameTime gameTime)
         {
+            //Possible fix - ThirdPersonController
+            //is third person camera active?
+            //does it have a valid target?
+            //set playerGameObject to be the target?
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 

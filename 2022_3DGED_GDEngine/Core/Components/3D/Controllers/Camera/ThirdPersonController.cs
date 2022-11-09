@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GD.Engine.Globals;
+using Microsoft.Xna.Framework;
 using System;
 
 namespace GD.Engine
@@ -7,13 +8,16 @@ namespace GD.Engine
     {
         private GameObject target;
 
-        public ThirdPersonController(GameObject target)
-        {
-            this.target = target;
-        }
+        public ThirdPersonController()
+        { }
 
         public override void Update(GameTime gameTime)
         {
+            if (Application.Player != null)
+                target = Application.Player;
+            else
+                throw new ArgumentNullException("Target not set! Do this in main");
+
             if (target != null)
             {
                 //use target position + offset to generate new camera position
@@ -23,8 +27,6 @@ namespace GD.Engine
                 //set new camera position
                 transform.SetTranslation(newPosition);
             }
-            else
-                throw new ArgumentNullException("Target not set! Do this in main");
 
             //since parent Update does nothing then dont bother calling it
             //base.Update(gameTime);
