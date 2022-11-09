@@ -38,6 +38,7 @@ namespace GD.App
         private SceneManager sceneManager;
         private SoundManager soundManager;
         private EventDispatcher eventDispatcher;
+        private GameObject playerGameObject;
 
         #endregion Fields
 
@@ -193,6 +194,16 @@ namespace GD.App
             //camera
             GameObject cameraGameObject = null;
 
+            cameraGameObject = new GameObject(AppData.THIRD_PERSON_CAMERA_NAME);
+            cameraGameObject.Transform = new Transform(null, null, null);
+            cameraGameObject.AddComponent(new Camera(
+                AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
+                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+                AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
+                AppData.FIRST_PERSON_CAMERA_FCP)); // 3000
+
+            cameraGameObject.AddComponent(new ThirdPersonController(playerGameObject));
+
             #region First Person
 
             //camera 1
@@ -265,7 +276,7 @@ namespace GD.App
 
             #endregion Curve
 
-            cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
+            cameraManager.SetActiveCamera(AppData.THIRD_PERSON_CAMERA_NAME);
         }
 
         private void InitializeDrawnContent(float worldScale)
@@ -314,6 +325,13 @@ namespace GD.App
             gameObject.AddComponent(new SimpleRotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
 
             sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializePlayer()
+        {
+            playerGameObject = new GameObject("player 1");
+            //...
+            //...
         }
 
         private void InitializeSkyBoxAndGround(float worldScale)

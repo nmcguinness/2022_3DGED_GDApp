@@ -27,12 +27,14 @@ This repository contains code for the game engine
 - [ ] Overload operators - Integer2
 
 ### Exercises
-- [ ] Add Integer2 to demo operator overloading in C# and add [expression bodied members](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/expression-bodied-members)
+- [x] Add Integer2 to demo operator overloading in C# and add [expression bodied members](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/expression-bodied-members)
+- [ ] Add ThirdPersonController to also demo use of FirstPersonController
 
 ### Demo/Comment
 - [x] Demo [git emojis](https://gitmoji.dev/) for begin, feature, bug, fix, refactor, remove
 - [x] Relationship between world scale and movement speed
 - [x] Demo PerfUtility updates re SpriteBatchInfo
+- [x] Demo FirstPersonController
 - [ ] Demo EventDispatcher
 
 ### Bugs
@@ -100,6 +102,7 @@ This repository contains code for the game engine
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
 - [ ] Add support for cloning GameObjects
+- [ ] Add support for cloning Camera
 - [ ] Add Camera::Viewport
 - [ ] Add clean/dirty flag to Transform on change
 - [ ] Add event notification on Transform change
