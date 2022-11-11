@@ -35,9 +35,12 @@ This repository contains code for the game engine
 - [x] Relationship between world scale and movement speed
 - [x] Demo PerfUtility updates re SpriteBatchInfo
 - [x] Demo FirstPersonController
+- [ ] Demo SoundManager
 - [ ] Demo EventDispatcher
+- [ ] [Sound Assets - Big Sound Bank](https://bigsoundbank.com/)
 
 ### Bugs
+- [ ] Fix depth problem on draw
 - [x] Fix FirstPersonController rotation
 - [x] Fix GameObject::GetComponent<>() - see FOVCameraController
 - [x] PerfUtility is not updating FPS - Fixed - base.Update() was accidentally removed
@@ -79,6 +82,9 @@ This repository contains code for the game engine
 - [x] Added Curve classes for camera controller
 
 ### To Do - Week 7
+- [x] Practice extension of a class (see Extensions)
+- [x] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
+- [x] Refactor RotationBehaviour 
 - [x] Added pre-processor directives (i.e. #if...) to set HIRES and DEMO in Main and AppData
 - [x] Re-added GameObject::RemoveComponent<T>() to support removal of components by type
 - [x] Added Resolutions to clarify and standardize setting screen resolutions
@@ -98,17 +104,20 @@ This repository contains code for the game engine
 
 ### To Do - Week 8
 - [x] Finish 1st Person Camera
+- [x] Add ThirdPersonController
+- [ ] Add RailController
+- [ ] Add DriveController
+- [ ] See depth bug and fix
+
+- [ ] Add support for cloning GameObjects
+- [ ] Add support for cloning Camera
+- [ ] Add RenderManager to render Scene data and remove Draw from Scene
 - [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
-- [ ] Add support for cloning GameObjects
-- [ ] Add support for cloning Camera
 - [ ] Add Camera::Viewport
 - [ ] Add clean/dirty flag to Transform on change
 - [ ] Add event notification on Transform change
-- [ ] Practice extension of a class (see Extensions)
-- [ ] Add Integer2 for use with screen resolution to prevent need to typecast - see InitializeGraphics()
-- [ ] Refactor RotationBehaviour 
 - [ ] Move level-specific methods to Level class
 
  
