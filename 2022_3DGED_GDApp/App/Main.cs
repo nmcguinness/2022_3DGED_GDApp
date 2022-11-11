@@ -1,6 +1,6 @@
 ﻿#region Pre-compiler directives
 
-//#define DEMO
+#define DEMO
 #define SHOW_DEBUG_INFO
 
 #endregion
@@ -37,6 +37,7 @@ namespace GD.App
         private CameraManager cameraManager;
         private SceneManager sceneManager;
         private SoundManager soundManager;
+        private RenderManager renderManager;
         private EventDispatcher eventDispatcher;
         private GameObject playerGameObject;
 
@@ -205,7 +206,9 @@ namespace GD.App
                 AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
                 AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
-                AppData.FIRST_PERSON_CAMERA_FCP)); // 3000
+                AppData.FIRST_PERSON_CAMERA_FCP,
+                new Viewport(0, 0, _graphics.PreferredBackBufferWidth,
+                _graphics.PreferredBackBufferHeight))); // 3000
 
             cameraGameObject.AddComponent(new ThirdPersonController());
 
@@ -223,7 +226,9 @@ namespace GD.App
                 AppData.FIRST_PERSON_HALF_FOV, //MathHelper.PiOver2 / 2,
                 (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
                 AppData.FIRST_PERSON_CAMERA_NCP, //0.1f,
-                AppData.FIRST_PERSON_CAMERA_FCP)); // 3000
+                AppData.FIRST_PERSON_CAMERA_FCP,
+                new Viewport(0, 0, _graphics.PreferredBackBufferWidth,
+                _graphics.PreferredBackBufferHeight))); // 3000
 
             //OLD
             //cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
@@ -239,7 +244,7 @@ namespace GD.App
             #region Security
 
             //camera 2
-            cameraGameObject = new GameObject("security camera 1");
+            cameraGameObject = new GameObject(AppData.SECURITY_CAMERA_NAME);
 
             cameraGameObject.Transform
                 = new Transform(null,
@@ -247,8 +252,11 @@ namespace GD.App
                 new Vector3(0, 2, 25));
 
             //add camera (view, projection)
-            cameraGameObject.AddComponent(new Camera(MathHelper.PiOver2 / 2,
-                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+            cameraGameObject.AddComponent(new Camera(
+                MathHelper.PiOver2 / 2,
+                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+                0.1f, 3500,
+                new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)));
 
             //add rotation
             cameraGameObject.AddComponent(new CycledRotationBehaviour(
@@ -272,12 +280,15 @@ namespace GD.App
             curve3D.Add(new Vector3(0, 8, 25), 2500);
             curve3D.Add(new Vector3(0, 5, 35), 4000);
 
-            cameraGameObject = new GameObject("curve camera 1");
+            cameraGameObject = new GameObject(AppData.CURVE_CAMERA_NAME);
             cameraGameObject.Transform =
                 new Transform(null, null, null);
             cameraGameObject.AddComponent(new Camera(
                 MathHelper.PiOver2 / 2,
-                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight, 0.1f, 1000));
+                (float)_graphics.PreferredBackBufferWidth / _graphics.PreferredBackBufferHeight,
+                0.1f, 3500,
+                  new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)));
+
             cameraGameObject.AddComponent(
                 new CurveBehaviour(curve3D));
 
@@ -303,7 +314,9 @@ namespace GD.App
         private void InitializeDemoModel()
         {
             //game object
-            var gameObject = new GameObject("my first sphere - wahoo!", ObjectType.Static, RenderType.Opaque);
+            var gameObject = new GameObject("my first sphere - wahoo!",
+                ObjectType.Static, RenderType.Transparent);
+
             gameObject.Transform = new Transform(2 * Vector3.One,
                 null, new Vector3(-2, 0, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
@@ -311,8 +324,9 @@ namespace GD.App
             var model = Content.Load<Model>("Assets/Models/sphere");
 
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
-            gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
-                new Material(texture, 1),
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(effect),
+                new Material(texture, 0.5f, Color.Red),
                 mesh));
 
             //lets try out our CycleTranslationBehaviour
@@ -425,17 +439,17 @@ namespace GD.App
             //add game effects
             InitializeEffects();
 
-            //add camera, scene manager
-            InitializeManagers();
-
             //add dictionaries to store and access content
             InitializeDictionaries();
 
-            //add game cameras
-            InitializeCameras();
+            //add camera, scene manager
+            InitializeManagers();
 
             //share some core references
             InitializeGlobals();
+
+            //add game cameras
+            InitializeCameras();
 
             //set screen properties (incl mouse)
             InitializeScreen(resolution, isMouseVisible, isCursorLocked);
@@ -508,18 +522,28 @@ namespace GD.App
         private void InitializeManagers()
         {
             //add event dispatcher for system events - the most important element!!!!!!
-            //eventDispatcher = new EventDispatcher(this);
+            eventDispatcher = new EventDispatcher(this);
+            //add to Components otherwise no Update() called
+            Components.Add(eventDispatcher);
 
             //add support for multiple cameras and camera switching
-            cameraManager = new CameraManager();
+            cameraManager = new CameraManager(this);
+            //add to Components otherwise no Update() called
+            Components.Add(cameraManager);
 
-            //add support for multiple scenes and scene switching
-            sceneManager = new SceneManager();
+            //big kahuna nr 1! this adds support to store, switch and Update() scene contents
+            sceneManager = new SceneManager(this);
+            //add to Components otherwise no Update()
+            Components.Add(sceneManager);
+
+            //big kahuna nr 2! this renders the ActiveScene from the ActiveCamera perspective
+            renderManager = new RenderManager(this, new ForwardSceneRenderer(_graphics.GraphicsDevice));
+            Components.Add(renderManager);
 
             //add support for playing sounds
             soundManager = new SoundManager();
-
-            //TODO - add other managers
+            //why don't we add SoundManager to Components? Because it has no Update()
+            //wait...SoundManager has no update? Yes, playing sounds is handled by an internal MonoGame thread - so we're off the hook!
         }
 
         private void InitializeDictionaries()
@@ -561,19 +585,14 @@ namespace GD.App
 
         protected override void Update(GameTime gameTime)
         {
-            //Possible fix - ThirdPersonController
-            //is third person camera active?
-            //does it have a valid target?
-            //set playerGameObject to be the target?
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             //update all drawn game objects in the active scene
-            sceneManager.Update(gameTime);
+            //sceneManager.Update(gameTime);
 
             //update active camera
-            cameraManager.Update(gameTime);
+            //cameraManager.Update(gameTime);
 
 #if DEMO
 
@@ -585,9 +604,11 @@ namespace GD.App
             if (Input.Keys.IsPressed(Keys.F1))
                 cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
             else if (Input.Keys.IsPressed(Keys.F2))
-                cameraManager.SetActiveCamera("security camera 1");
+                cameraManager.SetActiveCamera(AppData.SECURITY_CAMERA_NAME);
             else if (Input.Keys.IsPressed(Keys.F3))
-                cameraManager.SetActiveCamera("curve camera 1");
+                cameraManager.SetActiveCamera(AppData.CURVE_CAMERA_NAME);
+            else if (Input.Keys.IsPressed(Keys.F4))
+                cameraManager.SetActiveCamera(AppData.THIRD_PERSON_CAMERA_NAME);
 
             #endregion Demo - Camera switching
 
@@ -613,7 +634,7 @@ namespace GD.App
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //get active scene, get camera, and call the draw on the active scene
-            sceneManager.ActiveScene.Draw(gameTime, cameraManager.ActiveCamera);
+            //sceneManager.ActiveScene.Draw(gameTime, cameraManager.ActiveCamera);
 
             base.Draw(gameTime);
         }

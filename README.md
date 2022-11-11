@@ -104,6 +104,7 @@ This repository contains code for the game engine
 
 ### To Do - Week 8
 - [x] Finish 1st Person Camera
+- [x] Add CameraProjectionType and Viewport to Camera
 - [x] Add ThirdPersonController
 - [ ] Add RailController
 - [ ] Add DriveController
@@ -117,6 +118,7 @@ This repository contains code for the game engine
 - [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
 - [ ] Add Camera::Viewport
 - [ ] Add clean/dirty flag to Transform on change
+- [ ] Add clean/dirty flag to Camera on change
 - [ ] Add event notification on Transform change
 - [ ] Move level-specific methods to Level class
 
