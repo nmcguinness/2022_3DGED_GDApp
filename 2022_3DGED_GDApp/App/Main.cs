@@ -58,19 +58,6 @@ namespace GD.App
 
         protected override void Initialize()
         {
-#if DEMO
-            Integer2 myInt = new Integer2(1, 2);
-            Integer2 cloneMyInt = myInt.GetShallowCopy() as Integer2;
-            //hmm...is this a deep or shallow copy?
-            System.Diagnostics.Debug.WriteLine(myInt.ToString());
-            System.Diagnostics.Debug.WriteLine(cloneMyInt.ToString());
-            myInt.X = -999999;
-            System.Diagnostics.Debug.WriteLine("After...");
-            System.Diagnostics.Debug.WriteLine(myInt.ToString());
-            System.Diagnostics.Debug.WriteLine(cloneMyInt.ToString());
-            Integer2 myOtherInt = Integer2.One;
-#endif
-
             //moved spritebatch initialization here because we need it in InitializeDebug() below
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -296,7 +283,7 @@ namespace GD.App
 
             #endregion Curve
 
-            cameraManager.SetActiveCamera(AppData.THIRD_PERSON_CAMERA_NAME);
+            cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
         }
 
         private void InitializeDrawnContent(float worldScale)
@@ -433,9 +420,6 @@ namespace GD.App
             //add support for mouse etc
             InitializeInput();
 
-            //set screen resolution and show/hide mouse
-            InitializeGraphics();
-
             //add game effects
             InitializeEffects();
 
@@ -448,11 +432,11 @@ namespace GD.App
             //share some core references
             InitializeGlobals();
 
-            //add game cameras
-            InitializeCameras();
-
             //set screen properties (incl mouse)
             InitializeScreen(resolution, isMouseVisible, isCursorLocked);
+
+            //add game cameras
+            InitializeCameras();
         }
 
         private void InitializeGlobals()
@@ -506,19 +490,6 @@ namespace GD.App
             //_graphics.ApplyChanges();
         }
 
-        /// <summary>
-        /// Sets the sampler states etc
-        /// </summary>
-        private void InitializeGraphics()
-        {
-            //TODO - move later to something like RenderManager
-            //sets the sampler states which defines how textures are drawn when surface has UV values outside the range [0,1] - fixes the line issue at boundary between skybox textures
-            SamplerState samplerState = new SamplerState();
-            samplerState.AddressU = TextureAddressMode.Mirror;
-            samplerState.AddressV = TextureAddressMode.Mirror;
-            _graphics.GraphicsDevice.SamplerStates[0] = samplerState;
-        }
-
         private void InitializeManagers()
         {
             //add event dispatcher for system events - the most important element!!!!!!
@@ -556,7 +527,7 @@ namespace GD.App
             //intialize the utility component
             var perfUtility = new PerfUtility(this, _spriteBatch,
                 new Vector2(10, 10),
-                new Vector2(0, 20));
+                new Vector2(0, 22));
 
             //set the font to be used
             var spriteFont = Content.Load<SpriteFont>("Assets/Fonts/Perf");
@@ -564,8 +535,6 @@ namespace GD.App
             //add components to the info list to add UI information
             float headingScale = 1f;
             float contentScale = 0.9f;
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
-            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Performance ------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new FPSInfo(_spriteBatch, spriteFont, "FPS:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Camera -----------------------------------", Color.Yellow, headingScale * Vector2.One));
@@ -574,6 +543,8 @@ namespace GD.App
             perfUtility.infoList.Add(new CameraRotationInfo(_spriteBatch, spriteFont, "Rot:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Object -----------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV, F1-F4 for camera switch", Color.White, contentScale * Vector2.One));
 
             //add to the component list otherwise it wont have its Update or Draw called!
             Components.Add(perfUtility);

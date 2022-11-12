@@ -1,6 +1,7 @@
 ﻿#region Pre-compiler directives
 
-//#define HI_RES
+//#define DEMO
+#define HI_RES
 
 #endregion
 
@@ -10,12 +11,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GD.App
 {
+#if DEMO
+
     public enum CameraIDType : sbyte
     {
         First,
         Third,
         Security
     }
+
+#endif
 
     public class AppData
     {

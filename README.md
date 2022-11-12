@@ -5,7 +5,7 @@ This repository contains code for the game engine
 
 ## Table of Necessary Knowledge ##
 | Topic | See (Source Code) | Additional Reading |
-| :---------------- | :--------------- | :--------------- | :--------------- | 
+| :---------------- | :--------------- | :--------------- |
 | Encapsulating translation, rotation, and scale of an object|Transform|None|
 | Encapsulating View and Projection |Camera|[Basic Matrices](http://rbwhitaker.wikidot.com/monogame-basic-matrices)|
 | Representing drawn objects and non-drawn objects |GameObject, Component|None|
@@ -35,18 +35,25 @@ This repository contains code for the game engine
 - [x] Relationship between world scale and movement speed
 - [x] Demo PerfUtility updates re SpriteBatchInfo
 - [x] Demo FirstPersonController
-- [ ] Demo SoundManager
+- [x] Demo SoundManager
 - [ ] Demo EventDispatcher
 - [ ] [Sound Assets - Big Sound Bank](https://bigsoundbank.com/)
 
-### Bugs
-- [ ] Fix depth problem on draw
+### Bugs (MUST)
+- [x] Fix depth problem on draw
 - [x] Fix FirstPersonController rotation
 - [x] Fix GameObject::GetComponent<>() - see FOVCameraController
 - [x] PerfUtility is not updating FPS - Fixed - base.Update() was accidentally removed
 - [ ] Fix CycledTranslationBehaviour
 
-### Possible Improvements
+### Optimize (SHOULD)
+- [ ] Add clean/dirty flag to Transform on change
+- [ ] Add clean/dirty flag to Camera on change
+- [ ] Create renderers list in GameObjectList to optimize obtaining renderer in SceneRenderer::Draw()
+- [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
+- [ ] Add event notification on Transform change
+
+### Possible Improvements (COULD)
 - [ ] Add InputDevice to separate input from keyboard or gamepad and allow mappings
 
 ### To Do - Week 5
@@ -106,20 +113,14 @@ This repository contains code for the game engine
 - [x] Finish 1st Person Camera
 - [x] Add CameraProjectionType and Viewport to Camera
 - [x] Add ThirdPersonController
-- [ ] Add RailController
-- [ ] Add DriveController
-- [ ] See depth bug and fix
-
-- [ ] Add support for cloning GameObjects
-- [ ] Add support for cloning Camera
-- [ ] Add RenderManager to render Scene data and remove Draw from Scene
-- [ ] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
+- [x] Add RenderManager to render Scene data and remove Draw from Scene
+- [x] Convert SceneManager and CameraManager to inherit from DrawableGameComponent and GameComponent 
+- [x] Add Camera::Viewport
+- [x] Add support for Material alpha and diffuse color
+- [x] Increase decimal precision on Camera::rotation in perf utility to 2 decimal places to support accurate curve creation
+- [ ] Add RailController, DriveController
+- [ ] Add support for cloning GameObjects, Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
-- [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
-- [ ] Add Camera::Viewport
-- [ ] Add clean/dirty flag to Transform on change
-- [ ] Add clean/dirty flag to Camera on change
-- [ ] Add event notification on Transform change
 - [ ] Move level-specific methods to Level class
 
  
