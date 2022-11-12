@@ -22,6 +22,8 @@ This repository contains code for the game engine
 | Adding utility and extension classes to include useful secondary functionality (e.g. Vector3::Round) |Vector3Extension, PerfUtility, SerializationUtility |None|
 | Adding support for multiple scenes and multiple cameras | CameraManager, SceneManager |None|
 | Create behaviours (i.e. GameObject components) to add simple camera types | SecurityCameraBehaviour, CurveBehaviour, Curve|None|
+| Add Integer2 to demonstrate operator overloading | Integer2|[C# - Operator Overloading](https://www.tutorialspoint.com/csharp/csharp_operator_overloading.htm)|
+
 
 ### Add To Table
 - [ ] Overload operators - Integer2
