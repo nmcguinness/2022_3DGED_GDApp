@@ -6,7 +6,6 @@
 #endregion
 
 using GD.Core;
-using GD.Core.Types;
 using GD.Engine;
 using GD.Engine.Events;
 using GD.Engine.Globals;
@@ -18,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
@@ -41,6 +41,10 @@ namespace GD.App
         private EventDispatcher eventDispatcher;
         private GameObject playerGameObject;
 
+#if DEMO
+        private event EventHandler OnChanged;
+#endif
+
         #endregion Fields
 
         #region Constructors
@@ -56,8 +60,32 @@ namespace GD.App
 
         #region Actions - Initialize
 
+#if DEMO
+
+        private void DemoCode()
+        {
+            //shows how we can create an event, register for it, and raise it in Main::Update() on Keys.E press
+            DemoEvent();
+        }
+
+        private void DemoEvent()
+        {
+            OnChanged += HandleOnChanged;
+        }
+
+        private void HandleOnChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"{e} was sent by {sender}");
+        }
+
+#endif
+
         protected override void Initialize()
         {
+#if DEMO
+            DemoCode();
+#endif
+
             //moved spritebatch initialization here because we need it in InitializeDebug() below
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -609,6 +637,13 @@ namespace GD.App
             //    System.Diagnostics.Debug.WriteLine($"A: {Input.Gamepad.IsPressed(Buttons.A)}");
 
             #endregion Demo - Gamepad
+
+            #region Demo - Raising events using GDEvent
+
+            if (Input.Keys.WasJustPressed(Keys.E))
+                OnChanged.Invoke(this, null); //passing null for EventArgs but we'll make our own class MyEventArgs::EventArgs later
+
+            #endregion
 
 #endif
             //fixed a bug with components not getting Update called

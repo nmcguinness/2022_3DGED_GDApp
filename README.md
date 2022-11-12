@@ -120,6 +120,7 @@ This repository contains code for the game engine
 - [x] Add Camera::Viewport
 - [x] Add support for Material alpha and diffuse color
 - [x] Increase decimal precision on Camera::rotation in perf utility to 2 decimal places to support accurate curve creation
+- [x] Added GDEvent
 - [ ] Add RailController, DriveController
 - [ ] Add support for cloning GameObjects, Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
