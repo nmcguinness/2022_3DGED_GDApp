@@ -31,7 +31,7 @@ namespace GD.App
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private BasicEffect skyBoxEffect;
+        private BasicEffect unlitEffect;
         private BasicEffect effect;
 
         private CameraManager cameraManager;
@@ -170,8 +170,8 @@ namespace GD.App
         private void InitializeEffects()
         {
             //only for skybox with lighting disabled
-            skyBoxEffect = new BasicEffect(_graphics.GraphicsDevice);
-            skyBoxEffect.TextureEnabled = true;
+            unlitEffect = new BasicEffect(_graphics.GraphicsDevice);
+            unlitEffect.TextureEnabled = true;
 
             //all other drawn objects
             effect = new BasicEffect(_graphics.GraphicsDevice);
@@ -296,28 +296,28 @@ namespace GD.App
 
             //load an FBX and draw
             InitializeDemoModel();
+
+            //quad with a tree texture
+            InitializeTreeQuad();
         }
 
         private void InitializeDemoModel()
         {
             //game object
-            var gameObject = new GameObject("my first sphere - wahoo!",
-                ObjectType.Static, RenderType.Transparent);
+            var gameObject = new GameObject("my first bottle!",
+                ObjectType.Static, RenderType.Opaque);
 
-            gameObject.Transform = new Transform(2 * Vector3.One,
-                null, new Vector3(-2, 0, 0));
+            gameObject.Transform = new Transform(0.0005f * Vector3.One,
+                new Vector3(-90, 0, 0), new Vector3(2, 0, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
 
-            var model = Content.Load<Model>("Assets/Models/sphere");
+            var model = Content.Load<Model>("Assets/Models/bottle2");
 
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
             gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(effect),
-                new Material(texture, 0.5f, Color.Red),
+                new Material(texture, 1f, Color.White),
                 mesh));
-
-            //lets try out our CycleTranslationBehaviour
-            // gameObject.AddComponent(new CycledTranslationBehaviour(0.1f, 10));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -327,12 +327,27 @@ namespace GD.App
             //game object
             var gameObject = new GameObject("my first quad",
                 ObjectType.Static, RenderType.Opaque);
-            gameObject.Transform = new Transform(null, null, new Vector3(0, 2, 1));  //World
+            gameObject.Transform = new Transform(null, null, new Vector3(-1, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
                 new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
 
             gameObject.AddComponent(new SimpleRotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializeTreeQuad()
+        {
+            //game object
+            var gameObject = new GameObject("my first tree", ObjectType.Static,
+                RenderType.Transparent);
+            gameObject.Transform = new Transform(new Vector3(3, 3, 1), null, new Vector3(-3, 1.5f, 1));  //World
+            var texture = Content.Load<Texture2D>("Assets/Textures/Foliage/Trees/tree1");
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(unlitEffect),
+                new Material(texture, 1),
+                new QuadMesh(_graphics.GraphicsDevice)));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -365,7 +380,7 @@ namespace GD.App
             float halfWorldScale = worldScale / 2.0f;
 
             GameObject quad = null;
-            var gdBasicEffect = new GDBasicEffect(skyBoxEffect);
+            var gdBasicEffect = new GDBasicEffect(unlitEffect);
             var quadMesh = new QuadMesh(_graphics.GraphicsDevice);
 
             //skybox - back face
