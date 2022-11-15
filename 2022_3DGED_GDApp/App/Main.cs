@@ -32,7 +32,7 @@ namespace GD.App
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private BasicEffect unlitEffect;
-        private BasicEffect effect;
+        private BasicEffect litEffect;
 
         private CameraManager cameraManager;
         private SceneManager sceneManager;
@@ -42,7 +42,9 @@ namespace GD.App
         private GameObject playerGameObject;
 
 #if DEMO
+
         private event EventHandler OnChanged;
+
 #endif
 
         #endregion Fields
@@ -202,10 +204,10 @@ namespace GD.App
             unlitEffect.TextureEnabled = true;
 
             //all other drawn objects
-            effect = new BasicEffect(_graphics.GraphicsDevice);
-            effect.TextureEnabled = true;
-            effect.LightingEnabled = true;
-            effect.EnableDefaultLighting();
+            litEffect = new BasicEffect(_graphics.GraphicsDevice);
+            litEffect.TextureEnabled = true;
+            litEffect.LightingEnabled = true;
+            litEffect.EnableDefaultLighting();
         }
 
         private void InitializeCameras()
@@ -325,6 +327,11 @@ namespace GD.App
             //load an FBX and draw
             InitializeDemoModel();
 
+#if DEMO
+            //test for one team
+            InitializeRadarModel();
+#endif
+
             //quad with a tree texture
             InitializeTreeQuad();
         }
@@ -343,7 +350,29 @@ namespace GD.App
 
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
             gameObject.AddComponent(new Renderer(
-                new GDBasicEffect(effect),
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.White),
+                mesh));
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializeRadarModel()
+        {
+            //game object
+            var gameObject = new GameObject("radar",
+                ObjectType.Static, RenderType.Opaque);
+
+            gameObject.Transform = new Transform(0.005f * Vector3.One,
+                new Vector3(0, 0, 0), new Vector3(2, 0, 0));
+            //  var texture = Content.Load<Texture2D>("Assets/Textures/Radar/radar-display-texture");
+            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+
+            var model = Content.Load<Model>("Assets/Models/radar-display");
+
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
                 new Material(texture, 1f, Color.White),
                 mesh));
 
@@ -357,7 +386,7 @@ namespace GD.App
                 ObjectType.Static, RenderType.Opaque);
             gameObject.Transform = new Transform(null, null, new Vector3(-1, 2, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
-            gameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
+            gameObject.AddComponent(new Renderer(new GDBasicEffect(litEffect),
                 new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
 
             gameObject.AddComponent(new SimpleRotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
@@ -390,7 +419,7 @@ namespace GD.App
             var model = Content.Load<Model>("Assets/Models/sphere");
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
 
-            playerGameObject.AddComponent(new Renderer(new GDBasicEffect(effect),
+            playerGameObject.AddComponent(new Renderer(new GDBasicEffect(litEffect),
                 new Material(texture, 1),
                 mesh));
 
