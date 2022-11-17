@@ -330,6 +330,7 @@ namespace GD.App
 #if DEMO
             //test for one team
             InitializeRadarModel();
+            InitializeDemoButton();
 #endif
 
             //quad with a tree texture
@@ -369,6 +370,27 @@ namespace GD.App
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
 
             var model = Content.Load<Model>("Assets/Models/radar-display");
+
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.White),
+                mesh));
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializeDemoButton()
+        {
+            //game object
+            var gameObject = new GameObject("my first button!",
+                ObjectType.Static, RenderType.Transparent);
+
+            gameObject.Transform = new Transform(6 * Vector3.One,
+                new Vector3(0, 0, 0), new Vector3(-5, -5, 0));
+            var texture = Content.Load<Texture2D>("Assets/Textures/Button/button_DefaultMaterial_Base_color");
+
+            var model = Content.Load<Model>("Assets/Models/button");
 
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
             gameObject.AddComponent(new Renderer(
