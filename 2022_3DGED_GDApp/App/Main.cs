@@ -75,6 +75,21 @@ namespace GD.App
 
             //shows us how to listen to a specific event
             DemoStateManagerEvent();
+
+            Demo3DSoundTree();
+        }
+
+        private void Demo3DSoundTree()
+        {
+            //var camera = Application.CameraManager.ActiveCamera.AudioListener;
+            //var audioEmitter = //get tree, get emitterbehaviour, get audio emitter
+
+            //object[] parameters = {"sound name", audioListener, audioEmitter};
+
+            //EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+            //    EventActionType.OnPlay3D, parameters));
+
+            //throw new NotImplementedException();
         }
 
         private void DemoStateManagerEvent()
@@ -207,6 +222,7 @@ namespace GD.App
         private void LoadTextures()
         {
             //load and add to dictionary
+            //Content.Load<Texture>
         }
 
         private void LoadModels()
@@ -285,6 +301,9 @@ namespace GD.App
                 AppData.FIRST_PERSON_CAMERA_FCP,
                 new Viewport(0, 0, _graphics.PreferredBackBufferWidth,
                 _graphics.PreferredBackBufferHeight))); // 3000
+
+            //added ability for camera to listen to 3D sounds
+            cameraGameObject.AddComponent(new AudioListenerBehaviour());
 
             //OLD
             //cameraGameObject.AddComponent(new FirstPersonCameraController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED));
@@ -507,6 +526,9 @@ namespace GD.App
                 new GDBasicEffect(unlitEffect),
                 new Material(texture, 1),
                 new QuadMesh(_graphics.GraphicsDevice)));
+
+            //a weird tree that makes sounds
+            gameObject.AddComponent(new AudioEmitterBehaviour());
 
             sceneManager.ActiveScene.Add(gameObject);
         }

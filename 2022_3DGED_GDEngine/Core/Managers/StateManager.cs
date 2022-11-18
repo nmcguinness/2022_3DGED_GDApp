@@ -37,6 +37,8 @@ namespace GD.Engine
             this.maxTimeInMS = maxTimeInMS;
             totalElapsedTimeMS = 0;
             inventory = new List<InventoryItem>();
+
+            //Register
         }
 
         public override void Update(GameTime gameTime)

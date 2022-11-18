@@ -160,6 +160,15 @@ namespace GD.Engine.Managers
             //Register for certain events - see Main demo
             EventDispatcher.Subscribe(EventCategoryType.Player, HandlePlayerEvent);
             EventDispatcher.Subscribe(EventCategoryType.Menu, HandleMenuEvent);
+            EventDispatcher.Subscribe(EventCategoryType.Sound, HandleSoundEvent);
+        }
+
+        private void HandleSoundEvent(EventData eventData)
+        {
+            if (eventData.EventActionType == EventActionType.OnPlay3D)
+                Play3D(eventData.Parameters[0] as string,
+                    eventData.Parameters[1] as AudioListener,
+                    eventData.Parameters[2] as AudioEmitter);
         }
 
         private void HandleMenuEvent(EventData eventData)
