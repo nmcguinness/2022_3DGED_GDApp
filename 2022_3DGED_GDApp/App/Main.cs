@@ -43,6 +43,7 @@ namespace GD.App
         private RenderManager renderManager;
         private EventDispatcher eventDispatcher;
         private GameObject playerGameObject;
+        private StateManager stateManager;
 
 #if DEMO
 
@@ -71,6 +72,31 @@ namespace GD.App
         {
             //shows how we can create an event, register for it, and raise it in Main::Update() on Keys.E press
             DemoEvent();
+
+            //shows us how to listen to a specific event
+            DemoStateManagerEvent();
+        }
+
+        private void DemoStateManagerEvent()
+        {
+            EventDispatcher.Subscribe(EventCategoryType.Player, HandleEvent);
+        }
+
+        private void HandleEvent(EventData eventData)
+        {
+            switch (eventData.EventActionType)
+            {
+                case EventActionType.OnWin:
+                    System.Diagnostics.Debug.WriteLine(eventData.Parameters[0] as string);
+                    break;
+
+                case EventActionType.OnLose:
+                    System.Diagnostics.Debug.WriteLine(eventData.Parameters[2] as string);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void DemoEvent()
@@ -87,10 +113,6 @@ namespace GD.App
 
         protected override void Initialize()
         {
-#if DEMO
-            DemoCode();
-#endif
-
             //moved spritebatch initialization here because we need it in InitializeDebug() below
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -102,6 +124,10 @@ namespace GD.App
 
 #if SHOW_DEBUG_INFO
             InitializeDebug();
+#endif
+
+#if DEMO
+            DemoCode();
 #endif
 
             base.Initialize();
@@ -138,10 +164,17 @@ namespace GD.App
             InitializeCollidableContent(worldScale);
 
             //add non-collidable drawn stuff
-            //InitializeNonCollidableContent(worldScale);
+            InitializeNonCollidableContent(worldScale);
 
             //add the player
             //InitializePlayer();
+
+            //Raise all the events that I want to happen at the start
+            //object[] parameters = { "epic_soundcue" };
+            //EventDispatcher.Raise(
+            //    new EventData(EventCategoryType.Player,
+            //    EventActionType.OnSpawnObject,
+            //    parameters));
         }
 
         private void SetTitle(string title)
@@ -661,6 +694,10 @@ namespace GD.App
             //add the physics manager update thread
             physicsManager = new PhysicsManager(this);
             Components.Add(physicsManager);
+
+            //add state manager for inventory and countdown
+            stateManager = new StateManager(this, AppData.MAX_GAME_TIME_IN_MSECS);
+            Components.Add(stateManager);
         }
 
         private void InitializeDictionaries()
@@ -702,6 +739,9 @@ namespace GD.App
 
         protected override void Update(GameTime gameTime)
         {
+            //dummy key strokes
+            //Raise
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -714,7 +754,15 @@ namespace GD.App
 #if DEMO
 
             if (Input.Keys.WasJustPressed(Keys.B))
-                Application.SoundManager.Play2D("boom1");
+            {
+                object[] parameters = { "boom1" };
+                EventDispatcher.Raise(
+                    new EventData(EventCategoryType.Player,
+                    EventActionType.OnWin,
+                    parameters));
+
+                //    Application.SoundManager.Play2D("boom1");
+            }
 
             #region Demo - Camera switching
 
