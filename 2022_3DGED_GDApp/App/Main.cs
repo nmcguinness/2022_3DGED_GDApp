@@ -5,6 +5,8 @@
 
 #endregion
 
+using BEPUphysics;
+using BEPUphysics.Entities.Prefabs;
 using GD.Core;
 using GD.Engine;
 using GD.Engine.Events;
@@ -37,6 +39,7 @@ namespace GD.App
         private CameraManager cameraManager;
         private SceneManager sceneManager;
         private SoundManager soundManager;
+        private PhysicsManager physicsManager;
         private RenderManager renderManager;
         private EventDispatcher eventDispatcher;
         private GameObject playerGameObject;
@@ -131,11 +134,14 @@ namespace GD.App
             //add scene manager and starting scenes
             InitializeScenes();
 
-            //add drawn stuff
-            InitializeDrawnContent(worldScale);
+            //add collidable drawn stuff
+            InitializeCollidableContent(worldScale);
+
+            //add non-collidable drawn stuff
+            //InitializeNonCollidableContent(worldScale);
 
             //add the player
-            InitializePlayer();
+            //InitializePlayer();
         }
 
         private void SetTitle(string title)
@@ -316,7 +322,17 @@ namespace GD.App
             cameraManager.SetActiveCamera(AppData.FIRST_PERSON_CAMERA_NAME);
         }
 
-        private void InitializeDrawnContent(float worldScale)
+        private void InitializeCollidableContent(float worldScale)
+        {
+            #region Collidable
+
+            InitializeColliableGround(worldScale);
+            InitializeCollidableModel();
+
+            #endregion
+        }
+
+        private void InitializeNonCollidableContent(float worldScale)
         {
             //create sky
             InitializeSkyBoxAndGround(worldScale);
@@ -327,14 +343,45 @@ namespace GD.App
             //load an FBX and draw
             InitializeDemoModel();
 
-#if DEMO
+            //TODO - remove these test methods later
             //test for one team
             InitializeRadarModel();
+            //test for another team
             InitializeDemoButton();
-#endif
 
             //quad with a tree texture
             InitializeTreeQuad();
+        }
+
+        private void InitializeColliableGround(float worldScale)
+        {
+            var collidableGround = new Box(BEPUutilities.Vector3.Zero, worldScale, 1, worldScale);
+            physicsManager.Space.Add(collidableGround);
+
+            physicsManager.Space.Add(new Box(new BEPUutilities.Vector3(0, 4, 0), 1, 1, 1, 1));
+            physicsManager.Space.Add(new Box(new BEPUutilities.Vector3(0, 8, 0), 1, 1, 1, 1));
+            physicsManager.Space.Add(new Box(new BEPUutilities.Vector3(0, 12, 0), 1, 1, 1, 1));
+        }
+
+        private void InitializeCollidableModel()
+        {
+            //game object
+            var gameObject = new GameObject("my first collidable box!", ObjectType.Static, RenderType.Opaque);
+
+            gameObject.Transform = new Transform(null, null, new Vector3(0, 4, 0));
+            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+            var model = Content.Load<Model>("Assets/Models/cube");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.White),
+                mesh));
+
+            gameObject.AddComponent(new BoxCollider(new Vector3(0, 10, 0),
+                1, 1, 1, 10));
+
+            sceneManager.ActiveScene.Add(gameObject);
         }
 
         private void InitializeDemoModel()
@@ -545,6 +592,7 @@ namespace GD.App
             Application.CameraManager = cameraManager;
             Application.SceneManager = sceneManager;
             Application.SoundManager = soundManager;
+            Application.PhysicsManager = physicsManager;
         }
 
         private void InitializeInput()
@@ -609,6 +657,10 @@ namespace GD.App
             soundManager = new SoundManager();
             //why don't we add SoundManager to Components? Because it has no Update()
             //wait...SoundManager has no update? Yes, playing sounds is handled by an internal MonoGame thread - so we're off the hook!
+
+            //add the physics manager update thread
+            physicsManager = new PhysicsManager(this);
+            Components.Add(physicsManager);
         }
 
         private void InitializeDictionaries()
