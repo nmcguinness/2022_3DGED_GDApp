@@ -4,7 +4,7 @@
 This repository contains code for the game engine
 
 
-## Table of Necessary Knowledge ##
+## Table of Necessary Knowledge (TONK) ##
 | Topic | See (Source Code) | Additional Reading |
 | :---------------- | :--------------- | :--------------- |
 | Encapsulating translation, rotation, and scale of an object|Transform|None|
@@ -29,19 +29,19 @@ This repository contains code for the game engine
 ### Further Reading
 - Common screen [resolutions](https://en.wikipedia.org/wiki/Display_resolution#/media/File:Vector_Video_Standards8.svg)
 - Using the [out](https://www.c-sharpcorner.com/article/out-parameter-in-c-sharp-7/) keyword
-- Using a [Predicate](https://www.tutorialsteacher.com/csharp/csharp-predicate) and [Delegate](https://www.tutorialsteacher.com/csharp/csharp-delegates)
+- Using an [Action](https://www.tutorialsteacher.com/csharp/csharp-action-delegate), [Predicate](https://www.tutorialsteacher.com/csharp/csharp-predicate) and [Delegate](https://www.tutorialsteacher.com/csharp/csharp-delegates)
 - Using a [pragma](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-pragma) 
 - Added [IEnumerable](https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/make-class-foreach-statement) support to a class with a container to support foreach()
-- Iterating through a [dictionary](https://robertgreiner.com/iterating-through-a-dictionary-in-csharp/) used in SoundManager\:\:Dispose() and with simple/crude implementation in ContentDictionary\:\:Dispose()
-- Creating a [sealed](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/sealed) class in Cue used by SoundManager
-- Understanding [Platonic Solids](http://www.technologyuk.net/mathematics/geometry/platonic-solids.shtml)
+- Iterating through a [dictionary](https://robertgreiner.com/iterating-through-a-dictionary-in-csharp/) (e.g., used in SoundManager\:\:Dispose() and with simple/crude implementation in ContentDictionary\:\:Dispose())
+- Creating a [sealed](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/sealed) class (e.g., used in Cue used by SoundManager)
+- Understanding [Platonic Solids](http://www.technologyuk.net/mathematics/geometry/platonic-solids.shtml) when defining your primitives from scratch
 ![sdfsdf](http://www.technologyuk.net/mathematics/geometry/images/geometry_0185.gif)
 
 
-### Add To Table
-- [ ] Overload operators - Integer2
+### Add Content To Table of Necessary Knowledge
+- None
 
-### Exercises
+### Class Exercises
 - [x] Add Integer2 to demo operator overloading in C# and add [expression bodied members](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/expression-bodied-members)
 - [ ] Add ThirdPersonController to also demo use of FirstPersonController
 
