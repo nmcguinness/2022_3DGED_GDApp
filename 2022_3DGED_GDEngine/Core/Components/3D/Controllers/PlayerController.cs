@@ -49,7 +49,7 @@ namespace GD.Engine
             HandleKeyboardInput(gameTime);
         }
 
-        protected virtual void HandleKeyboardInput(GameTime gameTime)
+        public virtual void HandleKeyboardInput(GameTime gameTime)
         {
             translation = Vector3.Zero;
 
@@ -71,16 +71,5 @@ namespace GD.Engine
         }
 
         #endregion Actions - Update, Input
-
-        #region Actions - Gamepad (Unused)
-
-        protected virtual void HandleMouseInput(GameTime gameTime)
-        {
-        }
-        protected virtual void HandleGamepadInput(GameTime gameTime)
-        {
-        }
-
-        #endregion Actions - Gamepad (Unused)
     }
 }

@@ -5,15 +5,17 @@ namespace GD.Engine
 {
     public class AudioEmitterBehaviour : Component
     {
-        private AudioEmitter emitter;
+        private AudioEmitter audioEmitter;
 
         public override void Update(GameTime gameTime)
         {
-            emitter.Position = transform.translation;
-            emitter.Up = transform.World.Up;
-            emitter.Forward = transform.World.Forward;
+            if (transform == null || audioEmitter == null)
+                return;
+
+            audioEmitter.Position = transform.translation;
+            audioEmitter.Up = transform.World.Up;
+            audioEmitter.Forward = transform.World.Forward;
             //emitter.Velocity = transform.Velocity;
-            base.Update(gameTime);
         }
     }
 }

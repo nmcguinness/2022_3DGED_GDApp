@@ -3,6 +3,7 @@
 ## Overview ##
 This repository contains code for the game engine
 
+
 ## Table of Necessary Knowledge ##
 | Topic | See (Source Code) | Additional Reading |
 | :---------------- | :--------------- | :--------------- |
@@ -23,6 +24,18 @@ This repository contains code for the game engine
 | Adding support for multiple scenes and multiple cameras | CameraManager, SceneManager |None|
 | Create behaviours (i.e. GameObject components) to add simple camera types | SecurityCameraBehaviour, CurveBehaviour, Curve|None|
 | Add Integer2 to demonstrate operator overloading | Integer2|[C# - Operator Overloading](https://www.tutorialspoint.com/csharp/csharp_operator_overloading.htm)|
+
+
+### Further Reading
+- Common screen [resolutions](https://en.wikipedia.org/wiki/Display_resolution#/media/File:Vector_Video_Standards8.svg)
+- Using the [out](https://www.c-sharpcorner.com/article/out-parameter-in-c-sharp-7/) keyword
+- Using a [Predicate](https://www.tutorialsteacher.com/csharp/csharp-predicate) and [Delegate](https://www.tutorialsteacher.com/csharp/csharp-delegates)
+- Using a [pragma](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-pragma) 
+- Added [IEnumerable](https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/make-class-foreach-statement) support to a class with a container to support foreach()
+- Iterating through a [dictionary](https://robertgreiner.com/iterating-through-a-dictionary-in-csharp/) used in SoundManager\:\:Dispose() and with simple/crude implementation in ContentDictionary\:\:Dispose()
+- Creating a [sealed](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/sealed) class in Cue used by SoundManager
+- Understanding [Platonic Solids](http://www.technologyuk.net/mathematics/geometry/platonic-solids.shtml)
+![sdfsdf](http://www.technologyuk.net/mathematics/geometry/images/geometry_0185.gif)
 
 
 ### Add To Table

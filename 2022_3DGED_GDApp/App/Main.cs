@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
@@ -364,8 +365,13 @@ namespace GD.App
                 0.1f, 3500,
                   new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)));
 
-            cameraGameObject.AddComponent(
-                new CurveBehaviour(curve3D));
+            //define what action the curve will apply to the target game object
+            var curveAction = (Curve3D curve, GameObject target, GameTime gameTime) =>
+            {
+                target.Transform.SetTranslation(curve.Evaluate(gameTime.TotalGameTime.TotalMilliseconds, 4));
+            };
+
+            cameraGameObject.AddComponent(new CurveBehaviour(curve3D, curveAction));
 
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 

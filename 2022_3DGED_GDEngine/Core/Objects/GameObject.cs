@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GD.Engine
 {
@@ -159,5 +160,40 @@ namespace GD.Engine
         }
 
         #endregion Actions - Update
+
+        #region Utility
+
+        /// <summary>
+        /// Object to target vector, also provides access to distance from object to target
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public Vector3 GetNormalizedVectorTo(GameObject target, out float distance)
+        {
+            //camera to target object vector
+            Vector3 vectorToTarget = target.Transform.translation - transform.translation;
+
+            //distance from camera to target
+            distance = vectorToTarget.Length();
+
+            //camera to target object vector
+            vectorToTarget.Normalize();
+
+            return vectorToTarget;
+        }
+
+        /// <summary>
+        /// Object to target vector, no distance
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public Vector3 GetNormalizedVectorTo(GameObject target)
+        {
+            //camera to target object vector
+            return Vector3.Normalize(target.Transform.translation - transform.translation);
+        }
+
+        #endregion Utility
     }
 }
