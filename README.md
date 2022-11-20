@@ -62,10 +62,6 @@ This repository contains code for the game engine
 - [ ] Fix CycledTranslationBehaviour
 
 ### Optimize (SHOULD)
-- [ ] Add clean/dirty flag to Transform on change
-- [ ] Add clean/dirty flag to Camera on change
-- [ ] Create renderers list in GameObjectList to optimize obtaining renderer in SceneRenderer::Draw()
-- [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
 - [ ] Add event notification on Transform change
 
 ### Possible Improvements (COULD)
@@ -134,9 +130,18 @@ This repository contains code for the game engine
 - [x] Add support for Material alpha and diffuse color
 - [x] Increase decimal precision on Camera::rotation in perf utility to 2 decimal places to support accurate curve creation
 - [x] Added GDEvent
-- [ ] Add RailController, DriveController
+- [x] Add basic DriveController
+
+### To Do - Week 9
+- [x] Add RailController
+- [x] Add MathUtility with Sin related functions
+- [x] Re-factor CurveBehaviour to support generic Action
+- [ ] Add AudioEmitter and AudioListener behaviours
 - [ ] Add support for cloning GameObjects, Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Move level-specific methods to Level class
-
+- [ ] Add clean/dirty flag to Transform on change
+- [ ] Add clean/dirty flag to Camera on change
+- [ ] Create renderers list in GameObjectList to optimize obtaining renderer in SceneRenderer::Draw()
+- [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
  
