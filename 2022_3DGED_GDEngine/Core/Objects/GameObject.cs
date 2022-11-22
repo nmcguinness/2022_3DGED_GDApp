@@ -172,7 +172,7 @@ namespace GD.Engine
         public Vector3 GetNormalizedVectorTo(GameObject target, out float distance)
         {
             //camera to target object vector
-            Vector3 vectorToTarget = target.Transform.translation - transform.translation;
+            Vector3 vectorToTarget = target.Transform.Translation - transform.Translation;
 
             //distance from camera to target
             distance = vectorToTarget.Length();
@@ -191,7 +191,7 @@ namespace GD.Engine
         public Vector3 GetNormalizedVectorTo(GameObject target)
         {
             //camera to target object vector
-            return Vector3.Normalize(target.Transform.translation - transform.translation);
+            return Vector3.Normalize(target.Transform.Translation - transform.Translation);
         }
 
         #endregion Utility

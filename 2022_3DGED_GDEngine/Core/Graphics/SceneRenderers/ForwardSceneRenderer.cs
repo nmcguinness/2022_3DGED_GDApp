@@ -22,23 +22,23 @@ namespace GD.Engine
             SetGraphicsStates(true);
 
             //draw static opaque game objects
-            foreach (GameObject gameObject in scene.OpaqueList.StaticList)
-                gameObject.GetComponent<Renderer>().Draw(graphicsDevice, camera);
+            foreach (Renderer renderer in scene.OpaqueList.StaticList.Renderers)
+                renderer.Draw(graphicsDevice, camera);
 
             //draw dynamic opaque game objects
-            foreach (GameObject gameObject in scene.OpaqueList.DynamicList)
-                gameObject.GetComponent<Renderer>().Draw(graphicsDevice, camera);
+            foreach (Renderer renderer in scene.OpaqueList.DynamicList.Renderers)
+                renderer.Draw(graphicsDevice, camera);
 
             //set opaque
             SetGraphicsStates(false);
 
             //draw static transparent game objects
-            foreach (GameObject gameObject in scene.TransparentList.StaticList)
-                gameObject.GetComponent<Renderer>().Draw(graphicsDevice, camera);
+            foreach (Renderer renderer in scene.TransparentList.StaticList.Renderers)
+                renderer.Draw(graphicsDevice, camera);
 
             //draw dynamic opaque game objects
-            foreach (GameObject gameObject in scene.TransparentList.DynamicList)
-                gameObject.GetComponent<Renderer>().Draw(graphicsDevice, camera);
+            foreach (Renderer renderer in scene.TransparentList.DynamicList.Renderers)
+                renderer.Draw(graphicsDevice, camera);
         }
     }
 }

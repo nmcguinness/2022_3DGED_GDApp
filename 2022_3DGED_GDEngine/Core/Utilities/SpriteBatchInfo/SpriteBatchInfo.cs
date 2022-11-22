@@ -92,7 +92,7 @@ namespace GD.Engine.Utilities
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.translation.GetNewRounded(1)}", position, color, rotation, origin, scale, effects, layerDepth);
+            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.Translation.GetNewRounded(1)}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 
@@ -107,7 +107,7 @@ namespace GD.Engine.Utilities
 
         public override void Draw(Vector2 position)
         {
-            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.rotation.GetNewRounded(2)}", position, color, rotation, origin, scale, effects, layerDepth);
+            spriteBatch.DrawString(spriteFont, $"{label}{Application.CameraManager.ActiveCamera.transform.Rotation.GetNewRounded(2)}", position, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 

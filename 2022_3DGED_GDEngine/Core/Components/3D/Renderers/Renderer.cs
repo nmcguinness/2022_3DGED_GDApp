@@ -15,13 +15,21 @@ namespace GD.Engine
 
         #endregion Fields
 
+        #region Properties
+
+        public IEffect Effect { get => effect; set => effect = value; }
+        public Material Material { get => material; set => material = value; }
+        public Mesh Mesh { get => mesh; set => mesh = value; }
+
+        #endregion Properties
+
         #region Constructors
 
         public Renderer(IEffect effect, Material material, Mesh mesh)
         {
-            this.effect = effect;
-            this.material = material;
-            this.mesh = mesh;
+            this.Effect = effect;
+            this.Material = material;
+            this.Mesh = mesh;
         }
 
         #endregion Constructors
@@ -39,7 +47,7 @@ namespace GD.Engine
             //effect.Apply();
 
             //draw the object
-            mesh.Draw(graphicsDevice, effect, transform, camera, material);
+            Mesh.Draw(graphicsDevice, Effect, transform, camera, Material);
         }
 
         #endregion Actions - Draw

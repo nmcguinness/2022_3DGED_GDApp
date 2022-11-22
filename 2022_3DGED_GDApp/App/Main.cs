@@ -5,8 +5,6 @@
 
 #endregion
 
-using BEPUphysics;
-using BEPUphysics.Entities.Prefabs;
 using GD.Core;
 using GD.Engine;
 using GD.Engine.Events;
@@ -15,12 +13,13 @@ using GD.Engine.Inputs;
 using GD.Engine.Managers;
 using GD.Engine.Parameters;
 using GD.Engine.Utilities;
+using JigLibX.Collision;
+using JigLibX.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
@@ -393,7 +392,7 @@ namespace GD.App
         private void InitializeNonCollidableContent(float worldScale)
         {
             //create sky
-            InitializeSkyBoxAndGround(worldScale);
+            InitializeSkyBox(worldScale);
 
             //quad with crate texture
             InitializeDemoQuad();
@@ -413,12 +412,27 @@ namespace GD.App
 
         private void InitializeColliableGround(float worldScale)
         {
-            var collidableGround = new Box(BEPUutilities.Vector3.Zero, worldScale, 1, worldScale);
-            physicsManager.Space.Add(collidableGround);
+            var gdBasicEffect = new GDBasicEffect(unlitEffect);
+            var quadMesh = new QuadMesh(_graphics.GraphicsDevice);
 
-            physicsManager.Space.Add(new Box(new BEPUutilities.Vector3(0, 4, 0), 1, 1, 1, 1));
-            physicsManager.Space.Add(new Box(new BEPUutilities.Vector3(0, 8, 0), 1, 1, 1, 1));
-            physicsManager.Space.Add(new Box(new BEPUutilities.Vector3(0, 12, 0), 1, 1, 1, 1));
+            //ground
+            var ground = new GameObject("ground");
+            ground.Transform = new Transform(new Vector3(worldScale, worldScale, 1),
+                new Vector3(-90, 0, 0), new Vector3(0, 0, 0));
+            var texture = Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1");
+            ground.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
+
+            //add Collision Surface(s)
+            //var collider = new Collider();
+            //collider.AddPrimitive(new Box(
+            //        ground.Transform.Translation,
+            //        ground.Transform.Rotation,
+            //        ground.Transform.Scale),
+            //        new MaterialProperties(0.8f, 0.8f, 0.7f));
+            //collider.Enable(true, 1);
+            //ground.AddComponent(collider);
+
+            sceneManager.ActiveScene.Add(ground);
         }
 
         private void InitializeCollidableModel()
@@ -435,9 +449,6 @@ namespace GD.App
                 new GDBasicEffect(litEffect),
                 new Material(texture, 1f, Color.White),
                 mesh));
-
-            gameObject.AddComponent(new BoxCollider(new Vector3(0, 10, 0),
-                1, 1, 1, 10));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -470,8 +481,7 @@ namespace GD.App
                 ObjectType.Static, RenderType.Opaque);
 
             gameObject.Transform = new Transform(0.005f * Vector3.One,
-                new Vector3(0, 0, 0), new Vector3(2, 0, 0));
-            //  var texture = Content.Load<Texture2D>("Assets/Textures/Radar/radar-display-texture");
+                new Vector3(0, 0, 0), new Vector3(8, 0, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
 
             var model = Content.Load<Model>("Assets/Models/radar-display");
@@ -489,7 +499,7 @@ namespace GD.App
         {
             //game object
             var gameObject = new GameObject("my first button!",
-                ObjectType.Static, RenderType.Transparent);
+                ObjectType.Static, RenderType.Opaque);
 
             gameObject.Transform = new Transform(6 * Vector3.One,
                 new Vector3(0, 0, 0), new Vector3(-5, -5, 0));
@@ -516,7 +526,7 @@ namespace GD.App
             gameObject.AddComponent(new Renderer(new GDBasicEffect(litEffect),
                 new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
 
-            gameObject.AddComponent(new SimpleRotationBehaviour(new Vector3(1, 0, 0), MathHelper.ToRadians(1 / 16.0f)));
+            gameObject.AddComponent(new SimpleRotationBehaviour(new Vector3(1, 0, 0), 5 / 60.0f));
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -562,7 +572,7 @@ namespace GD.App
             Application.Player = playerGameObject;
         }
 
-        private void InitializeSkyBoxAndGround(float worldScale)
+        private void InitializeSkyBox(float worldScale)
         {
             float halfWorldScale = worldScale / 2.0f;
 
@@ -579,36 +589,33 @@ namespace GD.App
 
             //skybox - left face
             quad = new GameObject("skybox left face");
-            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(90), 0), new Vector3(-halfWorldScale, 0, 0));
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1),
+                new Vector3(0, 90, 0), new Vector3(-halfWorldScale, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/left");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
             sceneManager.ActiveScene.Add(quad);
 
             //skybox - right face
             quad = new GameObject("skybox right face");
-            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-90), 0), new Vector3(halfWorldScale, 0, 0));
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1),
+                new Vector3(0, -90, 0), new Vector3(halfWorldScale, 0, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/right");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
             sceneManager.ActiveScene.Add(quad);
 
             //skybox - top face
             quad = new GameObject("skybox top face");
-            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(90), MathHelper.ToRadians(-90), 0), new Vector3(0, halfWorldScale, 0));
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1),
+                new Vector3(90, -90, 0), new Vector3(0, halfWorldScale, 0));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/sky");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
             sceneManager.ActiveScene.Add(quad);
 
             //skybox - front face
             quad = new GameObject("skybox front face");
-            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(0, MathHelper.ToRadians(-180), 0), new Vector3(0, 0, halfWorldScale));
+            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1),
+                new Vector3(0, -180, 0), new Vector3(0, 0, halfWorldScale));
             texture = Content.Load<Texture2D>("Assets/Textures/Skybox/front");
-            quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
-            sceneManager.ActiveScene.Add(quad);
-
-            //ground
-            quad = new GameObject("ground");
-            quad.Transform = new Transform(new Vector3(worldScale, worldScale, 1), new Vector3(MathHelper.ToRadians(-90), 0, 0), new Vector3(0, 0, 0));
-            texture = Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1");
             quad.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
             sceneManager.ActiveScene.Add(quad);
         }
@@ -720,7 +727,7 @@ namespace GD.App
             //wait...SoundManager has no update? Yes, playing sounds is handled by an internal MonoGame thread - so we're off the hook!
 
             //add the physics manager update thread
-            physicsManager = new PhysicsManager(this);
+            physicsManager = new PhysicsManager(this, AppData.GRAVITY);
             Components.Add(physicsManager);
 
             //add state manager for inventory and countdown
@@ -772,12 +779,6 @@ namespace GD.App
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            //update all drawn game objects in the active scene
-            //sceneManager.Update(gameTime);
-
-            //update active camera
-            //cameraManager.Update(gameTime);
 
 #if DEMO
 

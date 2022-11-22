@@ -41,7 +41,7 @@ namespace GDLibrary
                 if (bFirstUpdate)
                 {
                     //set the initial position of the camera
-                    transform.translation = rail.MidPoint;
+                    transform.SetTranslation(rail.MidPoint);
                     bFirstUpdate = false;
                 }
 
@@ -50,12 +50,12 @@ namespace GDLibrary
                 cameraToTarget.Round(3);
 
                 //new position for camera if it is positioned between start and the end points of the rail
-                Vector3 projectedCameraPosition = transform.translation + Vector3.Dot(cameraToTarget, rail.Look) * rail.Look;
+                Vector3 projectedCameraPosition = transform.Translation + Vector3.Dot(cameraToTarget, rail.Look) * rail.Look;
                 projectedCameraPosition.Round(3);
 
                 //do not allow the camera to move outside the rail
                 if (rail.InsideRail(projectedCameraPosition))
-                    transform.translation = projectedCameraPosition;
+                    transform.SetTranslation(projectedCameraPosition);
 
                 //TODO - set the camera to look at the object
             }

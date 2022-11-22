@@ -136,7 +136,12 @@ This repository contains code for the game engine
 - [x] Add RailController
 - [x] Add MathUtility with Sin related functions
 - [x] Re-factor CurveBehaviour to support generic Action
-- [ ] Add AudioEmitter and AudioListener behaviours
+- [x] Add AudioEmitter and AudioListener behaviours
+
+### To Do - Week 10
+- [x] Add CurveRecorderController
+- [x] Add support code for physics
+- [x] Re-factor Transform to conform with Physics Collider class
 - [ ] Add support for cloning GameObjects, Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Move level-specific methods to Level class

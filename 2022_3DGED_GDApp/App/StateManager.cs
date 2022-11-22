@@ -1,8 +1,7 @@
-﻿using GD.Engine.Events;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace GD.Engine
+namespace GD.App
 {
     public enum ItemType : sbyte
     {
@@ -20,7 +19,7 @@ namespace GD.Engine
         public ItemType itemType;
         public string description;
         public int value;
-        private string audioCueName;  //"boom"
+        public string cueName;  //"boom"
     }
 
     /// <summary>

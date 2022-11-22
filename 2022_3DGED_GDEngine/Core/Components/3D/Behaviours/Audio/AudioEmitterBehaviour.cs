@@ -7,12 +7,17 @@ namespace GD.Engine
     {
         private AudioEmitter audioEmitter;
 
+        public AudioEmitterBehaviour()
+        {
+            audioEmitter = new AudioEmitter();
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (transform == null || audioEmitter == null)
                 return;
 
-            audioEmitter.Position = transform.translation;
+            audioEmitter.Position = transform.Translation;
             audioEmitter.Up = transform.World.Up;
             audioEmitter.Forward = transform.World.Forward;
             //emitter.Velocity = transform.Velocity;
