@@ -12,6 +12,7 @@ using GD.Engine.Globals;
 using GD.Engine.Inputs;
 using GD.Engine.Managers;
 using GD.Engine.Parameters;
+using GD.Engine.Timer;
 using GD.Engine.Utilities;
 using JigLibX.Collision;
 using JigLibX.Geometry;
@@ -858,7 +859,6 @@ namespace GD.App
                 Exit();
 
 #if DEMO
-
             if (Input.Keys.WasJustPressed(Keys.B))
             {
                 object[] parameters = { "boom1" };

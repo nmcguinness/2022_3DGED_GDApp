@@ -27,6 +27,8 @@ This repository contains code for the game engine
 
 
 ### Further Reading
+- Generating [Gitignore](https://www.toptal.com/developers/gitignore/) files
+- Using Gitignore to [remove files/folders](https://linuxize.com/post/gitignore-ignoring-files-in-git/) from upload
 - Common screen [resolutions](https://en.wikipedia.org/wiki/Display_resolution#/media/File:Vector_Video_Standards8.svg)
 - Using the [out](https://www.c-sharpcorner.com/article/out-parameter-in-c-sharp-7/) keyword
 - Using an [Action](https://www.tutorialsteacher.com/csharp/csharp-action-delegate), [Predicate](https://www.tutorialsteacher.com/csharp/csharp-predicate) and [Delegate](https://www.tutorialsteacher.com/csharp/csharp-delegates)
@@ -142,11 +144,13 @@ This repository contains code for the game engine
 - [x] Add CurveRecorderController
 - [x] Add support code for physics
 - [x] Re-factor Transform to conform with Physics Collider class
+- [x] Create renderers list in GameObjectList to optimize obtaining renderer in SceneRenderer::Draw()
+- [x] Add clean/dirty flag to Transform on change
+- [x] Add camera smoothing using Vector2.Lerp in FPC
+- [x] Add CD/CR demo for box, sphere, trianglemesh
 - [ ] Add support for cloning GameObjects, Camera
 - [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Move level-specific methods to Level class
-- [ ] Add clean/dirty flag to Transform on change
 - [ ] Add clean/dirty flag to Camera on change
-- [ ] Create renderers list in GameObjectList to optimize obtaining renderer in SceneRenderer::Draw()
 - [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime
  
