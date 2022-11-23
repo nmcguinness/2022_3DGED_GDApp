@@ -98,7 +98,7 @@ namespace GD.Engine.Managers
         #endregion Actions - Update
     }
 
-    public class PhysicsManager : GameComponent
+    public class PhysicsManager : PausableGameComponent
     {
         #region Statics
 
@@ -177,25 +177,28 @@ namespace GD.Engine.Managers
 
         public override void Update(GameTime gameTime)
         {
-            //TODO - change to Time.Instance
-            timeStep = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerSecond;
+            if (StatusType != StatusType.Off)
+            {
+                //TODO - change to Time.Instance
+                timeStep = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerSecond;
 
-            //if the time between updates indicates a FPS of close to 60 fps or less then update CD/CR engine
-            if (timeStep < 1.0f / 60.0f)
-            {
-                physicSystem.Integrate(timeStep);
-            }
-            else
-            {
-                //else fix at 60 updates per second
-                physicSystem.Integrate(1.0f / 60.0f);
+                //if the time between updates indicates a FPS of close to 60 fps or less then update CD/CR engine
+                if (timeStep < 1.0f / 60.0f)
+                {
+                    physicSystem.Integrate(timeStep);
+                }
+                else
+                {
+                    //else fix at 60 updates per second
+                    physicSystem.Integrate(1.0f / 60.0f);
+                }
             }
         }
 
         #endregion Actions - Update
     }
 
-    public class PhysicsDebugDrawer : DrawableGameComponent
+    public class PhysicsDebugDrawer : PausableDrawableGameComponent
     {
         private Color collisionSkinColor;
         private BasicEffect effect;
@@ -243,41 +246,44 @@ namespace GD.Engine.Managers
 
         public override void Draw(GameTime gameTime)
         {
-            SetGraphicsStates(true);
+            if (StatusType != StatusType.Off)
+            {
+                SetGraphicsStates(true);
 
-            //draw static opaque collision surfaces
-            var colliders = Application.SceneManager.ActiveScene.OpaqueList.StaticList.Colliders;
-            foreach (Collider collider in colliders)
-                AddCollisionSkinVertexData(collider);
+                //draw static opaque collision surfaces
+                var colliders = Application.SceneManager.ActiveScene.OpaqueList.StaticList.Colliders;
+                foreach (Collider collider in colliders)
+                    AddCollisionSkinVertexData(collider);
 
-            //draw dynamic opaque collision surfaces
-            colliders = Application.SceneManager.ActiveScene.OpaqueList.DynamicList.Colliders;
-            foreach (Collider collider in colliders)
-                AddCollisionSkinVertexData(collider);
+                //draw dynamic opaque collision surfaces
+                colliders = Application.SceneManager.ActiveScene.OpaqueList.DynamicList.Colliders;
+                foreach (Collider collider in colliders)
+                    AddCollisionSkinVertexData(collider);
 
-            //draw static transparent collision surfaces
-            colliders = Application.SceneManager.ActiveScene.TransparentList.StaticList.Colliders;
-            foreach (Collider collider in colliders)
-                AddCollisionSkinVertexData(collider);
+                //draw static transparent collision surfaces
+                colliders = Application.SceneManager.ActiveScene.TransparentList.StaticList.Colliders;
+                foreach (Collider collider in colliders)
+                    AddCollisionSkinVertexData(collider);
 
-            //draw dynamic transparent collision surfaces
-            colliders = Application.SceneManager.ActiveScene.TransparentList.DynamicList.Colliders;
-            foreach (Collider collider in colliders)
-                AddCollisionSkinVertexData(collider);
+                //draw dynamic transparent collision surfaces
+                colliders = Application.SceneManager.ActiveScene.TransparentList.DynamicList.Colliders;
+                foreach (Collider collider in colliders)
+                    AddCollisionSkinVertexData(collider);
 
-            //no vertices to draw - would happen if we forget to call DrawCollisionSkins() above or there were no drawn objects to see!
-            if (vertexData.Count == 0)
-                return;
+                //no vertices to draw - would happen if we forget to call DrawCollisionSkins() above or there were no drawn objects to see!
+                if (vertexData.Count == 0)
+                    return;
 
-            //draw skin
-            Game.GraphicsDevice.Viewport = Application.CameraManager.ActiveCamera.ViewPort;
-            effect.View = Application.CameraManager.ActiveCamera.View;
-            effect.Projection = Application.CameraManager.ActiveCamera.Projection;
-            effect.CurrentTechnique.Passes[0].Apply();
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, vertexData.ToArray(), 0, vertexData.Count - 1);
+                //draw skin
+                Game.GraphicsDevice.Viewport = Application.CameraManager.ActiveCamera.ViewPort;
+                effect.View = Application.CameraManager.ActiveCamera.View;
+                effect.Projection = Application.CameraManager.ActiveCamera.Projection;
+                effect.CurrentTechnique.Passes[0].Apply();
+                GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, vertexData.ToArray(), 0, vertexData.Count - 1);
 
-            //reset data
-            vertexData.Clear();
+                //reset data
+                vertexData.Clear();
+            }
         }
 
         public void AddVertexDataForShape(List<Vector3> shape, Color color)

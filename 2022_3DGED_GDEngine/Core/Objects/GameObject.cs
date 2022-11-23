@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace GD.Engine
 {
@@ -40,6 +39,7 @@ namespace GD.Engine
         /// </summary>
         /// <see cref="Scene"/>
         private RenderType renderType;
+        private GameObjectType gameObjectType = GameObjectType.Prop;
 
         #endregion Fields
 
@@ -65,6 +65,7 @@ namespace GD.Engine
         /// Gets a list of all components (e.g. controllers, behaviours, camera) of the current object
         /// </summary>
         public List<Component> Components { get => components; }
+        public GameObjectType GameObjectType { get => gameObjectType; set => gameObjectType = value; }
 
         #endregion Properties
 

@@ -1,4 +1,5 @@
-﻿using JigLibX.Collision;
+﻿using GD.Engine.Events;
+using JigLibX.Collision;
 using JigLibX.Geometry;
 using JigLibX.Physics;
 using Microsoft.Xna.Framework;
@@ -45,7 +46,8 @@ namespace GD.Engine
         /// </summary>
         /// <param name="isHandlingCollision"></param>
         /// <param name="isTrigger"></param>
-        public Collider(GameObject gameObject, bool isHandlingCollision = false, bool isTrigger = false)
+        public Collider(GameObject gameObject,
+            bool isHandlingCollision = false, bool isTrigger = false)
         {
             this.isHandlingCollision = isHandlingCollision;
             this.isTrigger = isTrigger;
@@ -88,7 +90,19 @@ namespace GD.Engine
 
         protected virtual void HandleResponse(GameObject parentGameObject)
         {
+            //DONT ADD CODE SPECIFIC TO YOUR GAME IN COLLIDER
             //see classes that inherit from this collider e.g. MyPlayerCollider
+
+            //int x = 0;
+            //if (parentGameObject.GameObjectType == GameObjectType.Consumable)
+            //{
+            //    //SceneManager - remove!
+            //    //PhysicsManager - remove!
+            //    object[] param = { parentGameObject,
+            //        "sad_monkey", 10, "you just picked up a monkey!"};
+            //    EventDispatcher.Raise(new EventData(EventCategoryType.GameObject,
+            //        EventActionType.OnRemoveObject, param));
+            //}
         }
 
         /// <summary>

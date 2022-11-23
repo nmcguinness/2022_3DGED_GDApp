@@ -446,6 +446,7 @@ namespace GD.App
         {
             //game object
             var gameObject = new GameObject("my first collidable box!", ObjectType.Dynamic, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Prop;
 
             gameObject.Transform = new Transform(
                 new Vector3(1, 1, 1),
@@ -460,7 +461,7 @@ namespace GD.App
                 new Material(texture, 1, Color.White),
                 mesh));
 
-            var collider = new Collider(gameObject);
+            var collider = new Collider(gameObject, true);
             collider.AddPrimitive(new Box(
                 gameObject.Transform.Translation,
                 gameObject.Transform.Rotation,
@@ -483,6 +484,7 @@ namespace GD.App
         {
             //game object
             var gameObject = new GameObject("my first collidable high detail monkey!", ObjectType.Static, RenderType.Opaque);
+            gameObject.GameObjectType = GameObjectType.Consumable;
 
             //TODO - rotation on triangle mesh not working
             gameObject.Transform = new Transform(
@@ -838,6 +840,7 @@ namespace GD.App
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV, F1-F4 for camera switch", Color.White, contentScale * Vector2.One));
 
             //add to the component list otherwise it wont have its Update or Draw called!
+            // perfUtility.StatusType = StatusType.Drawn | StatusType.Updated;
             Components.Add(perfUtility);
 
             if (showCollisionSkins)
