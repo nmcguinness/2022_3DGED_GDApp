@@ -45,7 +45,7 @@ namespace GD.Engine
         /// </summary>
         /// <param name="isHandlingCollision"></param>
         /// <param name="isTrigger"></param>
-        public Collider(bool isHandlingCollision = false, bool isTrigger = false)
+        public Collider(GameObject gameObject, bool isHandlingCollision = false, bool isTrigger = false)
         {
             this.isHandlingCollision = isHandlingCollision;
             this.isTrigger = isTrigger;
@@ -107,7 +107,7 @@ namespace GD.Engine
         /// <summary>
         /// Must be called after we instanciate the new collider behaviour in order for the body to participate in the physics system
         /// </summary>
-        public virtual void Enable(bool isImmovable, float mass)
+        public virtual void Enable(GameObject gameObject, bool isImmovable, float mass)
         {
             //set whether the object can move
             Body.Immovable = isImmovable;
@@ -149,8 +149,7 @@ namespace GD.Engine
                 = Matrix.CreateScale(transform.Scale) *
                     collision.GetPrimitiveLocal(0).Transform.Orientation *
                         body.Orientation *
-                                //     transform.RotationMatrix *
-                                Matrix.CreateTranslation(body.Position);
+                                          Matrix.CreateTranslation(body.Position);
         }
     }
 }

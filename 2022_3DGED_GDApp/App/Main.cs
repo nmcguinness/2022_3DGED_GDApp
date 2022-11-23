@@ -310,7 +310,9 @@ namespace GD.App
 
             //NEW
             cameraGameObject.AddComponent(new FirstPersonController(AppData.FIRST_PERSON_MOVE_SPEED, AppData.FIRST_PERSON_STRAFE_SPEED,
-                AppData.PLAYER_ROTATE_SPEED_VECTOR2, true));
+                AppData.PLAYER_ROTATE_SPEED_VECTOR2, AppData.FIRST_PERSON_CAMERA_SMOOTH_FACTOR, true));
+
+            //cameraGameObject.AddComponent(new CameraFOVController(1));
 
             cameraManager.Add(cameraGameObject.Name, cameraGameObject);
 
@@ -383,14 +385,17 @@ namespace GD.App
         {
             #region Collidable
 
-            InitializeColliableGround(worldScale);
-            InitializeCollidableModel();
+            InitializeCollidableGround(worldScale);
+            InitializeCollidableBox();
+            InitializeCollidableHighDetailMonkey();
 
             #endregion
         }
 
         private void InitializeNonCollidableContent(float worldScale)
         {
+            InitializeXYZ();
+
             //create sky
             InitializeSkyBox(worldScale);
 
@@ -410,7 +415,12 @@ namespace GD.App
             InitializeTreeQuad();
         }
 
-        private void InitializeColliableGround(float worldScale)
+        private void InitializeXYZ()
+        {
+            //  throw new NotImplementedException();
+        }
+
+        private void InitializeCollidableGround(float worldScale)
         {
             var gdBasicEffect = new GDBasicEffect(unlitEffect);
             var quadMesh = new QuadMesh(_graphics.GraphicsDevice);
@@ -423,32 +433,80 @@ namespace GD.App
             ground.AddComponent(new Renderer(gdBasicEffect, new Material(texture, 1), quadMesh));
 
             //add Collision Surface(s)
-            //var collider = new Collider();
-            //collider.AddPrimitive(new Box(
-            //        ground.Transform.Translation,
-            //        ground.Transform.Rotation,
-            //        ground.Transform.Scale),
-            //        new MaterialProperties(0.8f, 0.8f, 0.7f));
-            //collider.Enable(true, 1);
-            //ground.AddComponent(collider);
+            var collider = new Collider(ground);
+            collider.AddPrimitive(new Box(
+                    ground.Transform.Translation,
+                    ground.Transform.Rotation,
+                    ground.Transform.Scale),
+                    new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.Enable(ground, true, 1);
+            ground.AddComponent(collider);
 
             sceneManager.ActiveScene.Add(ground);
         }
 
-        private void InitializeCollidableModel()
+        private void InitializeCollidableBox()
         {
             //game object
-            var gameObject = new GameObject("my first collidable box!", ObjectType.Static, RenderType.Opaque);
+            var gameObject = new GameObject("my first collidable box!", ObjectType.Dynamic, RenderType.Opaque);
 
-            gameObject.Transform = new Transform(null, null, new Vector3(0, 4, 0));
+            gameObject.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(45, 45, 0),
+                new Vector3(0, 15, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
             var model = Content.Load<Model>("Assets/Models/cube");
             var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
 
             gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(litEffect),
-                new Material(texture, 1f, Color.White),
+                new Material(texture, 1, Color.White),
                 mesh));
+
+            var collider = new Collider(gameObject);
+            collider.AddPrimitive(new Box(
+                gameObject.Transform.Translation,
+                gameObject.Transform.Rotation,
+                gameObject.Transform.Scale), //make the colliders a fraction larger so that transparent boxes dont sit exactly on the ground and we end up with flicker or z-fighting
+                new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.Enable(gameObject, false, 10);
+            gameObject.AddComponent(collider);
+
+            //var collider = new Collider(gameObject);
+            //collider.AddPrimitive(new Sphere(
+            //    gameObject.Transform.Translation, 1), //make the colliders a fraction larger so that transparent boxes dont sit exactly on the ground and we end up with flicker or z-fighting
+            //    new MaterialProperties(0.8f, 0.8f, 0.7f));
+            //collider.Enable(gameObject, false, 10);
+            //gameObject.AddComponent(collider);
+
+            sceneManager.ActiveScene.Add(gameObject);
+        }
+
+        private void InitializeCollidableHighDetailMonkey()
+        {
+            //game object
+            var gameObject = new GameObject("my first collidable high detail monkey!", ObjectType.Static, RenderType.Opaque);
+
+            //TODO - rotation on triangle mesh not working
+            gameObject.Transform = new Transform(
+                new Vector3(1, 1, 1),
+                new Vector3(0, 0, 0),
+                new Vector3(0, 1, 0));
+            var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
+            var model = Content.Load<Model>("Assets/Models/monkey");
+            var mesh = new Engine.ModelMesh(_graphics.GraphicsDevice, model);
+
+            gameObject.AddComponent(new Renderer(
+                new GDBasicEffect(litEffect),
+                new Material(texture, 1f, Color.Yellow),
+                mesh));
+
+            var collider = new Collider(gameObject);
+            collider.AddPrimitive(CollisionUtility.GetTriangleMesh(model, gameObject.Transform), new MaterialProperties(0.8f, 0.8f, 0.7f));
+
+            //NOTE - TriangleMesh colliders MUST be marked as IMMOVABLE=TRUE
+            collider.Enable(gameObject, true, 1);
+            gameObject.AddComponent(collider);
 
             sceneManager.ActiveScene.Add(gameObject);
         }
@@ -502,7 +560,7 @@ namespace GD.App
                 ObjectType.Static, RenderType.Opaque);
 
             gameObject.Transform = new Transform(6 * Vector3.One,
-                new Vector3(0, 0, 0), new Vector3(-5, -5, 0));
+                new Vector3(0, 0, 0), new Vector3(-10, -5, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Button/button_DefaultMaterial_Base_color");
 
             var model = Content.Load<Model>("Assets/Models/button");
@@ -521,7 +579,8 @@ namespace GD.App
             //game object
             var gameObject = new GameObject("my first quad",
                 ObjectType.Static, RenderType.Opaque);
-            gameObject.Transform = new Transform(null, null, new Vector3(-1, 2, 1));  //World
+            gameObject.Transform = new Transform(null, null,
+                new Vector3(-2, 1, 0));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1");
             gameObject.AddComponent(new Renderer(new GDBasicEffect(litEffect),
                 new Material(texture, 1), new QuadMesh(_graphics.GraphicsDevice)));
@@ -536,7 +595,7 @@ namespace GD.App
             //game object
             var gameObject = new GameObject("my first tree", ObjectType.Static,
                 RenderType.Transparent);
-            gameObject.Transform = new Transform(new Vector3(3, 3, 1), null, new Vector3(-3, 1.5f, 1));  //World
+            gameObject.Transform = new Transform(new Vector3(3, 3, 1), null, new Vector3(-6, 1.5f, 1));  //World
             var texture = Content.Load<Texture2D>("Assets/Textures/Foliage/Trees/tree1");
             gameObject.AddComponent(new Renderer(
                 new GDBasicEffect(unlitEffect),
@@ -740,7 +799,7 @@ namespace GD.App
             //TODO - add texture dictionary, soundeffect dictionary, model dictionary
         }
 
-        private void InitializeDebug()
+        private void InitializeDebug(bool showCollisionSkins = true)
         {
             //intialize the utility component
             var perfUtility = new PerfUtility(this, _spriteBatch,
@@ -757,8 +816,23 @@ namespace GD.App
             perfUtility.infoList.Add(new FPSInfo(_spriteBatch, spriteFont, "FPS:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Camera -----------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new CameraNameInfo(_spriteBatch, spriteFont, "Name:", Color.White, contentScale * Vector2.One));
-            perfUtility.infoList.Add(new CameraPositionInfo(_spriteBatch, spriteFont, "Pos:", Color.White, contentScale * Vector2.One));
-            perfUtility.infoList.Add(new CameraRotationInfo(_spriteBatch, spriteFont, "Rot:", Color.White, contentScale * Vector2.One));
+
+            var infoFunction = (Transform transform) =>
+            {
+                return transform.Translation.GetNewRounded(1).ToString();
+            };
+
+            perfUtility.infoList.Add(new TransformInfo(_spriteBatch, spriteFont, "Pos:", Color.White, contentScale * Vector2.One,
+                ref Application.CameraManager.ActiveCamera.transform, infoFunction));
+
+            infoFunction = (Transform transform) =>
+            {
+                return transform.Rotation.GetNewRounded(1).ToString();
+            };
+
+            perfUtility.infoList.Add(new TransformInfo(_spriteBatch, spriteFont, "Rot:", Color.White, contentScale * Vector2.One,
+                ref Application.CameraManager.ActiveCamera.transform, infoFunction));
+
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Object -----------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
@@ -766,6 +840,9 @@ namespace GD.App
 
             //add to the component list otherwise it wont have its Update or Draw called!
             Components.Add(perfUtility);
+
+            if (showCollisionSkins)
+                Components.Add(new PhysicsDebugDrawer(this));
         }
 
         #endregion Actions - Engine Specific

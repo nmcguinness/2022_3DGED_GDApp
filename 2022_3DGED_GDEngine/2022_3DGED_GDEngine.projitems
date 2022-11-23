@@ -34,6 +34,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Scene\Scene.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Editor\Controllers\CurveRecorderController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\QuaternionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Base\TexturedMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Base\WireframeMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Wireframe\XYZMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\PhysicsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Other\Data\Resolutions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableDrawableComponent.cs" />
@@ -50,10 +53,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Effects\GDBasicEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Effects\IEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Materials\Material.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\CubeMesh.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Mesh.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\ModelMesh.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\QuadMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Textured\CubeMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Base\Mesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Textured\ModelMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Textured\QuadMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\3D\Renderers\Renderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\SceneRenderers\ForwardSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Other\Level\ILoadLevel.cs" />
@@ -71,7 +74,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Parameters\Rail\Rail.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Other\Screen\Screen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Math\MathUtility.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Physics\PhysicsDebugDrawer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\SpriteBatchInfo\SpriteBatchInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Performance\PerfUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utilities\Serialization\SerializationUtility.cs" />
@@ -79,8 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Core\Bugs\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\3D\Physics\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Enums\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Core\Graphics\Meshes\Wireframe\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Other\Level\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Other\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Other\Screen\" />

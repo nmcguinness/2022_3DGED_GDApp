@@ -58,8 +58,9 @@ namespace GD.App
         public static readonly float FIRST_PERSON_CAMERA_FCP = 3000;
         public static readonly float FIRST_PERSON_CAMERA_NCP = 0.1f;
 
-        public static readonly float FIRST_PERSON_HALF_FOV
-             = MathHelper.PiOver2 / 2.0f;
+        public static readonly float FIRST_PERSON_HALF_FOV = MathHelper.PiOver2 / 2.0f;
+
+        public static readonly float FIRST_PERSON_CAMERA_SMOOTH_FACTOR = 0.1f;
 
         #endregion Camera - First Person
 
@@ -105,7 +106,11 @@ namespace GD.App
 
         #endregion Movement Constants
 
+        #region Core
+
         public static readonly double MAX_GAME_TIME_IN_MSECS = 2500; //180000
         public static readonly Vector3 GRAVITY = new Vector3(0, -9.81f, 0);
+
+        #endregion
     }
 }

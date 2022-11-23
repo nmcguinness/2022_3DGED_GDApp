@@ -14,6 +14,7 @@ namespace GD.Engine
         protected float moveSpeed = 0.05f;
         protected float strafeSpeed = 0.025f;
         protected Vector2 rotationSpeed;
+        private float smoothFactor;
         private bool isGrounded;
 
         #endregion Fields
@@ -22,21 +23,23 @@ namespace GD.Engine
 
         protected Vector3 translation = Vector3.Zero;
         protected Vector3 rotation = Vector3.Zero;
+        private Vector2 oldDelta;
 
         #endregion Temps
 
         #region Constructors
 
-        public FirstPersonController(float moveSpeed, float strafeSpeed, float rotationSpeed, bool isGrounded = true)
-    : this(moveSpeed, strafeSpeed, rotationSpeed * Vector2.One, isGrounded)
+        public FirstPersonController(float moveSpeed, float strafeSpeed, float rotationSpeed, float smoothFactor = 0.25f, bool isGrounded = true)
+    : this(moveSpeed, strafeSpeed, rotationSpeed * Vector2.One, smoothFactor, isGrounded)
         {
         }
 
-        public FirstPersonController(float moveSpeed, float strafeSpeed, Vector2 rotationSpeed, bool isGrounded = true)
+        public FirstPersonController(float moveSpeed, float strafeSpeed, Vector2 rotationSpeed, float smoothFactor, bool isGrounded)
         {
             this.moveSpeed = moveSpeed;
             this.strafeSpeed = strafeSpeed;
             this.rotationSpeed = rotationSpeed;
+            this.smoothFactor = smoothFactor;
             this.isGrounded = isGrounded;
         }
 
@@ -74,8 +77,11 @@ namespace GD.Engine
         protected virtual void HandleMouseInput(GameTime gameTime)
         {
             rotation = Vector3.Zero;
-            var delta = Input.Mouse.Delta;
 
+            //smooth camera movement
+            var delta = oldDelta.Lerp(Input.Mouse.Delta, smoothFactor);
+
+            //did we move mouse?
             if (delta.Length() != 0)
             {
                 //Q - where are X and Y reversed?
@@ -83,6 +89,9 @@ namespace GD.Engine
                 rotation.X -= delta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
                 transform.SetRotation(rotation);
             }
+
+            //store current to be used for next update of smoothing
+            oldDelta = delta;
         }
 
         #endregion Actions - Update, Input
