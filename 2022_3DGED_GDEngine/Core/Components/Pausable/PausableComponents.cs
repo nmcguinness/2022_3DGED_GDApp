@@ -40,7 +40,8 @@ namespace GD.Engine
 
         #region Constructors
 
-        public PausableGameComponent(Game game) : this(game, StatusType.Updated)
+        public PausableGameComponent(Game game)
+            : this(game, StatusType.Updated)
         {
         }
 

@@ -77,21 +77,21 @@ namespace GD.Engine
         protected virtual void HandleMouseInput(GameTime gameTime)
         {
             rotation = Vector3.Zero;
+            var currentDelta = Input.Mouse.Delta;
 
             //smooth camera movement
-            var delta = oldDelta.Lerp(Input.Mouse.Delta, smoothFactor);
+            var newDelta = oldDelta.Lerp(currentDelta, smoothFactor);
 
             //did we move mouse?
-            if (delta.Length() != 0)
+            if (newDelta.Length() != 0)
             {
                 //Q - where are X and Y reversed?
-                rotation.Y -= delta.X * rotationSpeed.X * gameTime.ElapsedGameTime.Milliseconds;
-                rotation.X -= delta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
+                rotation.Y -= newDelta.X * rotationSpeed.X * gameTime.ElapsedGameTime.Milliseconds;
+                rotation.X -= newDelta.Y * rotationSpeed.Y * gameTime.ElapsedGameTime.Milliseconds;
                 transform.SetRotation(rotation);
             }
-
             //store current to be used for next update of smoothing
-            oldDelta = delta;
+            oldDelta = newDelta;
         }
 
         #endregion Actions - Update, Input

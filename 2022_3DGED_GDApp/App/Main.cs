@@ -384,13 +384,9 @@ namespace GD.App
 
         private void InitializeCollidableContent(float worldScale)
         {
-            #region Collidable
-
             InitializeCollidableGround(worldScale);
             InitializeCollidableBox();
             InitializeCollidableHighDetailMonkey();
-
-            #endregion
         }
 
         private void InitializeNonCollidableContent(float worldScale)
@@ -476,8 +472,8 @@ namespace GD.App
             //var collider = new Collider(gameObject);
             //collider.AddPrimitive(new Sphere(
             //    gameObject.Transform.Translation, 1), //make the colliders a fraction larger so that transparent boxes dont sit exactly on the ground and we end up with flicker or z-fighting
-            //    new MaterialProperties(0.8f, 0.8f, 0.7f));
-            //collider.Enable(gameObject, false, 10);
+            //    new MaterialProperties(0.2f, 0.8f, 0.7f));
+            //collider.Enable(gameObject, true, 10);
             //gameObject.AddComponent(collider);
 
             sceneManager.ActiveScene.Add(gameObject);
@@ -491,7 +487,7 @@ namespace GD.App
             //TODO - rotation on triangle mesh not working
             gameObject.Transform = new Transform(
                 new Vector3(1, 1, 1),
-                new Vector3(0, 0, 0),
+                new Vector3(0, 45, 0),
                 new Vector3(0, 1, 0));
             var texture = Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate2");
             var model = Content.Load<Model>("Assets/Models/monkey");
@@ -502,8 +498,10 @@ namespace GD.App
                 new Material(texture, 1f, Color.Yellow),
                 mesh));
 
+            var model_medium = Content.Load<Model>("Assets/Models/monkey_medium");
             var collider = new Collider(gameObject);
-            collider.AddPrimitive(CollisionUtility.GetTriangleMesh(model, gameObject.Transform), new MaterialProperties(0.8f, 0.8f, 0.7f));
+            collider.AddPrimitive(CollisionUtility.GetTriangleMesh(model_medium,
+                gameObject.Transform), new MaterialProperties(0.8f, 0.8f, 0.7f));
 
             //NOTE - TriangleMesh colliders MUST be marked as IMMOVABLE=TRUE
             collider.Enable(gameObject, true, 1);
@@ -859,6 +857,17 @@ namespace GD.App
                 Exit();
 
 #if DEMO
+            if (Input.Keys.WasJustPressed(Keys.P))
+            {
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
+                    EventActionType.OnPause));
+            }
+            else if (Input.Keys.WasJustPressed(Keys.U))
+            {
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
+                   EventActionType.OnPlay));
+            }
+
             if (Input.Keys.WasJustPressed(Keys.B))
             {
                 object[] parameters = { "boom1" };
