@@ -21,7 +21,11 @@ namespace GD.Engine
 
         #region Properties
 
-        public float LayerDepth { get => layerDepth; set => layerDepth = value >= 0 && value <= 1 ? value : 0; }
+        public float LayerDepth
+        {
+            get => layerDepth;
+            set => layerDepth = value >= 0 && value <= 1 ? value : 0;
+        }
         public Vector2 Origin { get => origin; set => origin = value; }
         public SpriteEffects SpriteEffects { get => spriteEffects; set => spriteEffects = value; }
         public Rectangle SourceRectangle { get => sourceRectangle; set => sourceRectangle = value; }

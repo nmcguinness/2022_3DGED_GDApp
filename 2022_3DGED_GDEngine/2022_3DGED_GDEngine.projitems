@@ -37,7 +37,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Pausable\PausableComponents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Editor\Controllers\CurveRecorderController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\QuaternionExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\SpriteMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\Materials\SpriteMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\Materials\TextSpriteMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\UIElements\UIElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Base\TexturedMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Base\WireframeMesh.cs" />
