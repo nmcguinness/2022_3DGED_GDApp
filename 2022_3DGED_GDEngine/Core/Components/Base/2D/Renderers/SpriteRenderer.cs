@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace GD.Engine
 {
@@ -7,34 +7,19 @@ namespace GD.Engine
     /// </summary>
     public class SpriteRenderer : Component
     {
-        #region Fields
-
         private SpriteMaterial material;  //textures, alpha
+        private UIElement uiElement;      //text, texture
 
-        #endregion Fields
-
-        #region Properties
-
-        public SpriteMaterial Material { get => material; set => material = value; }
-
-        #endregion Properties
-
-        #region Constructors
-
-        public SpriteRenderer(SpriteMaterial material)
+        public SpriteRenderer(SpriteMaterial material,
+            UIElement uiElement)
         {
-            Material = material;
+            this.material = material;
+            this.uiElement = uiElement;
         }
-
-        #endregion Constructors
-
-        #region Actions - Draw
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //TODO
+            uiElement.Draw(spriteBatch, transform, material);
         }
-
-        #endregion Actions - Draw
     }
 }

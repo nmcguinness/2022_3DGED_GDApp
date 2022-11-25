@@ -1,14 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GD.Engine
 {
     public class UITextElement : UIElement
     {
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch,
+        public void Draw(SpriteBatch spriteBatch,
           Transform transform, SpriteMaterial material)
         {
             if (spriteBatch == null || transform == null || material == null)
@@ -34,7 +32,7 @@ namespace GD.Engine
 
     public class UITextureElement : UIElement
     {
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch,
+        public void Draw(SpriteBatch spriteBatch,
             Transform transform, SpriteMaterial material)
         {
             if (spriteBatch == null || transform == null || material == null)
@@ -59,8 +57,7 @@ namespace GD.Engine
     public interface UIElement
     {
         //no common state information?
-        public void Draw(GameTime gameTime,
-            SpriteBatch spriteBatch,
+        public void Draw(SpriteBatch spriteBatch,
             Transform transform,
             SpriteMaterial material);
     }

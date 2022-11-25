@@ -44,6 +44,9 @@ namespace GD.App
         private EventDispatcher eventDispatcher;
         private GameObject playerGameObject;
         private StateManager stateManager;
+        private GameObject uiTextureGameObject;
+        private SpriteMaterial textSpriteMaterial;
+        private UITextureElement uiTextureElement;
 
 #if DEMO
 
@@ -190,6 +193,26 @@ namespace GD.App
             //    new EventData(EventCategoryType.Player,
             //    EventActionType.OnSpawnObject,
             //    parameters));
+
+            InitializeUI();
+        }
+
+        private void InitializeUI()
+        {
+            uiTextureGameObject = new GameObject("background");
+            uiTextureGameObject.Transform = new Transform(
+                new Vector3(1, 1, 0), //s
+                new Vector3(0, 0, 45), //r
+                new Vector3(50, 50, 0)); //t
+
+            var material = new SpriteMaterial(
+               Content.Load<Texture2D>("Assets/Textures/UI/white32x32"),
+                0, Color.Red);
+            var uiElement = new UITextureElement();
+            uiTextureGameObject.AddComponent(
+                new SpriteRenderer(material, uiElement));
+
+            //add to scene2D
         }
 
         private void SetTitle(string title)
@@ -923,6 +946,10 @@ namespace GD.App
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(gameTime);
+
+            _spriteBatch.Begin();
+            uiTextureGameObject.GetComponent<SpriteRenderer>().Draw(_spriteBatch);
+            _spriteBatch.End();
         }
 
         #endregion Actions - Update, Draw

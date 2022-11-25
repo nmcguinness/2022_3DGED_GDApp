@@ -25,7 +25,8 @@ namespace GD.Engine
 
         #region Constructors
 
-        public Renderer(IEffect effect, Material material, Mesh<VertexPositionNormalTexture> mesh)
+        public Renderer(IEffect effect, Material material,
+            Mesh<VertexPositionNormalTexture> mesh)
         {
             Effect = effect;
             Material = material;
@@ -36,10 +37,12 @@ namespace GD.Engine
 
         #region Actions - Draw
 
-        public virtual void Draw(GraphicsDevice graphicsDevice, Camera camera)
+        public virtual void Draw(GraphicsDevice graphicsDevice,
+            Camera camera)
         {
             //draw the object
-            mesh.Draw(graphicsDevice, effect, transform, camera, material);
+            mesh.Draw(graphicsDevice, effect, transform,
+                camera, material);
         }
 
         #endregion Actions - Draw
