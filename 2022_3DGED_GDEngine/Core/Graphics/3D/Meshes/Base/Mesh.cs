@@ -62,7 +62,8 @@ namespace GD.Engine
         /// </summary>
         /// <param name="graphicsDevice"></param>
         public virtual void Draw(GraphicsDevice graphicsDevice,
-            IEffect effect, Transform transform, Camera camera, Material material)
+            IEffect effect, Transform transform, Camera camera,
+            Material material)
         {
             //effect.SetWorld(transform.World);
             //effect.SetCamera(camera);

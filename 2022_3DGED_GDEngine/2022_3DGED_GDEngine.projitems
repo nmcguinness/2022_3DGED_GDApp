@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Editor\Controllers\CurveRecorderController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\QuaternionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\SpriteMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\UIElements\UIElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Base\TexturedMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Base\WireframeMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Wireframe\XYZMesh.cs" />
@@ -87,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Core\Bugs\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\NewFolder\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Enums\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\" />

@@ -31,7 +31,7 @@ namespace GD.Engine
         {
             this.diffuse = diffuse;
             this.alpha = alpha;
-            this.diffuseColor = color;
+            diffuseColor = color;
         }
 
         public Material(Texture2D diffuse, float alpha)

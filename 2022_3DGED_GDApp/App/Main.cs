@@ -922,8 +922,6 @@ namespace GD.App
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Draw()
-
             base.Draw(gameTime);
         }
 
