@@ -45,6 +45,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Wireframe\XYZMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Interfaces\IProvideStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\PhysicsManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\Render2DManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Other\Data\Resolutions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableDrawableComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableOnlyComponent.cs" />
@@ -92,7 +93,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Core\Enums\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Core\Managers\Core\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Other\Level\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Other\" />
     <Folder Include="$(MSBuildThisFileDirectory)Core\Other\Screen\" />

@@ -37,7 +37,7 @@ namespace GD.App
         private BasicEffect litEffect;
 
         private CameraManager cameraManager;
-        private SceneManager sceneManager;
+        private SceneManager<Scene> sceneManager;
         private SoundManager soundManager;
         private PhysicsManager physicsManager;
         private RenderManager renderManager;
@@ -47,6 +47,8 @@ namespace GD.App
         private GameObject uiTextureGameObject;
         private SpriteMaterial textSpriteMaterial;
         private UITextureElement uiTextureElement;
+        private SceneManager<Scene2D> uiManager;
+        private Render2DManager uiRenderManager;
 
 #if DEMO
 
@@ -199,6 +201,8 @@ namespace GD.App
 
         private void InitializeUI()
         {
+            var mainUIScene = new Scene2D("main UI");
+
             uiTextureGameObject = new GameObject("background");
             uiTextureGameObject.Transform = new Transform(
                 new Vector3(1, 1, 0), //s
@@ -213,6 +217,13 @@ namespace GD.App
                 new SpriteRenderer(material, uiElement));
 
             //add to scene2D
+            mainUIScene.Add(uiTextureGameObject);
+
+            //add scene2D to manager
+            uiManager.Add(mainUIScene.ID, mainUIScene);
+
+            //what ui do i see first?
+            uiManager.SetActiveScene(mainUIScene.ID);
         }
 
         private void SetTitle(string title)
@@ -743,6 +754,8 @@ namespace GD.App
             Application.SceneManager = sceneManager;
             Application.SoundManager = soundManager;
             Application.PhysicsManager = physicsManager;
+
+            Application.UISceneManager = uiManager;
         }
 
         private void InitializeInput()
@@ -795,7 +808,7 @@ namespace GD.App
             Components.Add(cameraManager);
 
             //big kahuna nr 1! this adds support to store, switch and Update() scene contents
-            sceneManager = new SceneManager(this);
+            sceneManager = new SceneManager<Scene>(this);
             //add to Components otherwise no Update()
             Components.Add(sceneManager);
 
@@ -815,6 +828,17 @@ namespace GD.App
             //add state manager for inventory and countdown
             stateManager = new StateManager(this, AppData.MAX_GAME_TIME_IN_MSECS);
             Components.Add(stateManager);
+
+            #region UI Related
+
+            uiManager = new SceneManager<Scene2D>(this);
+            Components.Add(uiManager);
+
+            uiRenderManager = new Render2DManager(this,
+                StatusType.Drawn | StatusType.Updated, _spriteBatch);
+            Components.Add(uiRenderManager);
+
+            #endregion
         }
 
         private void InitializeDictionaries()
@@ -946,10 +970,6 @@ namespace GD.App
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(gameTime);
-
-            _spriteBatch.Begin();
-            uiTextureGameObject.GetComponent<SpriteRenderer>().Draw(_spriteBatch);
-            _spriteBatch.End();
         }
 
         #endregion Actions - Update, Draw
