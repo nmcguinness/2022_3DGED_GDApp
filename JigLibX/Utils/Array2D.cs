@@ -1,10 +1,8 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using JigLibX.Math;
+
 using Microsoft.Xna.Framework;
-using System.Collections;
+using System;
+
 #endregion
 
 namespace JigLibX.Utils
@@ -44,7 +42,7 @@ namespace JigLibX.Utils
             this.nx = arr.Nx;
             this.nz = arr.Nz;
 
-            Buffer.BlockCopy(arr.Array, 0, this.Array, 0, this.Array.Length*4);
+            Buffer.BlockCopy(arr.Array, 0, this.Array, 0, this.Array.Length * 4);
         }
 
         /// <summary>
@@ -73,7 +71,6 @@ namespace JigLibX.Utils
 
             for (int i = 0; i < Array.Length; i++)
                 Array[i] = val;
-
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace JigLibX.Utils
         {
             Array2D arr = new Array2D(nx, nz);
 
-            if(func == null)
+            if (func == null)
                 return arr;
 
             for (int xx = 0; xx < nx; xx++)
@@ -96,11 +93,9 @@ namespace JigLibX.Utils
                 {
                     arr.Array[xx + zz * nx] = func(xx, zz, arr);
                 }
-
             }
 
             return arr;
-
         }
 
         /// <summary>
@@ -110,12 +105,12 @@ namespace JigLibX.Utils
         /// <param name="nz"></param>
         public void Resize(int nx, int nz)
         {
-            if (nx == this.nx && nz == this.nz) 
+            if (nx == this.nx && nz == this.nz)
                 return;
 
-            Array = new float[nx * nz]; 
-            
-            this.nx = nx; 
+            Array = new float[nx * nz];
+
+            this.nx = nx;
             this.nz = nz;
         }
 
@@ -215,7 +210,6 @@ namespace JigLibX.Utils
                     this.SetAt(i0, j0, orig.GetAt(i, j));
                 }
             }
-
         }
 
         /// <summary>
@@ -237,7 +231,6 @@ namespace JigLibX.Utils
             {
                 Array[i] = scale * Array[i] + offset;
             }
-
         }
 
         /// <summary>
@@ -340,7 +333,6 @@ namespace JigLibX.Utils
             }
         }
 
-
         /// <summary>
         /// enables/disables wrapping
         /// </summary>
@@ -391,7 +383,6 @@ namespace JigLibX.Utils
         {
             get
             {
-
                 float max = Array[0];
 
                 for (int i = 0; i < Array.Length; ++i)
@@ -402,7 +393,5 @@ namespace JigLibX.Utils
                 return max;
             }
         }
-
-
     }
 }

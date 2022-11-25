@@ -1,21 +1,17 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
-using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for SpherePlane  collison detection.
     /// </summary>
     public class CollDetectSpherePlane : DetectFunctor
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -76,7 +72,6 @@ namespace JigLibX.Collision
                 SmallCollPointInfo collInfo = new SmallCollPointInfo(worldPos - body0Pos, worldPos - body1Pos, oldDepth);
                 collisionFunctor.CollisionNotify(ref info, ref oldPlane.normal, &collInfo, 1);
             }
-
         }
     }
 }

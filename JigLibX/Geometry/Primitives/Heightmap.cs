@@ -1,23 +1,21 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
 using JigLibX.Utils;
-using JigLibX.Geometry;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
 {
     /// <summary>
-    /// Defines a heightmap that has up in the "Y" direction 
+    /// Defines a heightmap that has up in the "Y" direction
     /// </summary>
     /// <remarks>
     /// Indicies go from "bottom right" - i.e. (0, 0) -> (xmin, ymin)
     /// heights/normals are obtained by interpolation over triangles,
     /// with each quad being divided up in the same way - the diagonal
-    /// going from (i, j) to (i+1, j+1)    
+    /// going from (i, j) to (i+1, j+1)
     /// </remarks>
     public class Heightmap : Primitive
     {
@@ -28,14 +26,18 @@ namespace JigLibX.Geometry
         private float xMin, zMin;
         private float xMax, zMax;
         private float yMax, yMin;
+
         /// <summary>
         /// Get new Vector3
         /// </summary>
-        public Vector3 Min { get { return new Vector3(xMin, yMin, zMin); } }
+        public Vector3 Min
+        { get { return new Vector3(xMin, yMin, zMin); } }
+
         /// <summary>
         /// Get new Vector3
         /// </summary>
-        public Vector3 Max { get { return new Vector3(xMax, yMax, zMax); } }
+        public Vector3 Max
+        { get { return new Vector3(xMax, yMax, zMax); } }
 
         /// <summary>
         /// Pass in an array of heights, and the axis that represents up
@@ -132,13 +134,16 @@ namespace JigLibX.Geometry
             float hLeft = mHeights[i, j1];
             float hRight = mHeights[i, j0];
 
-            Vector3 v1 = new Vector3(dx, hFwd - hBack,0.0f);
-            Vector3 v2 = new Vector3(0.0f, hLeft - hRight,dz);
+            Vector3 v1 = new Vector3(dx, hFwd - hBack, 0.0f);
+            Vector3 v2 = new Vector3(0.0f, hLeft - hRight, dz);
 
             #region REFERENCE: Vector3 normal = Vector3.Cross(v1,v2);
+
             Vector3 normal;
             Vector3.Cross(ref v1, ref v2, out normal);
+
             #endregion
+
             normal.Normalize();
 
             return normal;
@@ -193,7 +198,7 @@ namespace JigLibX.Geometry
             // todo - optimise
             float h;
             Vector3 normal;
-            GetHeightAndNormal(out h, out normal,point);
+            GetHeightAndNormal(out h, out normal, point);
             return h;
         }
 
@@ -207,7 +212,7 @@ namespace JigLibX.Geometry
             // todo - optimise
             float h;
             Vector3 normal;
-            GetHeightAndNormal(out h, out normal,point);
+            GetHeightAndNormal(out h, out normal, point);
             return normal;
         }
 
@@ -217,7 +222,7 @@ namespace JigLibX.Geometry
         /// <param name="h"></param>
         /// <param name="normal"></param>
         /// <param name="point"></param>
-        public void GetHeightAndNormal(out float h, out Vector3 normal,Vector3 point)
+        public void GetHeightAndNormal(out float h, out Vector3 normal, Vector3 point)
         {
             float x = point.X;
             float z = point.Z;
@@ -257,7 +262,7 @@ namespace JigLibX.Geometry
             else if (i0 == i1)
             {
                 Vector3 right = Vector3.Right;
-                normal = Vector3.Cross(new Vector3(0.0f, h01 - h00, dz),right);
+                normal = Vector3.Cross(new Vector3(0.0f, h01 - h00, dz), right);
                 normal.Normalize();
             }
 
@@ -278,12 +283,12 @@ namespace JigLibX.Geometry
                 normal.Normalize();
             }
 
-             // get the plane equation
-             // h00 is in all the triangles
-             JiggleMath.NormalizeSafe(ref normal);
-             Vector3 pos = new Vector3((i0 * dx + xMin), h00, (j0 * dz + zMin));
-             float d; Vector3.Dot(ref normal, ref pos, out d); d = -d;
-             h = Distance.PointPlaneDistance(ref point,ref normal, d);
+            // get the plane equation
+            // h00 is in all the triangles
+            JiggleMath.NormalizeSafe(ref normal);
+            Vector3 pos = new Vector3((i0 * dx + xMin), h00, (j0 * dz + zMin));
+            float d; Vector3.Dot(ref normal, ref pos, out d); d = -d;
+            h = Distance.PointPlaneDistance(ref point, ref normal, d);
         }
 
         /// <summary>
@@ -295,7 +300,7 @@ namespace JigLibX.Geometry
         {
             // todo - optimise
             float h = GetHeight(point);
-            pos = new Vector3(point.X,h, point.Z);
+            pos = new Vector3(point.X, h, point.Z);
         }
 
         /// <summary>
@@ -307,8 +312,8 @@ namespace JigLibX.Geometry
         public void GetSurfacePosAndNormal(out Vector3 pos, out Vector3 normal, Vector3 point)
         {
             float h;
-            GetHeightAndNormal(out h, out normal,point);
-            pos = new Vector3(point.X,h, point.Z);
+            GetHeightAndNormal(out h, out normal, point);
+            pos = new Vector3(point.X, h, point.Z);
         }
 
         /// <summary>
@@ -325,8 +330,8 @@ namespace JigLibX.Geometry
         /// </summary>
         public override Transform Transform
         {
-            get {return Transform.Identity;}
-            set {}
+            get { return Transform.Identity; }
+            set { }
         }
 
         /// <summary>
@@ -337,7 +342,7 @@ namespace JigLibX.Geometry
         /// <param name="normal"></param>
         /// <param name="seg"></param>
         /// <returns>bool</returns>
-        public override bool SegmentIntersect(out float frac, out Vector3 pos, out Vector3 normal,Segment seg)
+        public override bool SegmentIntersect(out float frac, out Vector3 pos, out Vector3 normal, Segment seg)
         {
             frac = 0;
             pos = Vector3.Zero;
@@ -349,7 +354,7 @@ namespace JigLibX.Geometry
             Vector3 normalStart;
             float heightStart;
 
-            GetHeightAndNormal(out heightStart, out normalStart,seg.Origin);
+            GetHeightAndNormal(out heightStart, out normalStart, seg.Origin);
 
             if (heightStart < 0.0f)
                 return false;
@@ -357,7 +362,7 @@ namespace JigLibX.Geometry
             Vector3 normalEnd;
             float heightEnd;
             Vector3 end = seg.GetEnd();
-            GetHeightAndNormal(out heightEnd, out normalEnd,end);
+            GetHeightAndNormal(out heightEnd, out normalEnd, end);
 
             if (heightEnd > 0.0f)
                 return false;
@@ -421,6 +426,5 @@ namespace JigLibX.Geometry
                 return mHeights;
             }
         }
-
     }
 }

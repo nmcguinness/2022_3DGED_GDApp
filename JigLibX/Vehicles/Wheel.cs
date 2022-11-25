@@ -1,12 +1,11 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
+using JigLibX.Collision;
+using JigLibX.Geometry;
 using JigLibX.Math;
 using JigLibX.Physics;
-using JigLibX.Geometry;
-using JigLibX.Collision;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Vehicles
@@ -17,10 +16,12 @@ namespace JigLibX.Vehicles
     public class Wheel
     {
         #region private fields
+
         private Car car;
 
         /// local mount position
         private Vector3 pos;
+
         private Vector3 axisUp;
         private float spring;
         private float travel;
@@ -29,10 +30,11 @@ namespace JigLibX.Vehicles
         private float sideFriction;
         private float fwdFriction;
         private float damping;
-        int numRays;
+        private int numRays;
 
-        // things that change 
+        // things that change
         private float angVel;
+
         private float steerAngle;
         private float torque;
         private float driveTorque;
@@ -40,12 +42,15 @@ namespace JigLibX.Vehicles
         private float displacement; // = mTravel when fully compressed
         private float upSpeed; // speed relative to the car
         private bool locked;
+
         // last frame stuff
         private float lastDisplacement;
+
         private bool lastOnFloor;
 
         /// used to estimate the friction
         private float angVelForGrip;
+
         #endregion
 
         /// <summary>
@@ -107,17 +112,17 @@ namespace JigLibX.Vehicles
             lastDisplacement = 0.0f;
             lastOnFloor = false;
             angVelForGrip = 0.0f;
-
         }
 
         // do a number of rays, and choose the deepest penetration
-        const int maxNumRays = 32;
-        float[] fracs = new float[maxNumRays];
-        CollisionSkin[] otherSkins = new CollisionSkin[maxNumRays];
-        Vector3[] groundPositions = new Vector3[maxNumRays];
-        Vector3[] groundNormals = new Vector3[maxNumRays];
-        Segment[] segments = new Segment[maxNumRays];
-        WheelPred pred;
+        private const int maxNumRays = 32;
+
+        private float[] fracs = new float[maxNumRays];
+        private CollisionSkin[] otherSkins = new CollisionSkin[maxNumRays];
+        private Vector3[] groundPositions = new Vector3[maxNumRays];
+        private Vector3[] groundNormals = new Vector3[maxNumRays];
+        private Segment[] segments = new Segment[maxNumRays];
+        private WheelPred pred;
 
         /// <summary> // TODO teting testing testing ...
         /// Adds the forces die to this wheel to the parent. Return value indicates if it's
@@ -126,7 +131,6 @@ namespace JigLibX.Vehicles
         /// <param name="dt"></param>
         public bool AddForcesToCar(float dt)
         {
-            
             Vector3 force = Vector3.Zero;
             lastDisplacement = displacement;
             displacement = 0.0f;
@@ -135,7 +139,7 @@ namespace JigLibX.Vehicles
 
             Vector3 worldPos = carBody.Position + Vector3.TransformNormal(pos, carBody.Orientation);// *mPos;
             Vector3 worldAxis = Vector3.TransformNormal(axisUp, carBody.Orientation);// *mAxisUp;
-            
+
             //Vector3 wheelFwd = RotationMatrix(mSteerAngle, worldAxis) * carBody.Orientation.GetCol(0);
             // OpenGl has differnet row/column order for matrixes than XNA has ..
             Vector3 wheelFwd = Vector3.TransformNormal(carBody.Orientation.Right, JiggleMath.RotationMatrix(steerAngle, worldAxis));
@@ -157,11 +161,10 @@ namespace JigLibX.Vehicles
             //Assert(collSystem);
             int numRaysUse = System.Math.Min(numRays, maxNumRays);
 
-            // adjust the start position of the ray - divide the wheel into numRays+2 
+            // adjust the start position of the ray - divide the wheel into numRays+2
             // rays, but don't use the first/last.
             float deltaFwd = (2.0f * radius) / (numRaysUse + 1);
             float deltaFwdStart = deltaFwd;
-
 
             lastOnFloor = false;
             int bestIRay = 0;
@@ -173,7 +176,7 @@ namespace JigLibX.Vehicles
                 // work out the offset relative to the middle ray
                 float distFwd = (deltaFwdStart + iRay * deltaFwd) - radius;
                 //float zOffset = mRadius * (1.0f - CosDeg(90.0f * (distFwd / mRadius)));
-                float zOffset = radius * (1.0f - (float)System.Math.Cos( MathHelper.ToRadians( 90.0f * (distFwd / radius))));
+                float zOffset = radius * (1.0f - (float)System.Math.Cos(MathHelper.ToRadians(90.0f * (distFwd / radius))));
 
                 segments[iRay] = wheelRay;
                 segments[iRay].Origin += distFwd * wheelFwd + zOffset * wheelUp;
@@ -188,7 +191,6 @@ namespace JigLibX.Vehicles
                 }
             }
 
-            
             if (!lastOnFloor)
                 return false;
 
@@ -251,7 +253,7 @@ namespace JigLibX.Vehicles
             Vector3 groundFwd = Vector3.Cross(groundLeft, groundUp);
 
             Vector3 wheelPointVel = carBody.Velocity +
-             Vector3.Cross(carBody.AngularVelocity, Vector3.TransformNormal( pos, carBody.Orientation));// * mPos);
+             Vector3.Cross(carBody.AngularVelocity, Vector3.TransformNormal(pos, carBody.Orientation));// * mPos);
 
             Vector3 rimVel = angVel * Vector3.Cross(wheelLeft, groundPos - worldPos);
             wheelPointVel += rimVel;
@@ -279,7 +281,7 @@ namespace JigLibX.Vehicles
                 friction *= slipFactor;
             else
                 if ((sideVel > noslipVel) || (sideVel < -noslipVel))
-                    friction *= 1.0f - (1.0f - slipFactor) * (System.Math.Abs(sideVel) - noslipVel) / (slipVel - noslipVel);
+                friction *= 1.0f - (1.0f - slipFactor) * (System.Math.Abs(sideVel) - noslipVel) / (slipVel - noslipVel);
 
             if (sideVel < 0.0f)
                 friction *= -1.0f;
@@ -300,7 +302,7 @@ namespace JigLibX.Vehicles
                 friction *= slipFactor;
             else
                 if ((fwdVel > noslipVel) || (fwdVel < -noslipVel))
-                    friction *= 1.0f - (1.0f - slipFactor) * (System.Math.Abs(fwdVel) - noslipVel) / (slipVel - noslipVel);
+                friction *= 1.0f - (1.0f - slipFactor) * (System.Math.Abs(fwdVel) - noslipVel) / (slipVel - noslipVel);
 
             if (fwdVel < 0.0f)
                 friction *= -1.0f;
@@ -338,7 +340,7 @@ namespace JigLibX.Vehicles
             if (worldBody != null && !worldBody.Immovable)
             {
                 // todo get the position in the right place...
-                // also limit the velocity that this force can produce by looking at the 
+                // also limit the velocity that this force can produce by looking at the
                 // mass/inertia of the other object
                 float maxOtherBodyAcc = 500.0f;
                 float maxOtherBodyForce = maxOtherBodyAcc * worldBody.Mass;
@@ -466,15 +468,15 @@ namespace JigLibX.Vehicles
     }
 
     /// Predicate for the wheel->world intersection test
-    class WheelPred : CollisionSkinPredicate1
+    internal class WheelPred : CollisionSkinPredicate1
     {
-        CollisionSkin mSkin;
+        private CollisionSkin mSkin;
 
         /// <summary>
         /// WheelPred
         /// </summary>
         /// <param name="carSkin"></param>
-        public  WheelPred(CollisionSkin carSkin)
+        public WheelPred(CollisionSkin carSkin)
         {
             mSkin = carSkin;
         }
@@ -489,5 +491,4 @@ namespace JigLibX.Vehicles
             return (skin.ID != mSkin.ID);
         }
     }
-
 }

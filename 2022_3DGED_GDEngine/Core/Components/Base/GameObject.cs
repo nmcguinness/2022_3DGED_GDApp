@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace GD.Engine
 {
     /// <summary>
-    /// Base object in the game
+    /// Base object in the game for 3D, 2D and un-drawn (e.g., Camera) objects
     /// </summary>
     /// <see cref="GameObjectList"/>
     /// <seealso cref="Scene"/>
@@ -39,6 +39,11 @@ namespace GD.Engine
         /// </summary>
         /// <see cref="Scene"/>
         private RenderType renderType;
+
+        /// <summary>
+        /// Used when we collide with a GameObject to filter if it should be handled
+        /// </summary>
+        /// <see cref="Collider.HandleResponse(GameObject)"/>
         private GameObjectType gameObjectType = GameObjectType.Prop;
 
         #endregion Fields

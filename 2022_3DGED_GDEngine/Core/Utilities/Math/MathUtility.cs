@@ -27,6 +27,7 @@ namespace GD.Engine.Utilities
                 maxAmplitude = (value > 0) ? value : 1;
             }
         }
+
         public float AngularFrequency
         {
             get
@@ -38,6 +39,7 @@ namespace GD.Engine.Utilities
                 angularFrequency = (value > 0) ? value : 1;
             }
         }
+
         public float PhaseAngle
         {
             get

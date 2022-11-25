@@ -1,15 +1,14 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for CapsuleCapsule collison detection.
     /// </summary>
@@ -82,10 +81,7 @@ namespace JigLibX.Collision
                     SmallCollPointInfo collInfo = new SmallCollPointInfo(worldPos - body0Pos, worldPos - body1Pos, depth);
                     collisionFunctor.CollisionNotify(ref info, ref delta, &collInfo, 1);
                 }
-
             }
-
-
         }
     }
 }

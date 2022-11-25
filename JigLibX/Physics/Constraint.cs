@@ -1,8 +1,7 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Physics
@@ -12,7 +11,6 @@ namespace JigLibX.Physics
     /// </summary>
     public abstract class Constraint
     {
-
         private bool constraintEnabled = false;
         private bool satisfied = false;
 
@@ -66,13 +64,13 @@ namespace JigLibX.Physics
         public abstract bool Apply(float dt);
 
         /// <summary>
-        /// Implementation should remove all references to bodies etc - they've 
+        /// Implementation should remove all references to bodies etc - they've
         /// been destroyed.
         /// </summary>
         public abstract void Destroy();
 
         /// <summary>
-        /// Derived class should call this when Apply has been called on 
+        /// Derived class should call this when Apply has been called on
         /// this constraint.
         /// </summary>
         public bool Satisfied
@@ -82,7 +80,7 @@ namespace JigLibX.Physics
         }
 
         /// <summary>
-        /// SmoothCD for ease-in / ease-out smoothing 
+        /// SmoothCD for ease-in / ease-out smoothing
         /// Based on Game Programming Gems 4 Chapter 1.10
         /// </summary>
         /// <param name="val">in/out: value to be smoothed</param>
@@ -99,35 +97,45 @@ namespace JigLibX.Physics
                 float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 
                 #region REFERENCE: Vector3 change = val - to;
+
                 Vector3 change;// = val - to;
                 Vector3.Subtract(ref val, ref to, out change);
+
                 #endregion
 
                 #region REFERENCE: Vector3 temp = (valRate + omega * change) * timeDelta;
+
                 Vector3 temp;
                 Vector3.Multiply(ref change, omega, out temp);
                 Vector3.Add(ref valRate, ref temp, out temp);
                 Vector3.Multiply(ref temp, timeDelta, out temp);
+
                 #endregion
 
                 #region REFERENCE: valRate = (valRate - omega * temp) * exp;
+
                 Vector3 v1;
                 Vector3.Multiply(ref temp, omega, out v1);
                 Vector3.Subtract(ref valRate, ref v1, out v1);
                 Vector3.Multiply(ref v1, exp, out valRate);
+
                 #endregion
 
                 #region REFERENCE: val = to + (change + temp) * exp;
+
                 Vector3.Add(ref change, ref temp, out val);
                 Vector3.Multiply(ref val, exp, out val);
                 Vector3.Add(ref val, ref to, out val);
+
                 #endregion
             }
             else if (timeDelta > 0.0f)
             {
                 #region REFERENCE: valRate = (to - val) / timeDelta;
+
                 Vector3.Subtract(ref to, ref val, out valRate);
                 Vector3.Divide(ref valRate, timeDelta, out valRate);
+
                 #endregion
 
                 val = to;
@@ -138,6 +146,5 @@ namespace JigLibX.Physics
                 valRate.X = valRate.Y = valRate.Z = 0.0f;  // zero it...
             }
         }
-
     }
 }

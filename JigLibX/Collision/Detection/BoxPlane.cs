@@ -1,16 +1,13 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
-using JigLibX.Math;
+using Microsoft.Xna.Framework;
 using JPlane = JigLibX.Geometry.Plane;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for BoxPlane collision detection.
     /// </summary>
@@ -23,7 +20,8 @@ namespace JigLibX.Collision
             : base("BoxPlane", (int)PrimitiveType.Box, (int)PrimitiveType.Plane)
         {
         }
-        Vector3[] oldTransPts = new Vector3[8];
+
+        private Vector3[] oldTransPts = new Vector3[8];
 
         /// <summary>
         /// Detect BoxPlane Collisions.
@@ -107,9 +105,6 @@ namespace JigLibX.Collision
                 FreeStackAlloc(collPtArray);
 #endif
             }
-
         }
-
     }
 }
-

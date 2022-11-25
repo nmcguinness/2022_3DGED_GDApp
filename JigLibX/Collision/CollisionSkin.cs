@@ -1,12 +1,11 @@
 #region Using Statements
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using JigLibX.Physics;
 using JigLibX.Geometry;
 using JigLibX.Math;
+using JigLibX.Physics;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 
 #endregion
 

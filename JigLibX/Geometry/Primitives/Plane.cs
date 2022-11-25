@@ -1,9 +1,8 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -13,7 +12,6 @@ namespace JigLibX.Geometry
     /// </summary>
     public class Plane : Primitive
     {
-
         internal Vector3 normal = Vector3.Zero;
         private float d = 0.0f;
 
@@ -57,7 +55,7 @@ namespace JigLibX.Geometry
         /// <param name="pos0"></param>
         /// <param name="pos1"></param>
         /// <param name="pos2"></param>
-        public Plane(Vector3 pos0,Vector3 pos1,Vector3 pos2)
+        public Plane(Vector3 pos0, Vector3 pos1, Vector3 pos2)
             : base((int)PrimitiveType.Plane)
         {
             Vector3 dr1 = pos1 - pos0;
@@ -105,8 +103,10 @@ namespace JigLibX.Geometry
             newPlane.Transform = Transform;
             return newPlane;
         }
+
         private Matrix transformMatrix;
         private Matrix invTransform;
+
         /// <summary>
         /// Gets Transform or Sets transformMatrix and invTransform
         /// </summary>
@@ -222,6 +222,5 @@ namespace JigLibX.Geometry
             plane.Invert();
             return plane;
         }
-
     }
 }

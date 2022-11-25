@@ -1,32 +1,32 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for SphereBox collison detection.
     /// </summary>
     public class CollDetectSphereBox : DetectFunctor
     {
+        #region public CollDetectSphereBox()
 
-        #region public CollDetectSphereBox() 
         /// <summary>
         /// Constructor
         /// </summary>
-        public CollDetectSphereBox() 
+        public CollDetectSphereBox()
             : base("SphereBox", (int)PrimitiveType.Sphere, (int)PrimitiveType.Box)
         {
         }
+
         #endregion
 
         #region override CollDetect
+
         /// <summary>
         /// CollDetect
         /// </summary>
@@ -35,7 +35,7 @@ namespace JigLibX.Collision
         /// <param name="collisionFunctor"></param>
         public override void CollDetect(CollDetectInfo infoOrig, float collTolerance, CollisionFunctor collisionFunctor)
         {
-           // get the skins in the order that we're expecting
+            // get the skins in the order that we're expecting
             CollDetectInfo info = infoOrig;
 
             if (info.Skin0.GetPrimitiveOldWorld(info.IndexPrim0).Type == this.Type1)
@@ -92,13 +92,11 @@ namespace JigLibX.Collision
                     SmallCollPointInfo collInfo = new SmallCollPointInfo(oldBoxPoint - body0Pos,
                         oldBoxPoint - body1Pos, oldDepth);
 
-                    
                     collisionFunctor.CollisionNotify(ref info, ref dir, &collInfo, 1);
                 }
-
             }
-        #endregion
 
+            #endregion
         }
     }
 }

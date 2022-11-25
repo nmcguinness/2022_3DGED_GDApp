@@ -1,8 +1,8 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Vehicles
@@ -12,16 +12,17 @@ namespace JigLibX.Vehicles
     /// </summary>
     public class Car
     {
-        enum WheelId 
-        { 
+        private enum WheelId
+        {
             WheelBR = 0,
             WheelFR = 1,
             WheelBL = 2,
-            WheelFL = 3, 
-            MaxWheels = 4 
+            WheelFL = 3,
+            MaxWheels = 4
         }
 
         #region private fields
+
         private Chassis chassis;
         private List<Wheel> wheels;
 
@@ -42,11 +43,13 @@ namespace JigLibX.Vehicles
 
         // control stuff
         private float destSteering = 0.0f; // +1 for left, -1 for right
+
         private float destAccelerate = 0.0f; // +1 for acc, -1 for brake
 
         private float steering = 0.0f;
         private float accelerate = 0.0f;
-        private float hBrake = 0.0f; 
+        private float hBrake = 0.0f;
+
         #endregion
 
         /// <summary>
@@ -149,7 +152,6 @@ namespace JigLibX.Vehicles
                 wheels.Add(new Wheel());
             }
 
-
             wheels[(int)WheelId.WheelBR].Setup(this,
                           BRPos,
                           axis,
@@ -206,7 +208,6 @@ namespace JigLibX.Vehicles
         {
             if (chassis != null)
                 chassis.EnableChassis();
-
         }
 
         /// <summary>
@@ -214,9 +215,8 @@ namespace JigLibX.Vehicles
         /// </summary>
         public void DisableCar()
         {
-            if(chassis != null)
-            chassis.DisableChassis();
-
+            if (chassis != null)
+                chassis.DisableChassis();
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace JigLibX.Vehicles
             accelerate += dAccelerate;
 
             float dSteering = destSteering - steering;
-            dSteering = MathHelper.Clamp(dSteering, -deltaSteering, deltaSteering); 
+            dSteering = MathHelper.Clamp(dSteering, -deltaSteering, deltaSteering);
 
             steering += dSteering;
 
@@ -309,13 +309,12 @@ namespace JigLibX.Vehicles
             wheels[outer].SteerAngle = (angleSgn * beta);
         }
 
-
         /// <summary>
         /// Gets or Sets back-wheel drive
         /// </summary>
         public bool BWDrive
-        { 
-            get {return bWDrive;}
+        {
+            get { return bWDrive; }
             set { bWDrive = value; }
         }
 
@@ -327,7 +326,6 @@ namespace JigLibX.Vehicles
             get { return fWDrive; }
             set { fWDrive = value; }
         }
-
 
         /// <summary>
         /// Gets or Sets chassis (There will always be a chassis)
@@ -350,9 +348,9 @@ namespace JigLibX.Vehicles
         /// Accelerate control - values -1/0 to 1
         /// </summary>
         public float Accelerate
-        { 
-            get { return destAccelerate;}
-            set{destAccelerate = value;}
+        {
+            get { return destAccelerate; }
+            set { destAccelerate = value; }
         }
 
         /// <summary>
@@ -360,8 +358,8 @@ namespace JigLibX.Vehicles
         /// </summary>
         public float Steer
         {
-            get {return destSteering;}
-            set {destSteering = value;}
+            get { return destSteering; }
+            set { destSteering = value; }
         }
 
         /// <summary>
@@ -369,8 +367,8 @@ namespace JigLibX.Vehicles
         /// </summary>
         public float HBrake
         {
-            get {return hBrake;}
-            set {hBrake = value;}
+            get { return hBrake; }
+            set { hBrake = value; }
         }
 
         /// <summary>
@@ -388,12 +386,7 @@ namespace JigLibX.Vehicles
                         count++;
                 }
                 return count;
-
             }
         }
-
     }
-
-
-
 }

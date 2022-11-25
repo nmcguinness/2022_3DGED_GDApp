@@ -1,7 +1,4 @@
-﻿using GD.Engine.Collections;
-using GD.Engine.Globals;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +7,7 @@ namespace GD.Engine
     /// <summary>
     /// Store all the drawn and updateable GameOjects and call Update and Draw
     /// </summary>
-    public class Scene
+    public class Scene2D : IProvideStats
     {
         #region Fields
 
@@ -22,30 +19,30 @@ namespace GD.Engine
         /// <summary>
         /// Stores all opaque objects in the scene
         /// </summary>
-        private GameObjectList opaqueList;
+        private List<GameObject> opaqueList;
 
         /// <summary>
         /// Stores all transparent (i.e. semi or totally transparent) objects in the scene
         /// </summary>
-        private GameObjectList transparentList;
+        private List<GameObject> transparentList;
 
         #endregion Fields
 
         #region Properties
 
         public string ID { get => id; set => id = value.Trim(); }
-        public GameObjectList OpaqueList { get => opaqueList; protected set => opaqueList = value; }
-        public GameObjectList TransparentList { get => transparentList; protected set => transparentList = value; }
+        public List<GameObject> OpaqueList { get => opaqueList; protected set => opaqueList = value; }
+        public List<GameObject> TransparentList { get => transparentList; protected set => transparentList = value; }
 
         #endregion Properties
 
         #region Constructors
 
-        public Scene(string id)
+        public Scene2D(string id)
         {
             ID = id;
-            opaqueList = new GameObjectList();
-            transparentList = new GameObjectList();
+            opaqueList = new List<GameObject>();
+            transparentList = new List<GameObject>();
         }
 
         #endregion Constructors
@@ -60,27 +57,26 @@ namespace GD.Engine
                 transparentList.Add(gameObject);
         }
 
-        public GameObject Find(ObjectType objectType, RenderType renderType,
-                                    Predicate<GameObject> predicate)
+        public GameObject Find(RenderType renderType, Predicate<GameObject> predicate)
         {
             GameObject found = null;
 
             if (renderType == RenderType.Opaque)
-                found = opaqueList.Find(objectType, predicate);
+                found = opaqueList.Find(predicate);
             else
-                found = transparentList.Find(objectType, predicate);
+                found = transparentList.Find(predicate);
 
             return found;
         }
 
-        public bool Remove(ObjectType objectType, RenderType renderType, Predicate<GameObject> predicate)
+        public bool Remove(RenderType renderType, Predicate<GameObject> predicate)
         {
             bool wasRemoved = false;
 
             if (renderType == RenderType.Opaque)
-                wasRemoved = opaqueList.Remove(objectType, predicate);
+                wasRemoved = opaqueList.Remove(Find(renderType, predicate));
             else
-                wasRemoved = transparentList.Remove(objectType, predicate);
+                wasRemoved = transparentList.Remove(Find(renderType, predicate));
 
             return wasRemoved;
         }
@@ -91,9 +87,9 @@ namespace GD.Engine
             List<GameObject> foundList = null;
 
             if (renderType == RenderType.Opaque)
-                foundList = opaqueList.FindAll(objectType, predicate);
+                foundList = opaqueList.FindAll(predicate);
             else
-                foundList = transparentList.FindAll(objectType, predicate);
+                foundList = transparentList.FindAll(predicate);
 
             return foundList;
         }
@@ -104,41 +100,36 @@ namespace GD.Engine
             int removeCount = 0;
 
             if (renderType == RenderType.Opaque)
-                removeCount = opaqueList.RemoveAll(objectType, predicate);
+                removeCount = opaqueList.RemoveAll(predicate);
             else
-                removeCount = transparentList.RemoveAll(objectType, predicate);
+                removeCount = transparentList.RemoveAll(predicate);
 
             return removeCount;
         }
 
-        public void Size(RenderType renderType, out int sizeStaticList, out int sizeDynamicList)
+        public void Size(out int sizeOpaqueList, out int sizeTransparentList)
         {
-            if (renderType == RenderType.Opaque)
-                opaqueList.Size(out sizeStaticList, out sizeDynamicList);
-            else
-                transparentList.Size(out sizeStaticList, out sizeDynamicList);
+            sizeOpaqueList = opaqueList.Count;
+            sizeTransparentList = transparentList.Count;
         }
 
         public int TotalSize()
         {
-            return opaqueList.TotalSize() + transparentList.TotalSize();
+            return opaqueList.Count + transparentList.Count;
         }
 
-        public void Clear(ObjectType objectType, RenderType renderType)
+        public void Clear(RenderType renderType)
         {
             if (renderType == RenderType.Opaque)
-                opaqueList.Clear(objectType);
+                opaqueList.Clear();
             else
-                transparentList.Clear(objectType);
+                transparentList.Clear();
         }
 
         public void ClearAll()
         {
-            opaqueList.Clear(ObjectType.Static);
-            transparentList.Clear(ObjectType.Static);
-
-            opaqueList.Clear(ObjectType.Dynamic);
-            transparentList.Clear(ObjectType.Dynamic);
+            opaqueList.Clear();
+            transparentList.Clear();
         }
 
         #endregion Actions - Add, Find, FindAll, Remove, RemoveAll, Size, Clear
@@ -147,15 +138,12 @@ namespace GD.Engine
 
         public virtual void Update(GameTime gameTime)
         {
-            opaqueList.Update(gameTime);
-            transparentList.Update(gameTime);
-        }
+            foreach (GameObject gameObject in opaqueList)
+                gameObject.Update(gameTime);
 
-        //public virtual void Draw(GameTime gameTime, Camera camera)
-        //{
-        //    opaqueList.Draw(gameTime, camera);
-        //    transparentList.Draw(gameTime, camera);
-        //}
+            foreach (GameObject gameObject in transparentList)
+                gameObject.Update(gameTime);
+        }
 
         #endregion Actions - Update
 
@@ -163,9 +151,9 @@ namespace GD.Engine
 
 #if DEBUG
 
-        public string GetPerfStats()
+        public string GetStatistics()
         {
-            return $"Op: {opaqueList.GetPerfStats()}, Tr:{transparentList.GetPerfStats()}";
+            return $"Op: {opaqueList.Count}, Tr:{transparentList.Count}";
         }
 
 #endif

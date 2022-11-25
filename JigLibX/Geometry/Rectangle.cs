@@ -1,8 +1,7 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -16,10 +15,12 @@ namespace JigLibX.Geometry
         /// Origin
         /// </summary>
         public Vector3 Origin;
+
         /// <summary>
         /// Edge0
         /// </summary>
         public Vector3 Edge0;
+
         /// <summary>
         /// Edge1
         /// </summary>
@@ -48,6 +49,5 @@ namespace JigLibX.Geometry
         {
             return Origin + t0 * Edge0 + t1 * Edge1;
         }
-        
     }
 }

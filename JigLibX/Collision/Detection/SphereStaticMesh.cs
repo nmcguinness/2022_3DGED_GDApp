@@ -1,22 +1,18 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
-using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for SphereStaticMesh collison detection.
     /// </summary>
     public class CollDetectSphereStaticMesh : DetectFunctor
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -55,9 +51,9 @@ namespace JigLibX.Collision
                 fixed (SmallCollPointInfo* collPts = collPtArray)
                 {
                     int[] potTriArray = IntStackAlloc();
-                    fixed( int* potentialTriangles = potTriArray)
+                    fixed (int* potentialTriangles = potTriArray)
                     {
-#endif     
+#endif
                         int numCollPts = 0;
 
                         Vector3 collNormal = Vector3.Zero;
@@ -200,7 +196,7 @@ namespace JigLibX.Collision
                     fixed (SmallCollPointInfo* collPts = collPtArray)
                     {
                         int[] potTriArray = IntStackAlloc();
-                        fixed( int* potentialTriangles = potTriArray)
+                        fixed (int* potentialTriangles = potTriArray)
                         {
 #endif
                             int numCollPts = 0;
@@ -209,7 +205,6 @@ namespace JigLibX.Collision
 
                             for (int iTriangle = 0; iTriangle < numTriangles; ++iTriangle)
                             {
-
                                 // first test the old sphere for being on the wrong side
                                 IndexedTriangle meshTriangle = mesh.GetTriangle(potentialTriangles[iTriangle]);
                                 float distToCentreOld = meshTriangle.Plane.DotCoordinate(oldSphereCen);
@@ -340,7 +335,7 @@ namespace JigLibX.Collision
                 info.IndexPrim1 = primSwap;
             }
 
-            if(info.Skin0.CollisionSystem != null && info.Skin0.CollisionSystem.UseSweepTests)
+            if (info.Skin0.CollisionSystem != null && info.Skin0.CollisionSystem.UseSweepTests)
                 CollDetectSweep(info, collTolerance, collisionFunctor);
             else
                 CollDetectOverlap(info, collTolerance, collisionFunctor);

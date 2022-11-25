@@ -1,20 +1,20 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Collision;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Physics
 {
     /// <summary>
-    /// Constrains a point within a rigid body to remain at a fixed world point    
+    /// Constrains a point within a rigid body to remain at a fixed world point
     /// </summary>
     public class ConstraintWorldPoint : Constraint
     {
-        const float minVelForProcessing = 0.001f;
+        private const float minVelForProcessing = 0.001f;
 
         private Body body;
         private Vector3 pointOnBody;
@@ -50,8 +50,8 @@ namespace JigLibX.Physics
             this.body = body;
             this.pointOnBody = pointOnBody;
             this.worldPosition = worldPosition;
-         
-            if (body!=null) body.AddConstraint(this);
+
+            if (body != null) body.AddConstraint(this);
         }
 
         /// <summary>
@@ -75,20 +75,26 @@ namespace JigLibX.Physics
             // transform PointOnBody to the world space
 
             #region REFERENCE: Vector3 worldPos = body.Position + Vector3.Transform(pointOnBody, body.Orientation);
+
             Vector3 worldPos;
             Vector3.TransformNormal(ref pointOnBody, ref body.transform.Orientation, out worldPos);
             Vector3.Add(ref worldPos, ref body.transform.Position, out worldPos);
+
             #endregion
 
             #region REFERENCE: Vector3 R = worldPos - body.Position;
+
             Vector3 R;
             Vector3.Subtract(ref worldPos, ref body.transform.Position, out R);
+
             #endregion
 
             #region REFERENCE: Vector3 currentVel = body.Velocity + Vector3.Cross(body.AngVel, R);
+
             Vector3 currentVel;
             Vector3.Cross(ref body.transformRate.AngularVelocity, ref R, out currentVel);
             Vector3.Add(ref currentVel, ref body.transformRate.Velocity, out currentVel);
+
             #endregion
 
             // add an extra term to get us back to the original position
@@ -98,8 +104,10 @@ namespace JigLibX.Physics
             float timescale = 4.0f * dt;
 
             #region REFERENCE: Vector3 deviation = worldPos - worldPosition;
+
             Vector3 deviation;
-            Vector3.Subtract(ref worldPos,ref worldPosition,out deviation);
+            Vector3.Subtract(ref worldPos, ref worldPosition, out deviation);
+
             #endregion
 
             float deviationDistance = deviation.Length();
@@ -107,14 +115,17 @@ namespace JigLibX.Physics
             if (deviationDistance > allowedDeviation)
             {
                 #region REFERENCE: Vector3 deviationDir = deviation / deviationDistance;
+
                 Vector3 deviationDir;
                 Vector3.Divide(ref deviation, deviationDistance, out deviationDir);
+
                 #endregion
 
                 #region REFERENCE: desiredVel = ((allowedDeviation - deviationDistance) / timescale) * deviationDir;
-                Vector3.Multiply(ref deviationDir, (allowedDeviation - deviationDistance) / timescale, out desiredVel);
-                #endregion
 
+                Vector3.Multiply(ref deviationDir, (allowedDeviation - deviationDistance) / timescale, out desiredVel);
+
+                #endregion
             }
             else
             {
@@ -137,8 +148,10 @@ namespace JigLibX.Physics
                         Vector3 dir = collInfo.DirToBody0;
 
                         #region float dot = Vector3.Dot(desiredVel, dir);
+
                         float dot;
-                        Vector3.Dot(ref desiredVel,ref dir,out dot);
+                        Vector3.Dot(ref desiredVel, ref dir, out dot);
+
                         #endregion
 
                         if (dot < 0.0f)
@@ -148,9 +161,12 @@ namespace JigLibX.Physics
             }
 
             // need an impulse to take us from the current vel to the desired vel
+
             #region REFERENCE: Vector3 N = currentVel - desiredVel;
+
             Vector3 N;
             Vector3.Subtract(ref currentVel, ref desiredVel, out N);
+
             #endregion
 
             float normalVel = N.Length();
@@ -159,10 +175,13 @@ namespace JigLibX.Physics
                 return false;
 
             #region REFERENCE: N /= normalVel;
+
             Vector3.Divide(ref N, normalVel, out N);
+
             #endregion
 
             #region REFERENCE: float denominator = body.InvMass + Vector3.Dot(N, Vector3.Cross(Vector3.Transform(Vector3.Cross(R, N), body.WorldInvInertia), R));
+
             Vector3 v1; float f1;
             Vector3.Cross(ref R, ref N, out v1);
             Vector3.TransformNormal(ref v1, ref body.worldInvInertia, out v1);
@@ -170,6 +189,7 @@ namespace JigLibX.Physics
             Vector3.Dot(ref N, ref v1, out f1);
 
             float denominator = body.InverseMass + f1;
+
             #endregion
 
             if (denominator < JiggleMath.Epsilon)
@@ -195,15 +215,14 @@ namespace JigLibX.Physics
 
             body = null;
             DisableConstraint();
-
         }
 
         /// <summary>
         /// Gets or Set worldPosition
         /// </summary>
         public Vector3 WorldPosition
-        {   
-            set { worldPosition = value;}
+        {
+            set { worldPosition = value; }
             get { return worldPosition; }
         }
 
@@ -214,6 +233,5 @@ namespace JigLibX.Physics
         {
             get { return body; }
         }
-
     }
 }

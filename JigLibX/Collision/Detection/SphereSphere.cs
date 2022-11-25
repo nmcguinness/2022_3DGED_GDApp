@@ -1,21 +1,19 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for SphereSphere collison detection.
     /// </summary>
     public class CollDetectSphereSphere : DetectFunctor
     {
-
         private Random random = new Random();
 
         /// <summary>
@@ -36,9 +34,9 @@ namespace JigLibX.Collision
         {
             Vector3 body0Pos = (info.Skin0.Owner != null) ? info.Skin0.Owner.OldPosition : Vector3.Zero;
             Vector3 body1Pos = (info.Skin1.Owner != null) ? info.Skin1.Owner.OldPosition : Vector3.Zero;
-            
+
             // todo - proper swept test
-            Sphere oldSphere0 = (Sphere) info.Skin0.GetPrimitiveOldWorld(info.IndexPrim0);
+            Sphere oldSphere0 = (Sphere)info.Skin0.GetPrimitiveOldWorld(info.IndexPrim0);
             Sphere newSphere0 = (Sphere)info.Skin0.GetPrimitiveNewWorld(info.IndexPrim0);
             Sphere oldSphere1 = (Sphere)info.Skin1.GetPrimitiveOldWorld(info.IndexPrim1);
             Sphere newSphere1 = (Sphere)info.Skin1.GetPrimitiveNewWorld(info.IndexPrim1);
@@ -63,7 +61,7 @@ namespace JigLibX.Collision
                 else
                 {
                     // TODO - make this not random...!
-                    oldDelta = Vector3.TransformNormal(Vector3.Backward, Matrix.CreateFromAxisAngle(Vector3.Up,MathHelper.ToRadians(random.Next(360))));
+                    oldDelta = Vector3.TransformNormal(Vector3.Backward, Matrix.CreateFromAxisAngle(Vector3.Up, MathHelper.ToRadians(random.Next(360))));
                 }
 
                 Vector3 worldPos = oldSphere1.Position +
@@ -76,7 +74,6 @@ namespace JigLibX.Collision
                     collisionFunctor.CollisionNotify(ref info, ref oldDelta, &collInfo, 1);
                 }
             }
-
         }
     }
 }

@@ -1,13 +1,12 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     #region public struct CollDetectInfo
 
     /// <summary>
@@ -19,6 +18,7 @@ namespace JigLibX.Collision
         /// Index into skin0 primitive
         /// </summary>
         public int IndexPrim0;
+
         /// <summary>
         /// Index into skin1 primitive
         /// </summary>
@@ -28,6 +28,7 @@ namespace JigLibX.Collision
         /// CollisionSkin 0
         /// </summary>
         public CollisionSkin Skin0;
+
         /// <summary>
         /// CollisionSkin 1
         /// </summary>
@@ -55,8 +56,8 @@ namespace JigLibX.Collision
         {
             get { return new CollDetectInfo(null, null, 0, 0); }
         }
-
     }
+
     #endregion
 
     /// <summary>
@@ -107,6 +108,7 @@ namespace JigLibX.Collision
     }
 
     #region public class CollPointInfo
+
     /// <summary>
     /// Class CollPointInfo
     /// </summary>
@@ -197,6 +199,7 @@ namespace JigLibX.Collision
             this.MinSeparationVel = 0.0f;
         }
     }
+
     #endregion
 
     /// <summary>
@@ -210,14 +213,17 @@ namespace JigLibX.Collision
         /// Set at 10
         /// </summary>
         public const int MaxCollisionPoints = 10;
+
         /// <summary>
-        /// MatPairProperties 
+        /// MatPairProperties
         /// </summary>
         public MaterialPairProperties MatPairProperties;
+
         /// <summary>
         /// SkinInfo
         /// </summary>
         public CollDetectInfo SkinInfo;
+
         internal Vector3 dirToBody0; // hack
         private bool satisfied;
 
@@ -225,13 +231,17 @@ namespace JigLibX.Collision
         /// Set at 64
         /// </summary>
         public const int InitialCollisionInfoStack = 64;
+
         /// <summary>
         /// Set at 4096
         /// </summary>
         public const int InitialCollisionPointInfoStack = 4096;
+
         private static Stack<CollisionInfo> freeInfos = new Stack<CollisionInfo>(InitialCollisionInfoStack);
         private static Stack<CollPointInfo> freePtInfos = new Stack<CollPointInfo>(InitialCollisionPointInfoStack);
-        private CollisionInfo() { }
+
+        private CollisionInfo()
+        { }
 
         static CollisionInfo()
         {
@@ -245,7 +255,9 @@ namespace JigLibX.Collision
                 freePtInfos.Push(new CollPointInfo());
             }
         }
+
         #region Properties
+
         /// <summary>
         /// Gets or Sets satisfied
         /// </summary>
@@ -268,6 +280,7 @@ namespace JigLibX.Collision
         /// New CollPointInfo[]
         /// </summary>
         public CollPointInfo[] PointInfo = new CollPointInfo[MaxCollisionPoints];
+
         /// <summary>
         /// Value set at 0
         /// </summary>
@@ -325,7 +338,7 @@ namespace JigLibX.Collision
                     freePtInfos.Push(new CollPointInfo());
                 }
                 this.PointInfo[NumCollPts] = freePtInfos.Pop();
-                this.PointInfo[NumCollPts++].Init( ref pointInfos[i] );
+                this.PointInfo[NumCollPts++].Init(ref pointInfos[i]);
             }
         }
 
@@ -337,7 +350,7 @@ namespace JigLibX.Collision
         {
             for (int i = 0; i < NumCollPts; ++i)
             {
-                freePtInfos.Push( this.PointInfo[i] );
+                freePtInfos.Push(this.PointInfo[i]);
             }
             SkinInfo.Skin0 = null;
             SkinInfo.Skin1 = null;
@@ -374,6 +387,5 @@ namespace JigLibX.Collision
             info.Destroy();
             freeInfos.Push(info);
         }
-
     }
 }

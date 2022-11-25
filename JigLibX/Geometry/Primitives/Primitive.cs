@@ -1,15 +1,14 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
 {
-
     #region PrimitiveProperties
+
     /// <summary>
     /// Struct PrimitiveProperties
     /// </summary>
@@ -24,6 +23,7 @@ namespace JigLibX.Geometry
             /// Solid
             /// </summary>
             Solid,
+
             /// <summary>
             /// Shell
             /// </summary>
@@ -39,6 +39,7 @@ namespace JigLibX.Geometry
             /// Mass
             /// </summary>
             Mass,
+
             /// <summary>
             /// Density
             /// </summary>
@@ -49,10 +50,12 @@ namespace JigLibX.Geometry
         /// MassType
         /// </summary>
         public MassTypeEnum MassType;
+
         /// <summary>
         /// MassDistribution
         /// </summary>
         public MassDistributionEnum MassDistribution;
+
         /// <summary>
         /// MassOrDensity
         /// </summary>
@@ -71,8 +74,8 @@ namespace JigLibX.Geometry
             this.MassOrDensity = massOrDensity;
             this.MassType = massType;
         }
-
     }
+
     #endregion
 
     #region PrimitiveType
@@ -86,44 +89,52 @@ namespace JigLibX.Geometry
         /// AABox
         /// </summary>
         AABox,
+
         /// <summary>
         /// Box
         /// </summary>
         Box,
+
         /// <summary>
         /// Capsule
         /// </summary>
         Capsule,
+
         /// <summary>
         /// Heightmap
         /// </summary>
         Heightmap,
+
         /// <summary>
         /// Plane
         /// </summary>
         Plane,
+
         /// <summary>
         /// Sphere
         /// </summary>
         Sphere,
+
         /// <summary>
         /// TriangleMesh
         /// </summary>
         TriangleMesh,
+
         /// <summary>
         /// Cylinder
         /// </summary>
         Cylinder,
+
         /// <summary>
         /// NumTypes - can add more user defined types
         /// </summary>
-        NumTypes 
+        NumTypes
     }
 
     #endregion
 
-    /// All geometry primitives should derive from this so that it's possible to 
-    /// cast them into the correct type without the overhead/hassle of RTTI or 
+    /// All geometry primitives should derive from this so that it's possible to
+    /// cast them into the correct type without the overhead/hassle of RTTI or
     /// virtual fns specific to just one class of primitive. Just do a static cast
     /// based on the type, or use the Get functions
     ///
@@ -131,7 +142,6 @@ namespace JigLibX.Geometry
     /// user-defined primitives
     public abstract class Primitive
     {
-
         private int type;
 
         internal Transform transform = Transform.Identity;
@@ -154,16 +164,16 @@ namespace JigLibX.Geometry
         /// <summary>
         /// Gets or Sets transform
         /// </summary>
-        public virtual Transform Transform 
-        { 
-            get 
-            { 
-                return transform; 
-            } 
-            set 
-            { 
-                transform = value; 
-            } 
+        public virtual Transform Transform
+        {
+            get
+            {
+                return transform;
+            }
+            set
+            {
+                transform = value;
+            }
         }
 
         /// <summary>
@@ -200,8 +210,8 @@ namespace JigLibX.Geometry
         /// <param name="normal"></param>
         /// <param name="seg"></param>
         /// <returns>bool</returns>
-        public abstract bool SegmentIntersect(out float frac,out Vector3 pos,
-            out Vector3 normal,Segment seg);
+        public abstract bool SegmentIntersect(out float frac, out Vector3 pos,
+            out Vector3 normal, Segment seg);
 
         /// <summary>
         /// Calculate and return the volume
@@ -252,6 +262,5 @@ namespace JigLibX.Geometry
         {
             get { return this.type; }
         }
-
     }
 }

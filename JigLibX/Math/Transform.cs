@@ -1,13 +1,11 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Math
 {
-
     #region public struct Transform
 
     /// <summary>
@@ -20,6 +18,7 @@ namespace JigLibX.Math
         /// Position
         /// </summary>
         public Vector3 Position;
+
         /// <summary>
         /// Orientation
         /// </summary>
@@ -95,7 +94,7 @@ namespace JigLibX.Math
                 Matrix.Multiply(ref Orientation, ref rot, out Orientation);
             }
 
-          //  JiggleMath.Orthonormalise(ref this.Orientation);
+            //  JiggleMath.Orthonormalise(ref this.Orientation);
         }
 
         /// <summary>
@@ -145,12 +144,12 @@ namespace JigLibX.Math
             Vector3.Add(ref lhs.Position, ref result.Position, out result.Position);
             //result.Position = lhs.Position + Vector3.Transform(rhs.Position, lhs.Orientation);
         }
-
     }
 
     #endregion
 
     #region public struct TransformRate
+
     /// <summary>
     /// Stuct TransormRate
     /// </summary>
@@ -160,6 +159,7 @@ namespace JigLibX.Math
         /// Velocity
         /// </summary>
         public Vector3 Velocity;
+
         /// <summary>
         /// AngularVelocity
         /// </summary>
@@ -201,7 +201,7 @@ namespace JigLibX.Math
         /// <param name="rate1"></param>
         /// <param name="rate2"></param>
         /// <param name="result"></param>
-        public static void Add(ref TransformRate rate1, ref TransformRate rate2 ,out TransformRate result)
+        public static void Add(ref TransformRate rate1, ref TransformRate rate2, out TransformRate result)
         {
             Vector3.Add(ref rate1.Velocity, ref rate2.Velocity, out result.Velocity);
             Vector3.Add(ref rate1.AngularVelocity, ref rate2.AngularVelocity, out result.AngularVelocity);
@@ -211,9 +211,7 @@ namespace JigLibX.Math
         //{
         //    return new TransformRate(rate1.Velocity + rate2.Velocity, rate1.AngularVelocity + rate2.AngularVelocity);
         //}
-
-
     }
-    #endregion
 
+    #endregion
 }

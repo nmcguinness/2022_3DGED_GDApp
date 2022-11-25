@@ -1,18 +1,15 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using JigLibX.Physics;
+
 using JigLibX.Geometry;
-using JigLibX.Collision;
-using JigLibX.Utils;
+using JigLibX.Physics;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// The user of CollisionSystem creates an object derived from
     /// CollisionFunctor and passes it in to
@@ -30,7 +27,7 @@ namespace JigLibX.Collision
         /// <param name="dirToBody0"></param>
         /// <param name="pointInfos"></param>
         /// <param name="numCollPts"></param>
-        public unsafe abstract void CollisionNotify(ref CollDetectInfo collDetectInfo,
+        public abstract unsafe void CollisionNotify(ref CollDetectInfo collDetectInfo,
             ref Vector3 dirToBody0, SmallCollPointInfo* pointInfos, int numCollPts);
     }
 
@@ -54,7 +51,7 @@ namespace JigLibX.Collision
     /// <summary>
     /// The user can create an object derived from this and pass it in
     /// to the ray/segment intersection functions to indicate whether certain
-    /// skins should be considered. 
+    /// skins should be considered.
     /// </summary>
     public abstract class CollisionSkinPredicate1
     {
@@ -74,7 +71,7 @@ namespace JigLibX.Collision
     /// <param name="skin0">The skin that had the callback on</param>
     /// <param name="skin1">The other skin that we have collided with (maybe null tho would be odd...)</param>
     /// <returns>False to inhibit contact point generation</returns>
-    public delegate bool CollisionCallbackFn( CollisionSkin skin0, CollisionSkin skin1);
+    public delegate bool CollisionCallbackFn(CollisionSkin skin0, CollisionSkin skin1);
 
     /// <summary>
     /// Interface to a class that will contain a list of all the
@@ -84,8 +81,7 @@ namespace JigLibX.Collision
     /// </summary>
     public abstract class CollisionSystem
     {
-
-        private Dictionary<int,DetectFunctor> detectionFunctors = new Dictionary<int,DetectFunctor>();
+        private Dictionary<int, DetectFunctor> detectionFunctors = new Dictionary<int, DetectFunctor>();
         private bool useSweepTests = false;
         private MaterialTable materialTable = new MaterialTable();
 
@@ -106,7 +102,7 @@ namespace JigLibX.Collision
         private static CollDetectCapsulePlane capsulePlaneCollDetector = new CollDetectCapsulePlane();
 
         /// <summary>
-        /// Constructor initialized the default CollisionFunctors. Other CollisionFunctors can be added with 
+        /// Constructor initialized the default CollisionFunctors. Other CollisionFunctors can be added with
         /// RegisterCollDetectFunctor.
         /// </summary>
         public CollisionSystem()
@@ -160,16 +156,15 @@ namespace JigLibX.Collision
         /// to see whether or not to continue. If the skins are closer
         /// than collTolerance (+ve value means report objects that aren't
         /// quite colliding) then the functor will get called.
-        /// You can't just loop over all your bodies calling this, because 
-        /// that will double-detect collisions. Use DetectAllCollisions for 
+        /// You can't just loop over all your bodies calling this, because
+        /// that will double-detect collisions. Use DetectAllCollisions for
         /// that.
         /// </summary>
         public abstract void DetectCollisions(Body body, CollisionFunctor collisionFunctor,
             CollisionSkinPredicate2 collisionPredicate, float collTolerance);
 
-
         /// <summary>
-        /// As DetectCollisions but detects for all bodies, testing each pair 
+        /// As DetectCollisions but detects for all bodies, testing each pair
         /// only once
         /// </summary>
         /// <param name="bodies"></param>
@@ -192,10 +187,10 @@ namespace JigLibX.Collision
             int key10 = f.Type1 << 16 | f.Type0;
 
             if (!detectionFunctors.ContainsKey(key01))
-                detectionFunctors.Add(key01,f);
+                detectionFunctors.Add(key01, f);
 
             if (!detectionFunctors.ContainsKey(key10))
-                detectionFunctors.Add(key10,f);
+                detectionFunctors.Add(key10, f);
         }
 
         /// <summary>
@@ -245,6 +240,5 @@ namespace JigLibX.Collision
         {
             get { return materialTable; }
         }
-
     }
 }

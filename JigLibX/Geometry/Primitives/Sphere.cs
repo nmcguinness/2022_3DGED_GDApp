@@ -1,11 +1,9 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using JigLibX.Math;
-#endregion
 
+using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
+#endregion
 
 namespace JigLibX.Geometry
 {
@@ -15,7 +13,7 @@ namespace JigLibX.Geometry
     public class Sphere : Primitive
     {
         private float radius;
-        
+
         private static Sphere hugeSphere = new Sphere(Vector3.Zero, float.MaxValue);
 
         /// <summary>
@@ -95,7 +93,6 @@ namespace JigLibX.Geometry
             else
                 Ixx = (2.0f / 3.0f) * mass * radius * radius;
 
-
             inertiaTensor = Matrix.Identity;
             inertiaTensor.M11 = inertiaTensor.M22 = inertiaTensor.M33 = Ixx;
 
@@ -114,8 +111,8 @@ namespace JigLibX.Geometry
         /// </summary>
         public override Transform Transform
         {
-            get{return this.transform;}
-            set{this.transform = value;}
+            get { return this.transform; }
+            set { this.transform = value; }
         }
 
         /// <summary>
@@ -161,7 +158,5 @@ namespace JigLibX.Geometry
         {
             get { return hugeSphere; }
         }
-
-
     }
 }

@@ -1,15 +1,13 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for BoxHeightmap collison detection.
     /// </summary>
@@ -82,6 +80,7 @@ namespace JigLibX.Collision
                             float oldDist = oldHeightmap.GetHeight(oldPt);
 
                             #region REFERENCE: collPts.Add(new CollPointInfo(oldPt - body0Pos, oldPt - body1Pos, -oldDist));
+
                             Vector3 pt0;
                             Vector3 pt1;
                             Vector3.Subtract(ref oldPt, ref body0Pos, out pt0);
@@ -93,10 +92,13 @@ namespace JigLibX.Collision
                                 collPts[numCollPts].R1 = pt1;
                                 collPts[numCollPts++].InitialPenetration = -oldDist;
                             }
+
                             #endregion
 
                             #region REFERENCE: collNormal += normal;
+
                             Vector3.Add(ref collNormal, ref normal, out collNormal);
+
                             #endregion
                         }
                     }
@@ -112,6 +114,5 @@ namespace JigLibX.Collision
 #endif
             }
         }
-
     }
 }

@@ -148,8 +148,8 @@ This repository contains code for the game engine
 - [x] Add clean/dirty flag to Transform on change
 - [x] Add camera smoothing using Vector2.Lerp in FPC
 - [x] Add CD/CR demo for box, sphere, trianglemesh
+- [x] Add StatusType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Add support for cloning GameObjects, Camera
-- [ ] Add ActionType enum to support turning Update and Draw on/off during gameplay (hint: use when menu is shown) for specific GameObject and Scene
 - [ ] Move level-specific methods to Level class
 - [ ] Add clean/dirty flag to Camera on change
 - [ ] Change List to SortedList in GameObjectList to sort by material and reduce rendertime

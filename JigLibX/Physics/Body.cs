@@ -1,12 +1,9 @@
 #region Using Statements
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
 using JigLibX.Collision;
 using JigLibX.Math;
-using JigLibX.Utils;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 #endregion
 

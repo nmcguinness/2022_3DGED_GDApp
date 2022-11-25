@@ -1,13 +1,13 @@
 #region Using Statements
-using System;
+
 using System.Collections.Generic;
-using System.Text;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     #region public struct MaterialPairProperties
+
     /// <summary>
     /// Struct MaterialPairProperties
     /// </summary>
@@ -17,10 +17,12 @@ namespace JigLibX.Collision
         /// Restitution
         /// </summary>
         public float Restitution;
+
         /// <summary>
         /// Static Friction
         /// </summary>
         public float StaticFriction;
+
         /// <summary>
         /// Dynamic Friction
         /// </summary>
@@ -39,9 +41,11 @@ namespace JigLibX.Collision
             this.StaticFriction = sf;
         }
     }
+
     #endregion
 
     #region public struct MaterialProperties
+
     /// <summary>
     /// Struct MaterialProperties
     /// </summary>
@@ -51,10 +55,12 @@ namespace JigLibX.Collision
         /// Elasticity
         /// </summary>
         public float Elasticity;
+
         /// <summary>
         /// Static Roughness
         /// </summary>
         public float StaticRoughness;
+
         /// <summary>
         /// Dynamic Roughness
         /// </summary>
@@ -77,8 +83,8 @@ namespace JigLibX.Collision
         /// Gets new empty MaterialProperties
         /// </summary>
         public static MaterialProperties Unset { get { return new MaterialProperties(); } }
-
     }
+
     #endregion
 
     /// <summary>
@@ -87,7 +93,6 @@ namespace JigLibX.Collision
     /// </summary>
     public class MaterialTable
     {
-
         /// <summary>
         /// Some default materials that get added automatically User
         /// materials should start at NumMaterialTypes, or else
@@ -100,47 +105,58 @@ namespace JigLibX.Collision
             /// <summary>
             /// Unset
             /// </summary>
-            Unset, 
+            Unset,
+
             /// <summary>
             /// Individual values should be used/calculated at runtime
             /// </summary>
             UserDefined,
+
             /// <summary>
             /// NotBouncySmooth
             /// </summary>
-            NotBouncySmooth, 
+            NotBouncySmooth,
+
             /// <summary>
             /// NotBouncyNormal
             /// </summary>
-            NotBouncyNormal, 
+            NotBouncyNormal,
+
             /// <summary>
             /// NotBouncyRough
             /// </summary>
             NotBouncyRough,
+
             /// <summary>
             /// NormalSmooth
             /// </summary>
-            NormalSmooth, 
+            NormalSmooth,
+
             /// <summary>
             /// NormalNormal
             /// </summary>
-            NormalNormal, 
+            NormalNormal,
+
             /// <summary>
             /// NormalRough
             /// </summary>
             NormalRough,
+
             /// <summary>
             /// BouncySmooth
             /// </summary>
-            BouncySmooth, 
+            BouncySmooth,
+
             /// <summary>
             /// BouncyNormal
             /// </summary>
-            BouncyNormal, 
+            BouncyNormal,
+
             /// <summary>
             /// BouncyRough
             /// </summary>
             BouncyRough,
+
             /// <summary>
             /// NumMaterialTypes
             /// </summary>
@@ -253,7 +269,5 @@ namespace JigLibX.Collision
             int key10 = id2 << 16 | id1;
             materialPairs[key01] = materialPairs[key10] = pairProperties;
         }
-
     }
-
 }

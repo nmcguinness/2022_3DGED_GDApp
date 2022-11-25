@@ -1,24 +1,21 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using JigLibX.Physics;
-using JigLibX.Collision;
+
 using JigLibX.Geometry;
+using JigLibX.Physics;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// CollisionSystem which checks every skin against each other. For small scenes this is
     /// as fast or even faster as CollisionSystemGrid.
     /// </summary>
     public class CollisionSystemBrute : CollisionSystem
     {
-
         private List<CollisionSkin> skins = new List<CollisionSkin>();
 
         /// <summary>
@@ -45,13 +42,13 @@ namespace JigLibX.Collision
             if (nonColl0.Count == 0 && nonColl1.Count == 0)
                 return true;
 
-            for (int i0 = nonColl0.Count; i0-- != 0; )
+            for (int i0 = nonColl0.Count; i0-- != 0;)
             {
-                if (nonColl0[i0] == skin1) 
+                if (nonColl0[i0] == skin1)
                     return false;
             }
 
-            for (int i1 = nonColl1.Count; i1-- != 0; )
+            for (int i1 = nonColl1.Count; i1-- != 0;)
             {
                 if (nonColl1[i1] == skin0)
                     return false;
@@ -141,7 +138,6 @@ namespace JigLibX.Collision
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -161,7 +157,7 @@ namespace JigLibX.Collision
             for (int ibody = 0; ibody < numBodies; ++ibody)
             {
                 Body body = bodies[ibody];
-                if(!body.IsActive)
+                if (!body.IsActive)
                     continue;
 
                 info.Skin0 = body.CollisionSkin;
@@ -176,8 +172,8 @@ namespace JigLibX.Collision
 
                     // CHANGE
                     if (info.Skin1 == null)
-                        continue;      
-                    
+                        continue;
+
                     bool skinSleeping = true;
 
                     if (info.Skin1.Owner != null && info.Skin1.Owner.IsActive)
@@ -186,20 +182,20 @@ namespace JigLibX.Collision
                     if ((skinSleeping == false) && (info.Skin1.ID < info.Skin0.ID))
                         continue;
 
-                    if((collisionPredicate != null) &&
-                        collisionPredicate.ConsiderSkinPair(info.Skin0,info.Skin1) == false)
-                    continue;
+                    if ((collisionPredicate != null) &&
+                        collisionPredicate.ConsiderSkinPair(info.Skin0, info.Skin1) == false)
+                        continue;
 
                     // basic bbox test
-                    if(BoundingBoxHelper.OverlapTest(ref info.Skin0.WorldBoundingBox,
-                        ref info.Skin1.WorldBoundingBox,collTolerance))
+                    if (BoundingBoxHelper.OverlapTest(ref info.Skin0.WorldBoundingBox,
+                        ref info.Skin1.WorldBoundingBox, collTolerance))
                     {
-                        if (CheckCollidables(info.Skin0,info.Skin1))
+                        if (CheckCollidables(info.Skin0, info.Skin1))
                         {
                             int bodyPrimitives = info.Skin0.NumPrimitives;
                             int primitves = info.Skin1.NumPrimitives;
 
-                            for(info.IndexPrim0 = 0; info.IndexPrim0 < bodyPrimitives; ++info.IndexPrim0)
+                            for (info.IndexPrim0 = 0; info.IndexPrim0 < bodyPrimitives; ++info.IndexPrim0)
                             {
                                 for (info.IndexPrim1 = 0; info.IndexPrim1 < primitves; ++info.IndexPrim1)
                                 {
@@ -209,11 +205,10 @@ namespace JigLibX.Collision
                                         f.CollDetect(info, collTolerance, collisionFunctor);
                                 }
                             }
-                        } 
+                        }
                     } // overlapt test
                 } // loop over skins
             } // loop over bodies
-
         } // void
 
         /// <summary>
@@ -226,7 +221,7 @@ namespace JigLibX.Collision
         /// <param name="seg"></param>
         /// <param name="collisionPredicate"></param>
         /// <returns>bool</returns>
-        public override bool SegmentIntersect(out float fracOut,out CollisionSkin skinOut,out Vector3 posOut,out Vector3 normalOut, Segment seg, CollisionSkinPredicate1 collisionPredicate)
+        public override bool SegmentIntersect(out float fracOut, out CollisionSkin skinOut, out Vector3 posOut, out Vector3 normalOut, Segment seg, CollisionSkinPredicate1 collisionPredicate)
         {
             int numSkins = skins.Count;
             BoundingBox segBox = BoundingBoxHelper.InitialBox;
@@ -261,7 +256,6 @@ namespace JigLibX.Collision
                                 fracOut = frac;
                             }
                         }
-
                     }
                 }
             }
@@ -270,6 +264,5 @@ namespace JigLibX.Collision
             fracOut = MathHelper.Clamp(fracOut, 0.0f, 1.0f);
             return true;
         }
-
     }
 }

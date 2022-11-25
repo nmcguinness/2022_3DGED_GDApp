@@ -12,7 +12,6 @@ using GD.Engine.Globals;
 using GD.Engine.Inputs;
 using GD.Engine.Managers;
 using GD.Engine.Parameters;
-using GD.Engine.Timer;
 using GD.Engine.Utilities;
 using JigLibX.Collision;
 using JigLibX.Geometry;
@@ -923,8 +922,7 @@ namespace GD.App
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //get active scene, get camera, and call the draw on the active scene
-            //sceneManager.ActiveScene.Draw(gameTime, cameraManager.ActiveCamera);
+            _spriteBatch.Draw()
 
             base.Draw(gameTime);
         }

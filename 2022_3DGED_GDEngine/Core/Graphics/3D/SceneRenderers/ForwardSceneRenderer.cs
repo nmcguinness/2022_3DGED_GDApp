@@ -1,5 +1,4 @@
-﻿using GD.Engine.Globals;
-using GD.Engine.Managers;
+﻿using GD.Engine.Managers;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 

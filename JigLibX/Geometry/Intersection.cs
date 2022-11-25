@@ -1,10 +1,8 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
-using JigLibX.Geometry;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -23,18 +21,22 @@ namespace JigLibX.Geometry
             /// None
             /// </summary>
             None = 0,
+
             /// <summary>
             /// edge0
             /// </summary>
             Edge0 = 1 << 0,
+
             /// <summary>
             /// edge1
             /// </summary>
             Edge1 = 1 << 1,
+
             /// <summary>
             /// edge2
             /// </summary>
             Edge2 = 1 << 2,
+
             /// <summary>
             /// edgeAll
             /// </summary>
@@ -50,27 +52,33 @@ namespace JigLibX.Geometry
             /// None
             /// </summary>
             None = 0,
+
             /// <summary>
             /// Corner0
             /// </summary>
             Corner0 = 1 << 0,
+
             /// <summary>
             /// Corner1
             /// </summary>
             Corner1 = 1 << 1,
+
             /// <summary>
             /// Corner2
             /// </summary>
             Corner2 = 1 << 2,
+
             /// <summary>
             /// CornerAll
             /// </summary>
             CornerAll = Corner0 | Corner1 | Corner2
         }
 
-        private Intersection() { }
+        private Intersection()
+        { }
 
         #region LinePlaneIntersection
+
         /// <summary>
         /// LinePlaneIntersection
         /// </summary>
@@ -88,13 +96,15 @@ namespace JigLibX.Geometry
                 return false;
             }
 
-            float dist = Distance.PointPlaneDistance(line.Origin,plane);
+            float dist = Distance.PointPlaneDistance(line.Origin, plane);
             t = -dist / dot;
             return true;
         }
+
         #endregion
 
         #region RayPlaneIntersection
+
         /// <summary>
         /// RayPlaneIntersection
         /// </summary>
@@ -115,9 +125,11 @@ namespace JigLibX.Geometry
             t = -dist / dot;
             return (t >= 0.0f);
         }
+
         #endregion
 
         #region SegmentPlaneIntersection
+
         /// <summary>
         /// SegmentPlaneIntersection
         /// </summary>
@@ -146,9 +158,11 @@ namespace JigLibX.Geometry
                 return false;
             }
         }
+
         #endregion
 
         #region SweptSpherePlaneIntersection
+
         /// <summary>
         /// SweptSpherePlaneIntersection
         /// </summary>
@@ -180,13 +194,15 @@ namespace JigLibX.Geometry
             if (t < 0.0f || t > 1.0f)
                 return false;
 
-            pt = oldSphere.Center + t * (newSphere.Center- oldSphere.Center) - MathHelper.Min(radius, oldDistToPlane) * planeNormal;
+            pt = oldSphere.Center + t * (newSphere.Center - oldSphere.Center) - MathHelper.Min(radius, oldDistToPlane) * planeNormal;
             finalPenetration = radius - newDistToPlane;
             return true;
         }
+
         #endregion
 
         #region SweptSphereTriangleIntersection
+
         /// <summary>
         /// SweptSphereTriangleIntersection
         /// </summary>
@@ -211,7 +227,7 @@ namespace JigLibX.Geometry
             N = Vector3.Zero;
 
             // Check against plane
-            if (!SweptSpherePlaneIntersection(out pt,out depth, oldSphere, newSphere, trianglePlane.Normal, oldCentreDistToPlane, newCentreDistToPlane))
+            if (!SweptSpherePlaneIntersection(out pt, out depth, oldSphere, newSphere, trianglePlane.Normal, oldCentreDistToPlane, newCentreDistToPlane))
                 return false;
 
             Vector3 v0 = triangle.GetPoint(0);
@@ -256,7 +272,7 @@ namespace JigLibX.Geometry
             for (i = 0; i < 3; ++i)
             {
                 int mask = 1 << i;
-                if (!((mask !=0) & ((int)edgesToTest != 0))) // TODO: CHECK THIS
+                if (!((mask != 0) & ((int)edgesToTest != 0))) // TODO: CHECK THIS
                     continue;
                 Vector3 Ke;
                 Vector3 vp;
@@ -267,16 +283,17 @@ namespace JigLibX.Geometry
                         Ke = e0;
                         vp = v0;
                         break;
+
                     case 1:
                         Ke = e1;
                         vp = v1;
                         break;
+
                     case 2:
                     default:
                         Ke = e2;
                         vp = v2;
                         break;
-
                 }
                 Vector3 Kg = vp - oldSphere.Center;
 
@@ -295,7 +312,7 @@ namespace JigLibX.Geometry
                 float b = 2.0f * (keg * kes - kee * kgs);
                 float c = kee * (kgg - radiusSq) - keg * keg;
 
-                float blah = b*b - 4.0f * a * c;
+                float blah = b * b - 4.0f * a * c;
                 if (blah < 0.0f)
                     continue;
 
@@ -340,14 +357,15 @@ namespace JigLibX.Geometry
                     case 0:
                         vp = v0;
                         break;
+
                     case 1:
                         vp = v1;
                         break;
+
                     case 2:
                     default:
                         vp = v2;
                         break;
-
                 }
                 Vector3 Kg = vp - oldSphere.Center;
                 float kgs = Vector3.Dot(Kg, Ks);
@@ -363,7 +381,7 @@ namespace JigLibX.Geometry
                     continue;
 
                 // solve for t - take minimum
-                float t = (-b - (float) System.Math.Sqrt(blah)) / (2.0f * a);
+                float t = (-b - (float)System.Math.Sqrt(blah)) / (2.0f * a);
 
                 if (t < 0.0f || t > 1.0f)
                     continue;
@@ -381,11 +399,12 @@ namespace JigLibX.Geometry
                 return true;
 
             return false;
-
         }
+
         #endregion
 
         #region SegmentSphereIntersection
+
         /// <summary>
         /// SegmentSphereIntersection
         /// </summary>
@@ -424,9 +443,11 @@ namespace JigLibX.Geometry
             ts = MathHelper.Max(lambda1, 0.0f);
             return true;
         }
+
         #endregion
 
         #region SegmentCapsuleIntersection
+
         /// <summary>
         /// SegmentCapsuleIntersection
         /// </summary>
@@ -460,7 +481,6 @@ namespace JigLibX.Geometry
             float endFrac = float.MaxValue; // Check this!
             SegmentSphereIntersection(out endFrac, seg, new Sphere(capsule.GetEnd(), capsule.Radius));
 
-
             bestFrac = MathHelper.Min(sideFrac, originFrac);
             bestFrac = MathHelper.Min(bestFrac, endFrac);
 
@@ -472,9 +492,11 @@ namespace JigLibX.Geometry
 
             return false;
         }
+
         #endregion
 
         #region SegmentInfiniteCylinderIntersection
+
         /// <summary>
         /// SegmentInfiniteCylinderIntersection
         /// </summary>
@@ -530,9 +552,11 @@ namespace JigLibX.Geometry
 
             return true;
         }
+
         #endregion
 
         #region SegmentTriangleIntersection
+
         /// <summary>
         /// SegmentTriangleIntersection
         /// </summary>
@@ -579,6 +603,7 @@ namespace JigLibX.Geometry
             //if (tT1 != 0) tT1 = v;
             return true;
         }
+
         #endregion
     }
 }

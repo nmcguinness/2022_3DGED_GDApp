@@ -1,23 +1,25 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Diagnostics;
+
 #endregion
 
 namespace JigLibX.Geometry
 {
     /// <summary>
-    /// Support for an indexed triangle - assumes ownership by something that 
+    /// Support for an indexed triangle - assumes ownership by something that
     /// has an array of vertices and an array of tIndexedTriangle
     /// </summary>
     public struct IndexedTriangle
     {
         // used when traversing to stop us visiting the same triangle twice
         internal int counter;
-        /// indices into our owner's array of vertices 
+
+        /// indices into our owner's array of vertices
         private int vertexIndices0;
+
         private int vertexIndices1;
         private int vertexIndices2;
         private int convexFlags;
@@ -74,9 +76,9 @@ namespace JigLibX.Geometry
             vertexIndices1 = i1;
             vertexIndices2 = i2;
 
-            plane = new Microsoft.Xna.Framework.Plane( vertexArray[i0], vertexArray[i1], vertexArray[i2]);
-            
+            plane = new Microsoft.Xna.Framework.Plane(vertexArray[i0], vertexArray[i1], vertexArray[i2]);
         }
+
         /// <summary>
         /// Set the indices into the relevant vertex array for this
         /// triangle. Also sets the plane and bounding box
@@ -93,6 +95,7 @@ namespace JigLibX.Geometry
 
             plane = new Microsoft.Xna.Framework.Plane(vertexArray[i0], vertexArray[i1], vertexArray[i2]);
         }
+
         /// <summary>
         /// Get the indices into the relevant vertex array for this triangle.
         /// </summary>
@@ -117,10 +120,13 @@ namespace JigLibX.Geometry
             {
                 case 0:
                     return vertexIndices0;
+
                 case 1:
                     return vertexIndices1;
+
                 case 2:
                     return vertexIndices2;
+
                 default:
                     Debug.Assert(false);
                     return vertexIndices0;
@@ -180,7 +186,6 @@ namespace JigLibX.Geometry
             else
                 convexFlags &= (ushort)~(1 << (iPoint + 3));
         }
-
     }
 
     /// <summary>
@@ -199,10 +204,10 @@ namespace JigLibX.Geometry
         /// <param name="i0"></param>
         /// <param name="i1"></param>
         /// <param name="i2"></param>
-        public TriangleVertexIndices(int i0, int i1, int i2) 
+        public TriangleVertexIndices(int i0, int i1, int i2)
         {
-            this.I0 = i0; 
-            this.I1 = i1; 
+            this.I0 = i0;
+            this.I1 = i1;
             this.I2 = i2;
         }
 
@@ -217,5 +222,4 @@ namespace JigLibX.Geometry
             I0 = i0; I1 = i1; I2 = i2;
         }
     }
-
 }

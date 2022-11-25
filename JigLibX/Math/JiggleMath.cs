@@ -1,9 +1,7 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
-using JigLibX.Utils;
+
 #endregion
 
 namespace JigLibX.Math
@@ -75,7 +73,7 @@ namespace JigLibX.Math
             if (num0 != 0.0f)
             {
                 float num1 = 1.0f / (float)System.Math.Sqrt(num0);
-                vec.X *= num1;vec.Y *= num1;vec.Z *= num1;
+                vec.X *= num1; vec.Y *= num1; vec.Z *= num1;
             }
 
             return vec;
@@ -87,11 +85,11 @@ namespace JigLibX.Math
         /// <param name="matrix"></param>
         public static void Orthonormalise(ref Matrix matrix)
         {
-            float u11 = matrix.M11;float u12 = matrix.M12;float u13 = matrix.M13;
-            float u21 = matrix.M21;float u22 = matrix.M22;float u23 = matrix.M23;
-            float u31 = matrix.M31;float u32 = matrix.M32;float u33 = matrix.M33;
+            float u11 = matrix.M11; float u12 = matrix.M12; float u13 = matrix.M13;
+            float u21 = matrix.M21; float u22 = matrix.M22; float u23 = matrix.M23;
+            float u31 = matrix.M31; float u32 = matrix.M32; float u33 = matrix.M33;
 
-            float dot0,dot1;
+            float dot0, dot1;
 
             // u1
             float lengthSq0 = u11 * u11 + u12 * u12 + u13 * u13;
@@ -125,9 +123,9 @@ namespace JigLibX.Math
             u32 = u32 / length0;
             u33 = u33 / length0;
 
-            matrix.M11 = u11;matrix.M12 = u12;matrix.M13 = u13;
-            matrix.M21 = u21;matrix.M22 = u22;matrix.M23 = u23;
-            matrix.M31 = u31;matrix.M32 = u32;matrix.M33 = u33;      
+            matrix.M11 = u11; matrix.M12 = u12; matrix.M13 = u13;
+            matrix.M21 = u21; matrix.M22 = u22; matrix.M23 = u23;
+            matrix.M31 = u31; matrix.M32 = u32; matrix.M33 = u33;
         }
 
         /// <summary>
@@ -148,7 +146,7 @@ namespace JigLibX.Math
         /// <param name="b"></param>
         /// <param name="c"></param>
         /// <returns>float</returns>
-        public static float Max(float a, float b, float c) 
+        public static float Max(float a, float b, float c)
         {
             float abMax = a > b ? a : b;
 
@@ -168,6 +166,5 @@ namespace JigLibX.Math
 
             return abMin < c ? abMin : c;
         }
-
     }
 }

@@ -1,9 +1,8 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -37,7 +36,7 @@ namespace JigLibX.Geometry
         /// <param name="pt0"></param>
         /// <param name="pt1"></param>
         /// <param name="pt2"></param>
-        public Triangle(ref Vector3 pt0,ref Vector3 pt1,ref Vector3 pt2)
+        public Triangle(ref Vector3 pt0, ref Vector3 pt1, ref Vector3 pt2)
         {
             origin = pt0;
             edge0 = pt1 - pt0;
@@ -55,11 +54,10 @@ namespace JigLibX.Geometry
                 return origin + edge0;
 
             if (i == 2)
-                 return origin + edge1;
+                return origin + edge1;
 
             return origin;
         }
-
 
         /// <summary>
         /// Same numbering as in the constructor
@@ -75,7 +73,6 @@ namespace JigLibX.Geometry
                 point = origin + edge1;
             else
                 point = origin;
-
         }
 
         // BEN-OPTIMISATION: New method with ref point, also accounts for the bug fix.
@@ -112,7 +109,7 @@ namespace JigLibX.Geometry
         /// <param name="t0"></param>
         /// <param name="t1"></param>
         /// <returns>Vector3</returns>
-        public Vector3 GetPoint(float t0, float t1) 
+        public Vector3 GetPoint(float t0, float t1)
         {
             return origin + t0 * edge0 + t1 * edge1;
         }
@@ -197,7 +194,6 @@ namespace JigLibX.Geometry
         {
             get { return edge1 - edge0; }
         }
-
 
         /// <summary>
         /// Gets the plane containing the triangle

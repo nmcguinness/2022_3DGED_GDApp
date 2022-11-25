@@ -1,22 +1,20 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for SphereCapsule collison detection.
     /// </summary>
     public class CollDetectSphereCapsule : DetectFunctor
     {
         private Random random = new Random();
-
 
         /// <summary>
         /// Constructor
@@ -94,8 +92,6 @@ namespace JigLibX.Collision
                     collisionFunctor.CollisionNotify(ref info, ref delta, &collInfo, 1);
                 }
             }
-
         }
-
     }
 }

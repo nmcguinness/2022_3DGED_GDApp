@@ -1,10 +1,10 @@
 ﻿#region Using Statements
+
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using JigLibX.Math;
 using System.Diagnostics;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -26,34 +26,36 @@ namespace JigLibX.Geometry
             ZP = 0x4,
             PPP = XP | YP | ZP,
             PPM = XP | YP,
-            PMP = XP |      ZP,
-            PMM = XP ,
-            MPP =      YP | ZP,
-            MPM =      YP,
-            MMP =           ZP,
+            PMP = XP | ZP,
+            PMM = XP,
+            MPP = YP | ZP,
+            MPM = YP,
+            MMP = ZP,
             MMM = 0x0,
         }
 
-        struct Node
+        private struct Node
         {
             public UInt16[] nodeIndices;
-            public int[]        triIndices;
-            public BoundingBox  box;
+            public int[] triIndices;
+            public BoundingBox box;
         }
-        class BuildNode
+
+        private class BuildNode
         {
             public int childType; // will default to MMM (usually ECHild but can also be -1)
             public List<int> nodeIndices = new List<int>();
             public List<int> triIndices = new List<int>();
             public BoundingBox box;
         };
-        Vector3[]               positions;
-        BoundingBox[]           triBoxes;
-        TriangleVertexIndices[] tris;
-        Node[]                  nodes;
-        BoundingBox             rootNodeBox;
-        AABox                   boundingBox;
-        UInt16[]                nodeStack;
+
+        private Vector3[] positions;
+        private BoundingBox[] triBoxes;
+        private TriangleVertexIndices[] tris;
+        private Node[] nodes;
+        private BoundingBox rootNodeBox;
+        private AABox boundingBox;
+        private UInt16[] nodeStack;
 
         // to make compat with old Octree interface
         /// <summary>
@@ -67,7 +69,7 @@ namespace JigLibX.Geometry
         /// Clear
         /// </summary>
         /// <param name="NOTUSED"></param>
-        public void Clear( bool NOTUSED )
+        public void Clear(bool NOTUSED)
         {
             positions = null;
             triBoxes = null;
@@ -97,7 +99,7 @@ namespace JigLibX.Geometry
         /// </summary>
         /// <param name="_maxTrisPerCellNOTUSED"></param>
         /// <param name="_minCellSizeNOTUSED"></param>
-        public void BuildOctree( int _maxTrisPerCellNOTUSED, float _minCellSizeNOTUSED)
+        public void BuildOctree(int _maxTrisPerCellNOTUSED, float _minCellSizeNOTUSED)
         {
             // create tri and tri bounding box arrays
             triBoxes = new BoundingBox[tris.Length];
@@ -105,7 +107,6 @@ namespace JigLibX.Geometry
             // create an infinite size root box
             rootNodeBox = new BoundingBox(new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity),
                                            new Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity));
-
 
             for (int i = 0; i < tris.Length; i++)
             {
@@ -202,7 +203,6 @@ namespace JigLibX.Geometry
                 nodes[i].box = buildNodes[i].box;
             }
             buildNodes = null;
-
         }
 
         /// <summary>
@@ -213,8 +213,9 @@ namespace JigLibX.Geometry
         public Octree(List<Vector3> _positions, List<TriangleVertexIndices> _tris)
         {
             AddTriangles(_positions, _tris);
-            BuildOctree( 16, 1.0f );
+            BuildOctree(16, 1.0f);
         }
+
         /// <summary>
         /// Create a bounding box appropriate for a child, based on a parents AABox
         /// </summary>
@@ -340,6 +341,7 @@ namespace JigLibX.Geometry
         {
             return new IndexedTriangle(tris[_index].I0, tris[_index].I1, tris[_index].I2, positions);
         }
+
         /// <summary>
         /// Get a vertex
         /// </summary>
@@ -367,9 +369,8 @@ namespace JigLibX.Geometry
         {
             get { return tris.Length; }
         }
-
-
     }
+
 #if OLD_OCTREE
     /// <summary>
     /// Stores world collision data in an octree structure for quick ray testing
@@ -377,13 +378,13 @@ namespace JigLibX.Geometry
     /// </summary>
     public class Octree
     {
+    #region Octree Cell
 
-        #region Octree Cell
         /// <summary>
         /// Internally we don't store pointers but store indices into a single contiguous
         /// array of cells and triangles owned by Octree (so that the vectors can get resized).
         ///
-        /// Each cell will either contain children OR contain triangles. 
+        /// Each cell will either contain children OR contain triangles.
         /// </summary>
         struct Cell
         {
@@ -435,7 +436,6 @@ namespace JigLibX.Geometry
                     mChildCellIndices[i] = -1;
 
                 mTriangleIndices.Clear();
-
             }
 
             /// <summary>
@@ -445,12 +445,11 @@ namespace JigLibX.Geometry
             {
                 get { return mChildCellIndices[0] == -1; }
             }
-
-
         }
-        #endregion
 
-        #region private fields
+    #endregion
+
+    #region private fields
 
         private const int NumChildren = (int)Cell.EChild.NumChildren;
 
@@ -465,7 +464,7 @@ namespace JigLibX.Geometry
 
         private AABox boundingBox = new AABox();
 
-        /// During intersection testing we keep a stack of cells to test (rather than recursing) - 
+        /// During intersection testing we keep a stack of cells to test (rather than recursing) -
         /// to avoid excessive memory allocation we don't free the memory between calls unless
         /// the user calls FreeTemporaryMemory();
         private Stack<int> mCellsToTest;
@@ -474,7 +473,7 @@ namespace JigLibX.Geometry
         /// one cell
         private int testCounter;
 
-        #endregion
+    #endregion
 
         /// <summary>
         /// On creation the extents are defined - if anything is subsequently added
@@ -596,7 +595,7 @@ namespace JigLibX.Geometry
                 rootCell.mTriangleIndices.Add(i);
 
             // rather than doing things recursively, use a stack of cells that need
-            // to be processed - for each cell if it contains too many triangles we 
+            // to be processed - for each cell if it contains too many triangles we
             // create child cells and move the triangles down into them (then we
             // clear the parent triangles).
             Stack<int> cellsToProcess = new Stack<int>();
@@ -782,7 +781,7 @@ namespace JigLibX.Geometry
         }
 
         /// <summary>
-        /// Increment our test counter, wrapping around if necessary and zapping the 
+        /// Increment our test counter, wrapping around if necessary and zapping the
         /// triangle counters.
         /// </summary>
         private void IncrementTestCounter()
@@ -833,9 +832,6 @@ namespace JigLibX.Geometry
         {
             get { return triangles.Count; }
         }
-
-
-
     }
 #endif
 }

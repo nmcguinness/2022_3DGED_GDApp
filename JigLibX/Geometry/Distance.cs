@@ -1,10 +1,8 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
-using JigLibX.Geometry;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -14,9 +12,11 @@ namespace JigLibX.Geometry
     /// </summary>
     public sealed class Distance
     {
-        private Distance() { }
+        private Distance()
+        { }
 
         #region SegmentTriangleDistanceSq
+
         /// <summary>
         /// SegmentTriangleDistanceSq
         /// </summary>
@@ -83,9 +83,11 @@ namespace JigLibX.Geometry
             }
             return distSq;
         }
+
         #endregion
 
         #region PointTriangleDistanceSq
+
         /// <summary>
         /// PointTriangleDistanceSq
         /// </summary>
@@ -319,9 +321,11 @@ namespace JigLibX.Geometry
 
             return System.Math.Abs(fSqrDist);
         }
+
         #endregion
 
         #region PointPlaneDistance
+
         /// <summary>
         /// PointPlaneDistance
         /// </summary>
@@ -365,15 +369,17 @@ namespace JigLibX.Geometry
         /// <param name="planeNormal"></param>
         /// <param name="planeD"></param>
         /// <returns>float</returns>
-        public static float PointPlaneDistance(ref Vector3 pt,ref Vector3 planeNormal, float planeD)
+        public static float PointPlaneDistance(ref Vector3 pt, ref Vector3 planeNormal, float planeD)
         {
             float num0;
-            Vector3.Dot(ref planeNormal,ref pt,out num0);
+            Vector3.Dot(ref planeNormal, ref pt, out num0);
             return num0 + planeD;
         }
+
         #endregion
 
         #region PointPointDistanceSq
+
         /// <summary>
         /// PointPointDistanceSq
         /// </summary>
@@ -405,6 +411,7 @@ namespace JigLibX.Geometry
         #endregion
 
         #region PointPointDistance
+
         /// <summary>
         /// PointPointDistance
         /// </summary>
@@ -419,6 +426,7 @@ namespace JigLibX.Geometry
             float num4 = ((num3 * num3) + (num2 * num2)) + (num0 * num0);
             return (float)System.Math.Sqrt((double)num4);
         }
+
         /// <summary>
         /// PointPointDistance
         /// </summary>
@@ -437,6 +445,7 @@ namespace JigLibX.Geometry
         #endregion
 
         #region PointSegmentDistanceSq
+
         /// <summary>
         /// PointSegmentDistanceSq
         /// </summary>
@@ -590,6 +599,7 @@ namespace JigLibX.Geometry
         #endregion
 
         #region PointSegmentDistance
+
         /// <summary>
         /// PointSegmentDistance
         /// </summary>
@@ -743,6 +753,7 @@ namespace JigLibX.Geometry
         #endregion
 
         #region SegmentBoxDistanceSq
+
         /// <summary>
         /// SegmentBoxDistanceSq
         /// </summary>
@@ -762,7 +773,7 @@ namespace JigLibX.Geometry
             Line line = new Line(rkSeg.Origin, rkSeg.Delta);
 
             float fLP, fBP0, fBP1, fBP2;
-            float fSqrDistance = SqrDistance(line, rkBox, out fLP, out fBP0, out  fBP1, out fBP2);
+            float fSqrDistance = SqrDistance(line, rkBox, out fLP, out fBP0, out fBP1, out fBP2);
 
             if (fLP >= 0.0f)
             {
@@ -778,7 +789,7 @@ namespace JigLibX.Geometry
                 else
                 {
                     fSqrDistance = SqrDistance(rkSeg.Origin + rkSeg.Delta,
-                                               rkBox, out pfBParam0, out pfBParam1, out  pfBParam2);
+                                               rkBox, out pfBParam0, out pfBParam1, out pfBParam2);
 
                     pfLParam = 1.0f;
                     return MathHelper.Max(fSqrDistance, 0.0f);
@@ -786,17 +797,18 @@ namespace JigLibX.Geometry
             }
             else
             {
-                fSqrDistance = SqrDistance(rkSeg.Origin, rkBox, out  pfBParam0, out  pfBParam1, out  pfBParam2);
+                fSqrDistance = SqrDistance(rkSeg.Origin, rkBox, out pfBParam0, out pfBParam1, out pfBParam2);
 
                 pfLParam = 0.0f;
 
                 return MathHelper.Max(fSqrDistance, 0.0f);
             }
-
         }
+
         #endregion
 
         #region SqrDistance
+
         /// <summary>
         /// SqrDistance
         /// </summary>
@@ -858,16 +870,17 @@ namespace JigLibX.Geometry
                 kClosest.Z = box.GetHalfSideLengths().Z;
             }
 
-
             pfBParam0 = kClosest.X;
             pfBParam1 = kClosest.Y;
             pfBParam2 = kClosest.Z;
 
             return MathHelper.Max(fSqrDistance, 0.0f);
         }
+
         #endregion
 
         #region SqrDistance
+
         /// <summary>
         /// SqrDistance
         /// </summary>
@@ -1016,7 +1029,6 @@ namespace JigLibX.Geometry
                                 pnt.X -= prod1 * inv;
                                 pfLParam = -pmE1 * inv;
                             }
-
                         }
 
                         if (pnt.Z < -box.GetHalfSideLengths().Z)
@@ -1031,7 +1043,6 @@ namespace JigLibX.Geometry
                             sqrDistance += delta * delta;
                             pnt.Z = box.GetHalfSideLengths().Z;
                         }
-
                     }
                 }
                 else
@@ -1089,7 +1100,6 @@ namespace JigLibX.Geometry
                                 pnt.X -= prod1 * inv;
                                 pfLParam = -pmE1 * inv;
                             }
-
                         }
 
                         if (pnt.Y < -box.GetHalfSideLengths().Y)
@@ -1158,7 +1168,6 @@ namespace JigLibX.Geometry
                                 pnt.X -= prod1 * inv;
                                 pfLParam = -pmE1 * inv;
                             }
-
                         }
 
                         if (pnt.Z < -box.GetHalfSideLengths().Z)
@@ -1232,7 +1241,6 @@ namespace JigLibX.Geometry
                                 pnt.Y -= prod1 * inv;
                                 pfLParam = -pmE1 * inv;
                             }
-
                         }
 
                         if (pnt.X < -box.GetHalfSideLengths().X)
@@ -1247,7 +1255,6 @@ namespace JigLibX.Geometry
                             sqrDistance += delta * delta;
                             pnt.X = box.GetHalfSideLengths().X;
                         }
-
                     }
                     else
                     {
@@ -1391,7 +1398,7 @@ namespace JigLibX.Geometry
         /// <param name="sqrDistance"></param>
         private static void FaceA(ref Vector3 kPnt,
                  Vector3 kDir, Box rkBox,
-                 Vector3 kPmE,out float pfLParam,ref float sqrDistance)
+                 Vector3 kPmE, out float pfLParam, ref float sqrDistance)
         {
             // 0,1,2
             Vector3 kPpE;
@@ -1471,7 +1478,6 @@ namespace JigLibX.Geometry
                         kPnt.X = rkBox.GetHalfSideLengths().X;
                         kPnt.Y = -rkBox.GetHalfSideLengths().Y;
                         kPnt.Z = fT - rkBox.GetHalfSideLengths().Z;
-
                     }
                     else
                     {
@@ -1481,7 +1487,6 @@ namespace JigLibX.Geometry
                         fParam = -fDelta / fLSqr;
                         sqrDistance += kPmE.X * kPmE.X + kPpE.Y * kPpE.Y +
                           kPmE.Z * kPmE.Z + fDelta * fParam;
-
 
                         pfLParam = fParam;
                         kPnt.X = rkBox.GetHalfSideLengths().X;
@@ -1548,10 +1553,10 @@ namespace JigLibX.Geometry
                             sqrDistance += kPmE.X * kPmE.X + kPpE.Y * kPpE.Y +
                               fTmp * fTmp + fDelta * fParam;
 
-                                pfLParam = fParam;
-                                kPnt.X = rkBox.GetHalfSideLengths().X;
-                                kPnt.Y = -rkBox.GetHalfSideLengths().Y;
-                                kPnt.Z = fT - rkBox.GetHalfSideLengths().Z;
+                            pfLParam = fParam;
+                            kPnt.X = rkBox.GetHalfSideLengths().X;
+                            kPnt.Y = -rkBox.GetHalfSideLengths().Y;
+                            kPnt.Z = fT - rkBox.GetHalfSideLengths().Z;
                         }
                         else
                         {
@@ -1562,10 +1567,10 @@ namespace JigLibX.Geometry
                             sqrDistance += kPmE.X * kPmE.X + kPpE.Y * kPpE.Y +
                               kPmE.Z * kPmE.Z + fDelta * fParam;
 
-                                pfLParam = fParam;
-                                kPnt.X = rkBox.GetHalfSideLengths().X;
-                                kPnt.Y = -rkBox.GetHalfSideLengths().Y;
-                                kPnt.Z = rkBox.GetHalfSideLengths().Z;
+                            pfLParam = fParam;
+                            kPnt.X = rkBox.GetHalfSideLengths().X;
+                            kPnt.Y = -rkBox.GetHalfSideLengths().Y;
+                            kPnt.Z = rkBox.GetHalfSideLengths().Z;
                         }
                         return;
                     }
@@ -1577,7 +1582,6 @@ namespace JigLibX.Geometry
                     fParam = -fDelta / fLSqr;
                     sqrDistance += kPmE.X * kPmE.X + kPpE.Y * kPpE.Y +
                       kPpE.Z * kPpE.Z + fDelta * fParam;
-
 
                     pfLParam = fParam;
                     kPnt.X = rkBox.GetHalfSideLengths().X;
@@ -1598,7 +1602,7 @@ namespace JigLibX.Geometry
         /// <param name="sqrDistance"></param>
         private static void FaceB(ref Vector3 kPnt,
                Vector3 kDir, Box rkBox,
-               Vector3 kPmE, out float pfLParam,ref float sqrDistance)
+               Vector3 kPmE, out float pfLParam, ref float sqrDistance)
         {
             // 2,0,1
             Vector3 kPpE;
@@ -1678,7 +1682,6 @@ namespace JigLibX.Geometry
                         kPnt.Z = rkBox.GetHalfSideLengths().Z;
                         kPnt.X = -rkBox.GetHalfSideLengths().X;
                         kPnt.Y = fT - rkBox.GetHalfSideLengths().Y;
-
                     }
                     else
                     {
@@ -1688,7 +1691,6 @@ namespace JigLibX.Geometry
                         fParam = -fDelta / fLSqr;
                         sqrDistance += kPmE.Z * kPmE.Z + kPpE.X * kPpE.X +
                           kPmE.Y * kPmE.Y + fDelta * fParam;
-
 
                         pfLParam = fParam;
                         kPnt.Z = rkBox.GetHalfSideLengths().Z;
@@ -1785,7 +1787,6 @@ namespace JigLibX.Geometry
                     sqrDistance += kPmE.Z * kPmE.Z + kPpE.X * kPpE.X +
                       kPpE.Y * kPpE.Y + fDelta * fParam;
 
-
                     pfLParam = fParam;
                     kPnt.Z = rkBox.GetHalfSideLengths().Z;
                     kPnt.X = -rkBox.GetHalfSideLengths().X;
@@ -1805,7 +1806,7 @@ namespace JigLibX.Geometry
         /// <param name="sqrDistance"></param>
         private static void FaceC(ref Vector3 kPnt,
               Vector3 kDir, Box rkBox,
-              Vector3 kPmE,out float pfLParam, ref float sqrDistance)
+              Vector3 kPmE, out float pfLParam, ref float sqrDistance)
         {
             // 1,2,0
             Vector3 kPpE;
@@ -1885,7 +1886,6 @@ namespace JigLibX.Geometry
                         kPnt.Y = rkBox.GetHalfSideLengths().Y;
                         kPnt.Z = -rkBox.GetHalfSideLengths().Z;
                         kPnt.X = fT - rkBox.GetHalfSideLengths().X;
-
                     }
                     else
                     {
@@ -1895,7 +1895,6 @@ namespace JigLibX.Geometry
                         fParam = -fDelta / fLSqr;
                         sqrDistance += kPmE.Y * kPmE.Y + kPpE.Z * kPpE.Z +
                           kPmE.X * kPmE.X + fDelta * fParam;
-
 
                         pfLParam = fParam;
                         kPnt.Y = rkBox.GetHalfSideLengths().Y;
@@ -1992,7 +1991,6 @@ namespace JigLibX.Geometry
                     sqrDistance += kPmE.Y * kPmE.Y + kPpE.Z * kPpE.Z +
                       kPpE.X * kPpE.X + fDelta * fParam;
 
-
                     pfLParam = fParam;
                     kPnt.Y = rkBox.GetHalfSideLengths().Y;
                     kPnt.Z = -rkBox.GetHalfSideLengths().Z;
@@ -2000,9 +1998,11 @@ namespace JigLibX.Geometry
                 }
             }
         }
+
         #endregion
 
         #region SegmentSegmentDistanceSq
+
         /// <summary>
         /// Returns the distance of two segments.
         /// </summary>
@@ -2360,7 +2360,7 @@ namespace JigLibX.Geometry
 
             return System.Math.Abs(fSqrDist);
         }
-        #endregion
 
+        #endregion
     }
 }

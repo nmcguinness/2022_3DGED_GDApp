@@ -1,21 +1,19 @@
 #region Using statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using JigLibX.Geometry;
-using Microsoft.Xna.Framework;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for BoxStaticMesh collison detection.
     /// </summary>
     public class CollDetectBoxStaticMesh : DetectFunctor
     {
-
         /// <summary>
         /// Constructor of BoxStaticMesh Collision DetectFunctor.
         /// <seealso cref="DetectFunctor"/>
@@ -23,7 +21,6 @@ namespace JigLibX.Collision
         public CollDetectBoxStaticMesh()
             : base("BoxStaticMesh", (int)PrimitiveType.Box, (int)PrimitiveType.TriangleMesh)
         {
-
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace JigLibX.Collision
             }
             if (nPositions == 1)
             {
-                CollDetectBoxStaticMeshOverlap(oldBox, newBox, mesh,ref info, collTolerance, collisionFunctor);
+                CollDetectBoxStaticMeshOverlap(oldBox, newBox, mesh, ref info, collTolerance, collisionFunctor);
             }
             else
             {
@@ -90,7 +87,7 @@ namespace JigLibX.Collision
                     {
 #else
                     int[] potTriArray = IntStackAlloc();
-                    fixed( int* potentialTriangles = potTriArray)
+                    fixed (int* potentialTriangles = potTriArray)
                     {
 #endif
                         int numTriangles = mesh.GetTrianglesIntersectingtAABox(potentialTriangles, MaxLocalStackTris, ref bb);
@@ -116,10 +113,11 @@ namespace JigLibX.Collision
 #else
                     }
                     FreeStackAlloc(potTriArray);
-#endif                
+#endif
                 }
             }
         }
+
         /// <summary>
         /// Detect BoxStaticMesh Collisions.
         /// </summary>
@@ -157,7 +155,7 @@ namespace JigLibX.Collision
         /// <returns>bool</returns>
         private static bool AddPoint(List<Vector3> pts, ref Vector3 pt, float combinationDistanceSq)
         {
-            for (int i = pts.Count; i-- != 0; )
+            for (int i = pts.Count; i-- != 0;)
             {
                 if (Distance.PointPointDistanceSq(pts[i], pt) < combinationDistanceSq)
                 {
@@ -173,7 +171,7 @@ namespace JigLibX.Collision
         /// GetBoxTriangleIntersectionPoints
         /// Pushes intersection points onto the back of pts. Returns the
         /// number of points found.
-        /// Points that are close together (compared to 
+        /// Points that are close together (compared to
         /// combinationDistance) get combined
         /// </summary>
         /// <param name="pts"></param>
@@ -214,6 +212,7 @@ namespace JigLibX.Collision
             for (iEdge = 0; iEdge < 3; ++iEdge)
             {
                 #region "BEN-OPTIMISATION: Remove excess allocations and pass variables by reference."
+
                 // ORIGINAL CODE:
                 /*Vector3 pt0 = triangle.GetPoint(iEdge);
                 Vector3 pt1 = triangle.GetPoint((iEdge + 1) % 3);
@@ -232,6 +231,7 @@ namespace JigLibX.Collision
 
                 Segment s1 = new Segment(ref pt0, ref difference1);
                 Segment s2 = new Segment(ref pt1, ref difference2);
+
                 #endregion
 
                 if (box.SegmentIntersect(out tS, out pos, out n, s1))
@@ -333,7 +333,7 @@ namespace JigLibX.Collision
 
             return (false);
         }
-       
+
         /// <summary>
         /// DoOverlapBoxTriangleTest
         /// </summary>
@@ -350,10 +350,10 @@ namespace JigLibX.Collision
             ref CollDetectInfo info, float collTolerance,
             CollisionFunctor collisionFunctor)
         {
-
             Matrix dirs0 = newBox.Orientation;
-            
+
             #region REFERENCE: Triangle tri = new Triangle(mesh.GetVertex(triangle.GetVertexIndex(0)),mesh.GetVertex(triangle.GetVertexIndex(1)),mesh.GetVertex(triangle.GetVertexIndex(2)));
+
             Vector3 triVec0;
             Vector3 triVec1;
             Vector3 triVec2;
@@ -367,11 +367,12 @@ namespace JigLibX.Collision
             Vector3.Transform(ref triVec1, ref transformMatrix, out triVec1);
             Vector3.Transform(ref triVec2, ref transformMatrix, out triVec2);
 
-            Triangle tri = new Triangle(ref triVec0,ref triVec1,ref triVec2);
+            Triangle tri = new Triangle(ref triVec0, ref triVec1, ref triVec2);
+
             #endregion
 
-
             #region REFERENCE Vector3 triEdge0 = (tri.GetPoint(1) - tri.GetPoint(0));
+
             Vector3 pt0;
             Vector3 pt1;
             tri.GetPoint(0, out pt0);
@@ -379,31 +380,37 @@ namespace JigLibX.Collision
 
             Vector3 triEdge0;
             Vector3.Subtract(ref pt1, ref pt0, out triEdge0);
+
             #endregion
 
             #region REFERENCE Vector3 triEdge1 = (tri.GetPoint(2) - tri.GetPoint(1));
+
             Vector3 pt2;
             tri.GetPoint(2, out pt2);
 
             Vector3 triEdge1;
             Vector3.Subtract(ref pt2, ref pt1, out triEdge1);
+
             #endregion
 
             #region REFERENCE Vector3 triEdge2 = (tri.GetPoint(0) - tri.GetPoint(2));
+
             Vector3 triEdge2;
             Vector3.Subtract(ref pt0, ref pt2, out triEdge2);
+
             #endregion
 
             triEdge0.Normalize();
             triEdge1.Normalize();
             triEdge2.Normalize();
 
-
             // BEN-OPTIMISATION: Replaced loops with code that requires no looping.
             //                   The new code is faster, has less allocations and math especially
             //                   since the method returns as soon as it finds a non-overlapping axis,
             //                   i.e. Before irreleveat allocations occur.
+
             #region "Old (less efficient) code"
+
             /*Vector3 triNormal = triangle.Plane.Normal;
 
             // the 15 potential separating axes
@@ -427,7 +434,7 @@ namespace JigLibX.Collision
             // the overlap depths along each axis
             float[] overlapDepths = new float[numAxes];
 
-            // see if the boxes are separate along any axis, and if not keep a 
+            // see if the boxes are separate along any axis, and if not keep a
             // record of the depths along each axis
             int i;
             for (i = 0; i < numAxes; ++i)
@@ -469,15 +476,18 @@ namespace JigLibX.Collision
             Vector3 D = newBox.GetCentre() - tri.Centre;
             Vector3 N = axes[minAxis];
             float depth = overlapDepths[minAxis];*/
+
             #endregion
+
             #region "Optimised code"
+
             Vector3 triNormal = triangle.Plane.Normal;
             Vector3 right = dirs0.Right;
             Vector3 up = dirs0.Up;
             Vector3 backward = dirs0.Backward;
 
             float testDepth;
-            
+
             if (Disjoint(out testDepth, ref triNormal, newBox, ref tri, collTolerance))
                 return (false);
 
@@ -622,7 +632,7 @@ namespace JigLibX.Collision
             #endregion
 
             if (Vector3.Dot(D, N) < 0.0f)
-               N *= -1;
+                N *= -1;
 
             Vector3 boxOldPos = (info.Skin0.Owner != null) ? info.Skin0.Owner.OldPosition : Vector3.Zero;
             Vector3 boxNewPos = (info.Skin0.Owner != null) ? info.Skin0.Owner.Position : Vector3.Zero;
@@ -634,16 +644,21 @@ namespace JigLibX.Collision
             const float combinationDist = 0.05f;
             GetBoxTriangleIntersectionPoints(pts, newBox, tri, depth + combinationDist);
 
-            // adjust the depth 
+            // adjust the depth
+
             #region REFERENCE: Vector3 delta = boxNewPos - boxOldPos;
+
             Vector3 delta;
             Vector3.Subtract(ref boxNewPos, ref boxOldPos, out delta);
+
             #endregion
 
             #region REFERENCE: float oldDepth = depth + Vector3.Dot(delta, N);
+
             float oldDepth;
             Vector3.Dot(ref delta, ref N, out oldDepth);
             oldDepth += depth;
+
             #endregion
 
             unsafe
@@ -689,11 +704,10 @@ namespace JigLibX.Collision
                     {
 #if !USE_STACKALLOC
                         FreeStackAlloc(collPtArray);
-#endif                       
+#endif
                         return false;
                     }
                 }
-
             }
         }
 
@@ -717,11 +731,13 @@ namespace JigLibX.Collision
             float boxRadius = newBox.GetBoundingRadiusAroundCentre();
 
             #region REFERENCE: Vector3 boxCentre = newBox.GetCentre();
+
             Vector3 boxCentre;
             newBox.GetCentre(out boxCentre);
             // Deano need to trasnform the box center into mesh space
             Matrix invTransformMatrix = mesh.InverseTransformMatrix;
             Vector3.Transform(ref boxCentre, ref invTransformMatrix, out boxCentre);
+
             #endregion
 
             BoundingBox bb = BoundingBoxHelper.InitialBox;
@@ -736,7 +752,7 @@ namespace JigLibX.Collision
                 {
 #else
                 int[] potTriArray = IntStackAlloc();
-                fixed( int* potentialTriangles = potTriArray)
+                fixed (int* potentialTriangles = potTriArray)
                 {
 #endif
                     // aabox is done in mesh space and handles the mesh transform correctly

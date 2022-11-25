@@ -1,18 +1,17 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Collision;
-using JigLibX.Physics;
 using JigLibX.Geometry;
+using JigLibX.Physics;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Vehicles
 {
     /// <summary>
-    /// Basic rigid body to represent a single chassis - at the moment 
-    /// no moving components. You can inherit from this and pass your 
+    /// Basic rigid body to represent a single chassis - at the moment
+    /// no moving components. You can inherit from this and pass your
     /// own version to Car (TODO - tidy up this)
     /// </summary>
     public class Chassis
@@ -94,8 +93,6 @@ namespace JigLibX.Vehicles
             max = dimsMax;
         }
 
-
-
         /// <summary>
         /// Register with physics
         /// </summary>
@@ -127,7 +124,6 @@ namespace JigLibX.Vehicles
         {
             get { return collisionSkin; }
         }
-
     }
 
     /// <summary>
@@ -160,7 +156,6 @@ namespace JigLibX.Vehicles
             ClearForces();
             AddGravityToExternalForce();
             mCar.AddExternalForces(dt);
-
         }
 
         /// <summary>
@@ -173,7 +168,6 @@ namespace JigLibX.Vehicles
                 return;
 
             mCar.PostPhysics(dt);
-
         }
 
         /// <summary>
@@ -183,7 +177,5 @@ namespace JigLibX.Vehicles
         {
             get { return mCar; }
         }
-
-
     }
 }

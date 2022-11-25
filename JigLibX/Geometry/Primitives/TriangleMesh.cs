@@ -1,10 +1,10 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using JigLibX.Math;
+
 using JigLibX.Collision;
+using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -209,7 +209,6 @@ namespace JigLibX.Geometry
             // move segment into octree space
             seg.Origin = Vector3.Transform(seg.Origin, invTransform);
             seg.Delta = Vector3.TransformNormal(seg.Delta, invTransform);
-
 
             BoundingBox segBox = BoundingBoxHelper.InitialBox;
             BoundingBoxHelper.AddSegment(seg, ref segBox);

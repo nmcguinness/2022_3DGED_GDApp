@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using JigLibX.Math;
-using JigLibX.Physics;
+﻿using JigLibX.Collision;
 using JigLibX.Geometry;
-using JigLibX.Collision;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace JigLibX.Physics
 {
@@ -31,7 +27,7 @@ namespace JigLibX.Physics
             for (float slice = 0; slice <= elementsToCalc; slice++)
             {
                 double stepRad = MathHelper.ToRadians(slice * stepSize);
-                
+
                 float x1 = (float)(System.Math.Sin(stepRad));
                 float y1 = (float)(System.Math.Cos(stepRad));
 
@@ -48,7 +44,7 @@ namespace JigLibX.Physics
         /// <param name="wireframe"></param>
         /// <param name="orientation"></param>
         /// <param name="color"></param>
-        private static void AddShapeToWireframe( List<Vector3> shape, List<VertexPositionColor> wireframe, Matrix orientation, Color color )
+        private static void AddShapeToWireframe(List<Vector3> shape, List<VertexPositionColor> wireframe, Matrix orientation, Color color)
         {
             if (wireframe.Count > 0)
             {
@@ -122,7 +118,6 @@ namespace JigLibX.Physics
                     AddShapeToWireframe(SpherePoints, wireframe, trans, Color.Blue);
                     AddShapeToWireframe(SpherePoints, wireframe, Matrix.CreateRotationY(MathHelper.PiOver2) * trans, Color.Red);
                     AddShapeToWireframe(SpherePoints, wireframe, Matrix.CreateRotationX(MathHelper.PiOver2) * trans, Color.Green);
-
                 }
                 else if (p is Capsule)
                 {
@@ -159,13 +154,12 @@ namespace JigLibX.Physics
                     AddLineToWireframe(SidePoints[0], SidePoints[1], wireframe, Zmat * trans, Color.Blue);
                     AddLineToWireframe(SidePoints[2], SidePoints[3], wireframe, Zmat * trans, Color.Blue);
 
-                    //// Create X Profile 
+                    //// Create X Profile
                     Matrix Xmat = Matrix.Identity;
                     AddShapeToWireframe(CylPoints, wireframe, Matrix.CreateTranslation(new Vector3(0, 0, np.Length)) * Xmat * trans, Color.Red);
                     AddShapeToWireframe(CylPoints, wireframe, Matrix.CreateTranslation(new Vector3(0, 0, 0)) * Xmat * trans, Color.Red);
                     AddLineToWireframe(SidePoints[0], SidePoints[1], wireframe, Xmat * trans, Color.Red);
                     AddLineToWireframe(SidePoints[2], SidePoints[3], wireframe, Xmat * trans, Color.Red);
-
                 }
                 else if (p is Box)
                 {
@@ -224,10 +218,9 @@ namespace JigLibX.Physics
                             AddLineToWireframe(point, point - 0.5f * normal, wireframe, trans, Color.GreenYellow);
                         }
                     }
-
                 }
                 else if (p is JigLibX.Geometry.Plane)
-                {                  
+                {
                 }
                 else if (p is TriangleMesh)
                 {
@@ -249,10 +242,8 @@ namespace JigLibX.Physics
                         tPoints.Add(p1);
 
                         AddShapeToWireframe(tPoints, wireframe, trans, Color.Red);
-
                     }
                 }
-
             }
 
             return wireframe.ToArray();
@@ -265,14 +256,11 @@ namespace JigLibX.Physics
         /// <param name="wireframe"></param>
         public static void TransformWireframe(this Body body, VertexPositionColor[] wireframe)
         {
-            
-            for ( int i = 0; i < wireframe.Length; i++)
+            for (int i = 0; i < wireframe.Length; i++)
             {
                 wireframe[i].Position = Vector3.Transform(wireframe[i].Position,
                                             body.Orientation * Matrix.CreateTranslation(body.Position));
             }
-
         }
-
     }
 }

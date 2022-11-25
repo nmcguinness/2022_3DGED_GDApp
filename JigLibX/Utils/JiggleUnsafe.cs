@@ -1,8 +1,7 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Utils
@@ -61,7 +60,7 @@ namespace JigLibX.Utils
         {
             fixed (float* adr = &mat.M11)
             {
-                return ((Vector3*)(adr+index))[index];
+                return ((Vector3*)(adr + index))[index];
             }
         }
 

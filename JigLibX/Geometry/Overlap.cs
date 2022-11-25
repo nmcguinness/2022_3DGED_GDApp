@@ -1,10 +1,9 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Math;
 using JigLibX.Utils;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Geometry
@@ -17,6 +16,7 @@ namespace JigLibX.Geometry
         // Missing: SegmentPlaneOverlap
 
         #region SegmentTriangleOverlap
+
         /// <summary>
         /// Indicates if a segment intersects a triangle
         /// </summary>
@@ -57,11 +57,13 @@ namespace JigLibX.Geometry
 
             return true;
         }
+
         #endregion
 
         // Missing: SweptSpherePlaneOverlap
 
         #region SegmentAABoxOverlap
+
         /// <summary>
         /// Indicates if a segment overlaps an AABox
         /// </summary>
@@ -75,7 +77,7 @@ namespace JigLibX.Geometry
 
             float[] faceOffsets = new float[2];
 
-            // The AABox faces are aligned with the world directions. Loop 
+            // The AABox faces are aligned with the world directions. Loop
             // over the 3 directions and do the two tests.
             for (int iDir = 0; iDir < 3; iDir++)
             {
@@ -118,7 +120,7 @@ namespace JigLibX.Geometry
             }
             return false;
         }
-        #endregion
 
+        #endregion
     }
 }

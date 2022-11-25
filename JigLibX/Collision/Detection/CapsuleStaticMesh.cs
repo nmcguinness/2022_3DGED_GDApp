@@ -1,21 +1,18 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for CapsuleStaticMesh collison detection.
     /// </summary>
     public class CollDetectCapsuleStaticMesh : DetectFunctor
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,7 +40,7 @@ namespace JigLibX.Collision
                 info.IndexPrim1 = primSwap;
             }
 
-            if((info.Skin0.CollisionSystem != null) && info.Skin0.CollisionSystem.UseSweepTests)
+            if ((info.Skin0.CollisionSystem != null) && info.Skin0.CollisionSystem.UseSweepTests)
                 CollDetectSweep(info, collTolerance, collisionFunctor);
             else
                 CollDetectOverlap(info, collTolerance, collisionFunctor);
@@ -61,7 +58,6 @@ namespace JigLibX.Collision
         private void CollDetectCapsuleStaticMeshOverlap(Capsule oldCapsule, Capsule newCapsule,
             TriangleMesh mesh, CollDetectInfo info, float collTolerance, CollisionFunctor collisionFunctor)
         {
-
             Vector3 body0Pos = (info.Skin0.Owner != null) ? info.Skin0.Owner.OldPosition : Vector3.Zero;
             Vector3 body1Pos = (info.Skin1.Owner != null) ? info.Skin1.Owner.OldPosition : Vector3.Zero;
 
@@ -244,6 +240,5 @@ namespace JigLibX.Collision
 
             CollDetectCapsulseStaticMeshSweep(oldCapsule, newCapsule, mesh, info, collTolerance, collisionFunctor);
         }
-
     }
 }

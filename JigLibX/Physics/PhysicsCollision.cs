@@ -1,15 +1,15 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-using Microsoft.Xna.Framework;
 using JigLibX.Collision;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Physics
 {
     #region CollisionIsland
+
     /// <summary>
     /// Class CollisionIsland
     /// </summary>
@@ -22,14 +22,17 @@ namespace JigLibX.Physics
             : base(64)
         {
         }
+
         /// <summary>
         /// Empry CollisionIsland
         /// </summary>
         private static CollisionIsland empty = new CollisionIsland();
+
         /// <summary>
         /// Gets empty
         /// </summary>
-        public static CollisionIsland Empty { get { return empty; } }
+        public static CollisionIsland Empty
+        { get { return empty; } }
 
         /// <summary>
         /// WantsDeactivation
@@ -61,18 +64,18 @@ namespace JigLibX.Physics
             for (int i = 0; i < count; i++) this[i].SetActive();
         }
     }
+
     #endregion
 
     #region BasicCollisionFunctor
 
     /// <summary>
     /// Derived from the CollisionFunctor class. The BasicCollisionFunctor can be passed to
-    /// CollisionSystem.DetectAllCollision method and gets called for every collision found. 
+    /// CollisionSystem.DetectAllCollision method and gets called for every collision found.
     /// The collisions get added to a list.
     /// </summary>
     public class BasicCollisionFunctor : CollisionFunctor
     {
-
         private List<CollisionInfo> colls;
 
         /// <summary>
@@ -102,12 +105,12 @@ namespace JigLibX.Physics
             // if more than one point, add another that is in the middle - collision
 
             if ((skin0 != null) && (skin0.Owner != null))
-            {            
+            {
                 // if either skin say don't generate contact points, then we don't
-                bool generateContactPoints = skin0.OnCollisionEvent(skin0,skin1);
+                bool generateContactPoints = skin0.OnCollisionEvent(skin0, skin1);
                 if (skin1 != null)
                 {
-                    generateContactPoints &= skin1.OnCollisionEvent(skin1,skin0);
+                    generateContactPoints &= skin1.OnCollisionEvent(skin1, skin0);
                 }
 
                 if (generateContactPoints)
@@ -123,10 +126,10 @@ namespace JigLibX.Physics
             else if ((skin1 != null) && (skin1.Owner != null))
             {
                 // if either skin say don't generate contact points, then we don't
-                bool generateContactPoints = skin1.OnCollisionEvent(skin1,skin0);
+                bool generateContactPoints = skin1.OnCollisionEvent(skin1, skin0);
                 if (skin0 != null)
                 {
-                    generateContactPoints &= skin0.OnCollisionEvent(skin0,skin1);
+                    generateContactPoints &= skin0.OnCollisionEvent(skin0, skin1);
                 }
 
                 if (generateContactPoints)
@@ -153,9 +156,7 @@ namespace JigLibX.Physics
     /// </summary>
     public class FrozenCollisionPredicate : CollisionSkinPredicate2
     {
-
         private Body body;
-
 
         /// <summary>
         /// Constructor of FrozenCollision Predicate.
@@ -183,6 +184,6 @@ namespace JigLibX.Physics
             return false;
         }
     }
-    #endregion
 
+    #endregion
 }

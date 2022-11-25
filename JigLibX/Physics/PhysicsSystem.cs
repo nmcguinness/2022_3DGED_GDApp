@@ -1,14 +1,11 @@
 #region Using Statements
 
+using JigLibX.Collision;
+using JigLibX.Math;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using JigLibX.Collision;
-using JigLibX.Geometry;
-using JigLibX.Math;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 #endregion
 

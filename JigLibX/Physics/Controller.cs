@@ -1,20 +1,11 @@
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-#endregion
-
 namespace JigLibX.Physics
 {
-
     /// <summary>
     /// This can get updated at the same time as Body.AddExternalForces so that forces
     /// can be added independant of individual bodies - e.g. joints between pairs of bodies.
     /// </summary>
     public abstract class Controller
     {
-
         private bool controllerEnabled = false;
 
         /// <summary>
@@ -26,7 +17,7 @@ namespace JigLibX.Physics
             if (controllerEnabled) return;
 
             controllerEnabled = true;
-            
+
             PhysicsSystem.CurrentPhysicsSystem.AddController(this);
         }
 
@@ -56,6 +47,5 @@ namespace JigLibX.Physics
         /// </summary>
         /// <param name="dt"></param>
         public abstract void UpdateController(float dt);
-
     }
 }

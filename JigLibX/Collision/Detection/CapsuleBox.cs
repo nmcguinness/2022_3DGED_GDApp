@@ -1,15 +1,14 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+using System;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for CapsuleBox collison detection.
     /// </summary>
@@ -61,10 +60,10 @@ namespace JigLibX.Collision
 
             float oldSegT;
             float oldBoxT0, oldBoxT1, oldBoxT2;
-            float oldDistSq = Distance.SegmentBoxDistanceSq(out oldSegT, out oldBoxT0, out oldBoxT1, out oldBoxT2,oldSeg, oldBox);
+            float oldDistSq = Distance.SegmentBoxDistanceSq(out oldSegT, out oldBoxT0, out oldBoxT1, out oldBoxT2, oldSeg, oldBox);
             float newSegT;
             float newBoxT0, newBoxT1, newBoxT2;
-            float newDistSq = Distance.SegmentBoxDistanceSq(out newSegT, out newBoxT0, out newBoxT1, out newBoxT2,newSeg, newBox);
+            float newDistSq = Distance.SegmentBoxDistanceSq(out newSegT, out newBoxT0, out newBoxT1, out newBoxT2, newSeg, newBox);
 
             if (MathHelper.Min(oldDistSq, newDistSq) < ((radius + collTolerance) * (radius + collTolerance)))
             {
@@ -99,9 +98,7 @@ namespace JigLibX.Collision
 
                     collisionFunctor.CollisionNotify(ref info, ref dir, &collInfo, 1);
                 }
-
             }
-
         }
     }
 }

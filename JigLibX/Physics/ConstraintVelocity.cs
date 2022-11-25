@@ -1,15 +1,15 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Collision;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 #endregion
 
 namespace JigLibX.Physics
 {
     /// <summary>
-    /// Constrains a velocity to be a certain value - either in world 
+    /// Constrains a velocity to be a certain value - either in world
     /// or body (by transforming the velocity direction) coordinates
     /// </summary>
     public class ConstraintVelocity : Constraint
@@ -23,6 +23,7 @@ namespace JigLibX.Physics
             /// World
             /// </summary>
             World,
+
             /// <summary>
             /// Body
             /// </summary>
@@ -125,24 +126,26 @@ namespace JigLibX.Physics
 
                     if (collInfo.SkinInfo.Skin1.Owner == null)
                     {
-
                         Vector3 dir = collInfo.DirToBody0;
                         //Vector3 dir = collInfo.DirToBody0.GetNormalisedSafe();
 
                         #region REFERENCE: float dot = Vector3.Dot(vel, dir);
+
                         float dot;
                         Vector3.Dot(ref vel, ref dir, out dot);
+
                         #endregion
 
                         if (dot < 0.0f)
                         {
                             #region REFERENCE: vel -= dot * dir;
+
                             Vector3 v1;
                             Vector3.Multiply(ref dir, dot, out v1);
                             Vector3.Subtract(ref vel, ref v1, out vel);
+
                             #endregion
                         }
-
                     }
                 }
             }
@@ -166,30 +169,38 @@ namespace JigLibX.Physics
                 if (doVel)
                 {
                     #region REFERENCE: Vector3 velBodyFrame = Vector3.Transform(vel, body.Orientation);
+
                     Vector3 velBodyFrame;
                     Vector3.TransformNormal(ref vel, ref body.transform.Orientation, out velBodyFrame);
+
                     #endregion
 
                     #region REFERENCE: body.Velocity = (frac * velBodyFrame + (1.0f - frac) * body.Velocity);
+
                     Vector3 v1;
                     Vector3.Multiply(ref body.transformRate.Velocity, 1.0f - frac, out v1);
                     Vector3.Multiply(ref velBodyFrame, frac, out body.transformRate.Velocity);
                     Vector3.Add(ref body.transformRate.Velocity, ref v1, out body.transformRate.Velocity);
+
                     #endregion
                 }
 
                 if (doAngVel)
                 {
                     #region REFERENCE: Vector3 angVelBodyFrame = Vector3.Transform(angVel, body.Orientation);
+
                     Vector3 angVelBodyFrame;
                     Vector3.TransformNormal(ref angVel, ref body.transform.Orientation, out angVelBodyFrame);
+
                     #endregion
 
                     #region REFERENCE: body.AngVel = (frac * angVelBodyFrame + (1.0f - frac) * body.AngVel);
+
                     Vector3 v1;
                     Vector3.Multiply(ref body.transformRate.AngularVelocity, 1.0f - frac, out v1);
                     Vector3.Multiply(ref angVelBodyFrame, frac, out body.transformRate.AngularVelocity);
                     Vector3.Add(ref body.transformRate.AngularVelocity, ref v1, out body.transformRate.AngularVelocity);
+
                     #endregion
                 }
             }
@@ -198,20 +209,24 @@ namespace JigLibX.Physics
                 if (doVel)
                 {
                     #region REFERENCE: body.Velocity = (frac * vel + (1.0f - frac) * body.Velocity);
+
                     Vector3 v1;
                     Vector3.Multiply(ref body.transformRate.Velocity, 1.0f - frac, out body.transformRate.Velocity);
                     Vector3.Multiply(ref vel, frac, out v1);
                     Vector3.Add(ref body.transformRate.Velocity, ref v1, out body.transformRate.Velocity);
+
                     #endregion
                 }
 
                 if (doAngVel)
                 {
                     #region REFERENCE: body.AngVel = (frac * angVel + (1.0f - frac) * body.AngVel);
+
                     Vector3 v1;
                     Vector3.Multiply(ref body.transformRate.AngularVelocity, 1.0f - frac, out body.transformRate.AngularVelocity);
                     Vector3.Multiply(ref angVel, frac, out v1);
                     Vector3.Add(ref body.transformRate.AngularVelocity, ref v1, out body.transformRate.AngularVelocity);
+
                     #endregion
                 }
             }
@@ -234,7 +249,5 @@ namespace JigLibX.Physics
             body = null;
             DisableConstraint();
         }
-
     }
 }
-

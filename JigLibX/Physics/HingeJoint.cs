@@ -1,10 +1,8 @@
 ﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-using Microsoft.Xna.Framework;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Physics
@@ -109,7 +107,7 @@ namespace JigLibX.Physics
                 // anchor point for body 2 is chosen to be in the middle of the
                 // angle range.  relative to hinge
                 float angleToMiddle = 0.5f * (hingeFwdAngle - hingeBckAngle);
-                Vector3 hingeRelAnchorPos1 = Vector3.TransformNormal(hingeRelAnchorPos0, Matrix.CreateFromAxisAngle(hingeAxis,MathHelper.ToRadians(-angleToMiddle)));
+                Vector3 hingeRelAnchorPos1 = Vector3.TransformNormal(hingeRelAnchorPos0, Matrix.CreateFromAxisAngle(hingeAxis, MathHelper.ToRadians(-angleToMiddle)));
 
                 // work out the "string" length
                 float hingeHalfAngle = 0.5f * (hingeFwdAngle + hingeBckAngle);
@@ -187,7 +185,6 @@ namespace JigLibX.Physics
                 mMaxDistanceConstraint.DisableConstraint();
 
             broken = true;
-
         }
 
         /// <summary>
@@ -202,7 +199,6 @@ namespace JigLibX.Physics
                 mMaxDistanceConstraint.EnableConstraint();
 
             broken = false;
-
         }
 
         /// <summary>
@@ -226,9 +222,9 @@ namespace JigLibX.Physics
                 JiggleMath.NormalizeSafe(ref hingeAxis);
 
                 float angRot1;//
-                Vector3.Dot(ref body0.transformRate.AngularVelocity,ref hingeAxis,out angRot1);
+                Vector3.Dot(ref body0.transformRate.AngularVelocity, ref hingeAxis, out angRot1);
                 float angRot2;
-                Vector3.Dot(ref body1.transformRate.AngularVelocity,ref hingeAxis,out angRot2);
+                Vector3.Dot(ref body1.transformRate.AngularVelocity, ref hingeAxis, out angRot2);
 
                 float avAngRot = 0.5f * (angRot1 + angRot2);
 
@@ -238,7 +234,7 @@ namespace JigLibX.Physics
 
                 Vector3 newAngVel1;// = body0.AngVel + (newAngRot1 - angRot1) * hingeAxis;
                 Vector3.Multiply(ref hingeAxis, newAngRot1 - angRot1, out newAngVel1);
-                Vector3.Add(ref newAngVel1,ref body0.transformRate.AngularVelocity, out newAngVel1);
+                Vector3.Add(ref newAngVel1, ref body0.transformRate.AngularVelocity, out newAngVel1);
 
                 Vector3 newAngVel2;// = body1.AngVel + (newAngRot2 - angRot2) * hingeAxis;
                 Vector3.Multiply(ref hingeAxis, newAngRot2 - angRot2, out newAngVel2);
@@ -275,6 +271,5 @@ namespace JigLibX.Physics
         {
             get { return broken; }
         }
-
     }
 }

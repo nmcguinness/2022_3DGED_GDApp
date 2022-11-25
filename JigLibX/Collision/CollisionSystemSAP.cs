@@ -3,32 +3,34 @@
 //Separately released into the public domain by the author.
 
 #region Using Statements
-using System;
+
+using JigLibX.Geometry;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
-using JigLibX.Geometry;
-#endregion
+
+#endregion Using Statements
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
-    /// Implementing a collision system (broad-phase test) based on the sweep-and-prune 
+    /// Implementing a collision system (broad-phase test) based on the sweep-and-prune
     /// algorithm
     /// </summary>
     public class CollisionSystemSAP : CollisionSystem, IComparer<CollisionSkin>
     {
-        List<CollisionSkin> skins_ = new List<CollisionSkin>();
-        bool dirty_;
-        float largestX_;
-        List<CollisionSkin> active_ = new List<CollisionSkin>();
-        List<Primitive> testing_ = new List<Primitive>();
-        List<Primitive> second_ = new List<Primitive>();
+        private List<CollisionSkin> skins_ = new List<CollisionSkin>();
+        private bool dirty_;
+        private float largestX_;
+        private List<CollisionSkin> active_ = new List<CollisionSkin>();
+        private List<Primitive> testing_ = new List<Primitive>();
+        private List<Primitive> second_ = new List<Primitive>();
+
         /// <summary>
         /// Gets largestX_
         /// </summary>
-        public float LargestX { get { return largestX_; } }
+        public float LargestX
+        { get { return largestX_; } }
 
         /// <summary>
         /// Constructor
@@ -88,7 +90,7 @@ namespace JigLibX.Collision
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <param name="skins"></param>
-        void Extract(Vector3 min, Vector3 max, List<CollisionSkin> skins)
+        private void Extract(Vector3 min, Vector3 max, List<CollisionSkin> skins)
         {
             if (skins_.Count == 0)
                 return;
@@ -108,7 +110,7 @@ namespace JigLibX.Collision
         /// </summary>
         /// <param name="x"></param>
         /// <returns>int</returns>
-        int bsearch(float x)
+        private int bsearch(float x)
         {
             //  It is up to the caller to make sure this isn't called on an empty collection.
             int top = skins_.Count;
@@ -192,7 +194,7 @@ namespace JigLibX.Collision
             }
         }
 
-        SkinTester skinTester_ = new SkinTester();
+        private SkinTester skinTester_ = new SkinTester();
 
         /// <summary>
         /// DetectAllCollisions
@@ -222,13 +224,13 @@ namespace JigLibX.Collision
         /// <summary>
         /// Class SkinTester
         /// </summary>
-        class SkinTester : CollisionSkinPredicate2
+        private class SkinTester : CollisionSkinPredicate2
         {
-            CollisionFunctor collisionFunctor_;
-            CollisionSkinPredicate2 collisionPredicate_;
-            float collTolerance_;
-            CollDetectInfo info_;
-            CollisionSystem sys_;
+            private CollisionFunctor collisionFunctor_;
+            private CollisionSkinPredicate2 collisionPredicate_;
+            private float collTolerance_;
+            private CollDetectInfo info_;
+            private CollisionSystem sys_;
 
             /// <summary>
             /// Constructor
@@ -260,7 +262,7 @@ namespace JigLibX.Collision
             /// <param name="skin0"></param>
             /// <param name="skin1"></param>
             /// <returns>bool</returns>
-            private static bool CheckCollidables(CollisionSkin skin0,CollisionSkin skin1)
+            private static bool CheckCollidables(CollisionSkin skin0, CollisionSkin skin1)
             {
                 List<CollisionSkin> nonColl0 = skin0.NonCollidables;
                 List<CollisionSkin> nonColl1 = skin1.NonCollidables;
@@ -269,13 +271,13 @@ namespace JigLibX.Collision
                 if (nonColl0.Count == 0 && nonColl1.Count == 0)
                     return true;
 
-                for (int i0 = nonColl0.Count; i0-- != 0; )
+                for (int i0 = nonColl0.Count; i0-- != 0;)
                 {
                     if (nonColl0[i0] == skin1)
                         return false;
                 }
 
-                for (int i1 = nonColl1.Count; i1-- != 0; )
+                for (int i1 = nonColl1.Count; i1-- != 0;)
                 {
                     if (nonColl1[i1] == skin0)
                         return false;
@@ -322,6 +324,7 @@ namespace JigLibX.Collision
                     }
                 }
             }
+
             /// <summary>
             /// ConsiderSkinPair
             /// </summary>
@@ -339,7 +342,7 @@ namespace JigLibX.Collision
         /// </summary>
         /// <param name="cs"></param>
         /// <param name="st"></param>
-        void AddToActive(CollisionSkin cs, SkinTester st)
+        private void AddToActive(CollisionSkin cs, SkinTester st)
         {
             int n = active_.Count;
             float xMin = cs.WorldBoundingBox.Min.X;
@@ -348,7 +351,7 @@ namespace JigLibX.Collision
             unsafe
             {
                 CollisionSkin asi;
-                for (int i = 0; i != n; )
+                for (int i = 0; i != n;)
                 {
                     asi = active_[i];
                     if (asi.WorldBoundingBox.Max.X < xMin)
@@ -448,14 +451,14 @@ namespace JigLibX.Collision
                     }
                 }
             }
-            
+
             return (fracOut <= 1);
         }
 
         /// <summary>
         /// MaybeSort
         /// </summary>
-        void MaybeSort()
+        private void MaybeSort()
         {
             if (dirty_)
             {

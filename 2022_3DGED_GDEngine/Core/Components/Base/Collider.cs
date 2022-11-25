@@ -1,5 +1,4 @@
-﻿using GD.Engine.Events;
-using JigLibX.Collision;
+﻿using JigLibX.Collision;
 using JigLibX.Geometry;
 using JigLibX.Physics;
 using Microsoft.Xna.Framework;

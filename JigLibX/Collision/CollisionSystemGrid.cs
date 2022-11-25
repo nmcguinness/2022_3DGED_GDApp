@@ -1,20 +1,18 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-using Microsoft.Xna.Framework;
-using JigLibX.Collision;
-using JigLibX.Physics;
 using JigLibX.Geometry;
 using JigLibX.Math;
+using JigLibX.Physics;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     #region GridEntry
+
     /// <summary>
     /// Double linked list used to contain all the skins in a grid box
     /// </summary>
@@ -24,14 +22,17 @@ namespace JigLibX.Collision
         /// Skin
         /// </summary>
         public CollisionSkin Skin;
+
         /// <summary>
         /// Previous
         /// </summary>
         public GridEntry Previous;
+
         /// <summary>
         /// Next
         /// </summary>
         public GridEntry Next;
+
         /// <summary>
         /// GridIndex
         /// </summary>
@@ -71,7 +72,6 @@ namespace JigLibX.Collision
             entry.GridIndex = -2;
         }
 
-
         /// <summary>
         /// Inserts an entry after prev, updating all links
         /// </summary>
@@ -87,8 +87,8 @@ namespace JigLibX.Collision
                 next.Previous = entry;
             entry.GridIndex = prev.GridIndex;
         }
-
     }
+
     #endregion
 
     /// <summary>
@@ -452,13 +452,13 @@ namespace JigLibX.Collision
             if (nonColl0.Count == 0 && nonColl1.Count == 0)
                 return true;
 
-            for (int i0 = nonColl0.Count; i0-- != 0; )
+            for (int i0 = nonColl0.Count; i0-- != 0;)
             {
                 if (nonColl0[i0] == skin1)
                     return false;
             }
 
-            for (int i1 = nonColl1.Count; i1-- != 0; )
+            for (int i1 = nonColl1.Count; i1-- != 0;)
             {
                 if (nonColl1[i1] == skin0)
                     return false;
@@ -536,7 +536,7 @@ namespace JigLibX.Collision
                 tempGridLists.Clear();
                 GetListsToCheck(tempGridLists, info.Skin0);
 
-                for (int iList = tempGridLists.Count; iList-- != 0; )
+                for (int iList = tempGridLists.Count; iList-- != 0;)
                 {
                     // first one is a placeholder;
                     GridEntry entry = tempGridLists[iList];
@@ -557,7 +557,7 @@ namespace JigLibX.Collision
 
                         // only do one per pair
                         if ((skinSleeping == false) && (info.Skin1.ID < info.Skin0.ID))
-                             continue;
+                            continue;
 
                         if ((collisionPredicate != null) && (!collisionPredicate.ConsiderSkinPair(info.Skin0, info.Skin1)))
                             continue;
@@ -633,7 +633,6 @@ namespace JigLibX.Collision
                                 fracOut = frac;
                             }
                         }
-
                     }
                 }
             }
@@ -644,4 +643,3 @@ namespace JigLibX.Collision
         }
     }
 }
-

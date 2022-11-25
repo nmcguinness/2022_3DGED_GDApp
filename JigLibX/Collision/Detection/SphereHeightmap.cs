@@ -1,21 +1,17 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
-using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
 {
-
     /// <summary>
     /// DetectFunctor for SphereHeightmap collison detection.
     /// </summary>
     public class CollDetectSphereHeightmap : DetectFunctor
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,7 +42,6 @@ namespace JigLibX.Collision
             Vector3 body0Pos = (info.Skin0.Owner != null) ? info.Skin0.Owner.OldPosition : Vector3.Zero;
             Vector3 body1Pos = (info.Skin1.Owner != null) ? info.Skin1.Owner.OldPosition : Vector3.Zero;
 
-
             // todo - proper swept test
             Sphere oldSphere = info.Skin0.GetPrimitiveOldWorld(info.IndexPrim0) as Sphere;
             Sphere newSphere = info.Skin0.GetPrimitiveNewWorld(info.IndexPrim0) as Sphere;
@@ -56,7 +51,7 @@ namespace JigLibX.Collision
 
             float newDist;
             Vector3 normal;
-            newHeightmap.GetHeightAndNormal(out newDist, out normal,newSphere.Position);
+            newHeightmap.GetHeightAndNormal(out newDist, out normal, newSphere.Position);
             if (newDist < collTolerance + newSphere.Radius)
             {
                 float oldDist = oldHeightmap.GetHeight(oldSphere.Position);

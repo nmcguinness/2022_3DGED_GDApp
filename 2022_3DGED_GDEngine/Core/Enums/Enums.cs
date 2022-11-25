@@ -2,6 +2,8 @@
 {
     public enum GameObjectType : sbyte
     {
+        #region 3D
+
         Interactable,
         Collectible,
         Consumable,
@@ -10,6 +12,18 @@
         NPC,
         Enemy,
         Architecture,
+        Camera,
+        Trigger,  //collidable volume with no model
+
+        #endregion 3D
+
+        #region 2D
+
+        UI_Text,
+        UI_Texture,
+        UI_Button
+
+        #endregion 2D
     }
 
     public enum TurnDirectionType : sbyte

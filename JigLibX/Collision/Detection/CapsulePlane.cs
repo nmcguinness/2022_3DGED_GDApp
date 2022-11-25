@@ -1,10 +1,8 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
-using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
@@ -14,7 +12,6 @@ namespace JigLibX.Collision
     /// </summary>
     public class CollDetectCapsulePlane : DetectFunctor
     {
-
         /// <summary>
         /// DetectFunctor for CapsulePlane collison detection.
         /// </summary>
@@ -114,8 +111,7 @@ namespace JigLibX.Collision
 #if !USE_STACKALLOC
                 FreeStackAlloc(collPtArray);
 #endif
-            }            
-
+            }
         }
     }
 }

@@ -1,15 +1,13 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.Xna.Framework;
-using JigLibX.Math;
+
 #endregion
 
 namespace JigLibX.Geometry
 {
-
     #region public struct Line
+
     /// <summary>
     /// A line goes through pos, and extends infinitely far in both
     /// directions along dir.
@@ -20,6 +18,7 @@ namespace JigLibX.Geometry
         /// Origin
         /// </summary>
         public Vector3 Origin;
+
         /// <summary>
         /// Direction
         /// </summary>
@@ -50,9 +49,11 @@ namespace JigLibX.Geometry
             //return this.Origin + t * this.Dir;
         }
     }
+
     #endregion
 
     #region public struct Ray
+
     /// <summary>
     /// A Ray is just a line that extends in the +ve direction
     /// </summary>
@@ -62,6 +63,7 @@ namespace JigLibX.Geometry
         /// Origin
         /// </summary>
         public Vector3 Origin;
+
         /// <summary>
         /// Direction
         /// </summary>
@@ -72,7 +74,7 @@ namespace JigLibX.Geometry
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="dir"></param>
-        public Ray(Vector3 origin,Vector3 dir)
+        public Ray(Vector3 origin, Vector3 dir)
         {
             this.Origin = origin;
             this.Dir = dir;
@@ -93,9 +95,11 @@ namespace JigLibX.Geometry
             //return this.Origin + t * this.Dir;
         }
     }
+
     #endregion
 
     #region public struct Segment
+
     /// <summary>
     /// A Segment is a line that starts at origin and goes only as far as
     /// (origin + delta).
@@ -106,6 +110,7 @@ namespace JigLibX.Geometry
         /// Origin
         /// </summary>
         public Vector3 Origin;
+
         /// <summary>
         /// Direction
         /// </summary>
@@ -166,7 +171,7 @@ namespace JigLibX.Geometry
             result.X += Origin.X;
             result.Y += Origin.Y;
             result.Z += Origin.Z;
-            
+
             return result;
         }
 
@@ -195,8 +200,7 @@ namespace JigLibX.Geometry
                 Delta.Z + Origin.Z);
             //return Origin + Delta;
         }
-
     }
-    #endregion
 
+    #endregion
 }

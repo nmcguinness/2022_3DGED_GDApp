@@ -1,22 +1,18 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using JigLibX.Math;
-#endregion
 
+using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
+#endregion
 
 namespace JigLibX.Geometry
 {
-
     /// <summary>
     /// Defines a capsule that is orientated along its body x direction, with
     /// its start at its position.
     /// </summary>
-    public class Capsule : Primitive 
+    public class Capsule : Primitive
     {
-
         private float length;
         private float radius;
 
@@ -27,7 +23,7 @@ namespace JigLibX.Geometry
         /// <param name="orient"></param>
         /// <param name="radius"></param>
         /// <param name="length"></param>
-        public Capsule(Vector3 pos,Matrix orient,float radius, float length)
+        public Capsule(Vector3 pos, Matrix orient, float radius, float length)
             : base((int)PrimitiveType.Capsule)
         {
             this.transform = new Transform(pos, orient);
@@ -77,8 +73,8 @@ namespace JigLibX.Geometry
         /// </summary>
         public override Transform Transform
         {
-            get{return this.transform;}
-            set{this.transform = value;}
+            get { return this.transform; }
+            set { this.transform = value; }
         }
 
         /// <summary>

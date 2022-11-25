@@ -6,7 +6,7 @@ using System;
 namespace GD.Engine.Managers
 {
     /// <summary>
-    /// Performs draw (or render) on ActiveScene objects
+    /// Renders the active scene
     /// </summary>
     public class RenderManager : PausableDrawableGameComponent
     {

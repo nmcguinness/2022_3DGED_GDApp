@@ -1,10 +1,9 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace JigLibX.Collision
@@ -14,7 +13,6 @@ namespace JigLibX.Collision
     /// </summary>
     public class CollDetectCapsuleHeightmap : DetectFunctor
     {
-
         /// <summary>
         /// DetectFunctor for CapsuleHeightmap collison detection.
         /// </summary>
@@ -55,7 +53,6 @@ namespace JigLibX.Collision
 
             unsafe
             {
-
 #if USE_STACKALLOC
                 SmallCollPointInfo* collPts = stackalloc SmallCollPointInfo[MaxLocalStackSCPI];
 #else
@@ -124,5 +121,4 @@ namespace JigLibX.Collision
             }
         }
     }
-            
 }

@@ -1,7 +1,7 @@
 #region Using Statements
-using System;
+
 using System.Collections.Generic;
-using System.Text;
+
 #endregion
 
 namespace JigLibX.Collision
@@ -16,18 +16,24 @@ namespace JigLibX.Collision
     {
         private int type0, type1;
         private string name;
+
         /// <summary>
         /// Gets name
         /// </summary>
-        public string Name { get { return this.name; } }
+        public string Name
+        { get { return this.name; } }
+
         /// <summary>
         /// Gets type0
         /// </summary>
-        public int Type0 { get { return this.type0; } }
+        public int Type0
+        { get { return this.type0; } }
+
         /// <summary>
         /// Gets type1
         /// </summary>
-        public int Type1 { get { return this.type1; } }
+        public int Type1
+        { get { return this.type1; } }
 
         /// <summary>
         /// Constructor
@@ -49,18 +55,22 @@ namespace JigLibX.Collision
         /// <param name="collTolerance"></param>
         /// <param name="collisionFunctor"></param>
         public abstract void CollDetect(CollDetectInfo info, float collTolerance, CollisionFunctor collisionFunctor);
+
         /// <summary>
         /// Set at 2048
         /// </summary>
         public const int MaxLocalStackTris = 2048;
+
         /// <summary>
         /// Set at 10
         /// </summary>
         public const int MaxLocalStackSCPI = 10;
-        const int InitialLocalStackDepth = 10;
-        
-        static Stack<int[]> freeInts = new Stack<int[]>();
-        static Stack<SmallCollPointInfo[]> freeSCPIs = new Stack<SmallCollPointInfo[]>();
+
+        private const int InitialLocalStackDepth = 10;
+
+        private static Stack<int[]> freeInts = new Stack<int[]>();
+        private static Stack<SmallCollPointInfo[]> freeSCPIs = new Stack<SmallCollPointInfo[]>();
+
         static DetectFunctor()
         {
             for (int i = 0; i < InitialLocalStackDepth; ++i)
@@ -92,6 +102,7 @@ namespace JigLibX.Collision
         {
             freeInts.Push(alloced);
         }
+
         /// <summary>
         /// SCPIStackAlloc
         /// </summary>
@@ -114,6 +125,5 @@ namespace JigLibX.Collision
         {
             freeSCPIs.Push(alloced);
         }
-
     }
 }
