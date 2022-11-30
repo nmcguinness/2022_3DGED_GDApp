@@ -46,10 +46,11 @@ namespace GD.App
         private PickingManager pickingManager;
         private StateManager stateManager;
         private GameObject uiTextureGameObject;
-        private SpriteMaterial textSpriteMaterial;
-        private UITextureElement uiTextureElement;
-        private SceneManager<Scene2D> uiManager;
-        private Render2DManager uiRenderManager;
+
+        private UserInterfaceManager hudManager;
+        private Render2DManager hudRenderManager;
+        private UserInterfaceManager menuManager;
+        private Render2DManager menuRenderManager;
 
 #if DEMO
 
@@ -200,34 +201,80 @@ namespace GD.App
 
 #endif
 
-            InitializeUI();
+            InitializeHUD();
+            InitializeMenu();
         }
 
-        private void InitializeUI()
+        private void InitializeMenu()
         {
-            var mainUIScene = new Scene2D("main UI");
+            var mainMenuScene = new Scene2D("main menu");
+
+            GameObject uiTextureGameObject = null;
+
+            #region Add Background
 
             uiTextureGameObject = new GameObject("background");
+            var texture = Content.Load<Texture2D>("Assets/Textures/Menu/Backgrounds/exitmenuwithtrans");
+            var material = new SpriteMaterial(texture, Color.White);
+
+            var scaleToWindow = new Vector3(((float)_graphics.PreferredBackBufferWidth) / texture.Width,
+                ((float)_graphics.PreferredBackBufferHeight) / texture.Height, 1);
+
+            uiTextureGameObject.Transform = new Transform(
+                scaleToWindow, //s
+                new Vector3(0, 0, 0), //r
+                new Vector3(0, 0, 0)); //t
+
+            var uiElement = new UITextureElement();
+            uiTextureGameObject.AddComponent(new SpriteRenderer(material, uiElement));
+
+            //add to scene2D
+            mainMenuScene.Add(uiTextureGameObject);
+
+            #endregion
+
+            #region Add Scene to Manager and Set Active
+
+            //add scene2D to menu manager
+            menuManager.Add(mainMenuScene.ID, mainMenuScene);
+
+            //what menu do i see first?
+            menuManager.SetActiveScene(mainMenuScene.ID);
+
+            #endregion
+        }
+
+        private void InitializeHUD()
+        {
+            var mainHUD = new Scene2D("game HUD");
+
+            #region Add HUD Element
+
+            uiTextureGameObject = new GameObject("a square");
             uiTextureGameObject.Transform = new Transform(
                 new Vector3(1, 1, 0), //s
                 new Vector3(0, 0, 45), //r
                 new Vector3(50, 50, 0)); //t
 
-            var material = new SpriteMaterial(
-               Content.Load<Texture2D>("Assets/Textures/UI/white32x32"),
-                0, Color.Red);
+            var material = new SpriteMaterial(Content.Load<Texture2D>("Assets/Textures/UI/white32x32"), Color.Red);
             var uiElement = new UITextureElement();
             uiTextureGameObject.AddComponent(
                 new SpriteRenderer(material, uiElement));
 
             //add to scene2D
-            mainUIScene.Add(uiTextureGameObject);
+            mainHUD.Add(uiTextureGameObject);
+
+            #endregion
+
+            #region Add Scene to Manager and Set Active
 
             //add scene2D to manager
-            uiManager.Add(mainUIScene.ID, mainUIScene);
+            hudManager.Add(mainHUD.ID, mainHUD);
 
             //what ui do i see first?
-            uiManager.SetActiveScene(mainUIScene.ID);
+            hudManager.SetActiveScene(mainHUD.ID);
+
+            #endregion
         }
 
         private void SetTitle(string title)
@@ -352,8 +399,10 @@ namespace GD.App
             var characterCollider = new CharacterCollider(cameraGameObject, true);
 
             cameraGameObject.AddComponent(characterCollider);
-            characterCollider.AddPrimitive(new Capsule(cameraGameObject.Transform.Translation,
-                Matrix.CreateRotationX(MathHelper.PiOver2), 1, 3.6f),
+            characterCollider.AddPrimitive(new Capsule(
+                cameraGameObject.Transform.Translation,
+                Matrix.CreateRotationX(MathHelper.PiOver2),
+                1, 3.6f),
                 new MaterialProperties(0.2f, 0.8f, 0.7f));
             characterCollider.Enable(cameraGameObject, false, 1);
 
@@ -783,7 +832,7 @@ namespace GD.App
             Application.SoundManager = soundManager;
             Application.PhysicsManager = physicsManager;
 
-            Application.UISceneManager = uiManager;
+            Application.UISceneManager = hudManager;
         }
 
         private void InitializeInput()
@@ -877,18 +926,37 @@ namespace GD.App
 
             #endregion
 
+            #region Game State
+
             //add state manager for inventory and countdown
             stateManager = new StateManager(this, AppData.MAX_GAME_TIME_IN_MSECS);
             Components.Add(stateManager);
 
-            #region UI Related
+            #endregion
 
-            uiManager = new SceneManager<Scene2D>(this);
-            Components.Add(uiManager);
+            #region UI
 
-            uiRenderManager = new Render2DManager(this, StatusType.Drawn | StatusType.Updated, _spriteBatch);
-            uiRenderManager.DrawOrder = 2;
-            Components.Add(uiRenderManager);
+            hudManager = new UserInterfaceManager(this);
+            hudManager.StatusType = StatusType.Off;
+            Components.Add(hudManager);
+
+            hudRenderManager = new Render2DManager(this, _spriteBatch, hudManager);
+            hudRenderManager.StatusType = StatusType.Off;
+            hudRenderManager.DrawOrder = 2;
+            Components.Add(hudRenderManager);
+
+            #endregion
+
+            #region Menu
+
+            menuManager = new UserInterfaceManager(this);
+            menuManager.StatusType = StatusType.Off;
+            Components.Add(menuManager);
+
+            menuRenderManager = new Render2DManager(this, _spriteBatch, menuManager);
+            menuRenderManager.StatusType = StatusType.Off;
+            menuRenderManager.DrawOrder = 3;
+            Components.Add(menuRenderManager);
 
             #endregion
         }

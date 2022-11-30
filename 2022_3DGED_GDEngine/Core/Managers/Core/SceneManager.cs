@@ -98,7 +98,7 @@ namespace GD.Engine.Managers
 
         public override void Update(GameTime gameTime)
         {
-            if (StatusType != StatusType.Off)
+            if (IsUpdated)
                 activeScene.Update(gameTime);
         }
 

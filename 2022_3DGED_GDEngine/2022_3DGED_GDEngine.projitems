@@ -50,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\PhysicsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\PickingManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\Render2DManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\UI\UserInterfaceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Other\Data\Resolutions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableDrawableComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableOnlyComponent.cs" />
