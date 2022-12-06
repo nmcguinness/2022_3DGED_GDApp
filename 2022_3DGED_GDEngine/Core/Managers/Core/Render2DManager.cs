@@ -1,8 +1,6 @@
 ﻿using GD.Engine.Events;
-using GD.Engine.Globals;
 using GD.Engine.Managers;
 using Microsoft.Xna.Framework;
-using System.Windows.Forms;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace GD.Engine

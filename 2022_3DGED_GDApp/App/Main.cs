@@ -155,6 +155,12 @@ namespace GD.App
             base.Initialize();
         }
 
+        private void HandleExit(EventData eventData)
+        {
+            if (eventData.EventActionType == EventActionType.OnExit)
+                this.Exit();
+        }
+
         #endregion Actions - Initialize
 
         #region Actions - Level Specific
@@ -203,6 +209,11 @@ namespace GD.App
 
             InitializeHUD();
             InitializeMenu();
+
+            //start the game paused
+            //   EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
+            //listen for exit events
+            //  EventDispatcher.Subscribe(EventCategoryType.Menu, HandleExit);
         }
 
         private void InitializeMenu()
@@ -227,6 +238,54 @@ namespace GD.App
 
             var uiElement = new UITextureElement();
             uiTextureGameObject.AddComponent(new SpriteRenderer(material, uiElement));
+
+            //add to scene2D
+            mainMenuScene.Add(uiTextureGameObject);
+
+            #endregion
+
+            #region Add Play button
+
+            uiTextureGameObject = new GameObject("play");
+            texture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
+            material = new SpriteMaterial(texture, Color.Green, 0);
+
+            uiTextureGameObject.Transform = new Transform(
+                new Vector3(0.6f, 0.6f, 1), //s
+                new Vector3(0, 0, 0), //r
+                new Vector3(Application.Screen.ScreenCentre - 0.6f * texture.GetCenter() - new Vector2(0, 30), 0)); //t
+
+            uiElement = new UITextureElement();
+            var spriteRenderer = new SpriteRenderer(material, uiElement);
+            uiTextureGameObject.AddComponent(spriteRenderer);
+
+            //add bounding box for mouse collisions
+            uiTextureGameObject.AddComponent(new ButtonCollider2D(uiTextureGameObject,
+                spriteRenderer, new EventData(EventCategoryType.Menu, EventActionType.OnPlay)));
+
+            //add to scene2D
+            mainMenuScene.Add(uiTextureGameObject);
+
+            #endregion
+
+            #region Add Exit button
+
+            uiTextureGameObject = new GameObject("exit");
+            texture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
+            material = new SpriteMaterial(texture, Color.Red, 0);
+
+            uiTextureGameObject.Transform = new Transform(
+                new Vector3(0.6f, 0.6f, 1), //s
+                new Vector3(0, 0, 0), //r
+                new Vector3(Application.Screen.ScreenCentre - 0.6f * texture.GetCenter() + new Vector2(0, 30), 0)); //t
+
+            uiElement = new UITextureElement();
+            spriteRenderer = new SpriteRenderer(material, uiElement);
+            uiTextureGameObject.AddComponent(spriteRenderer);
+
+            //add bounding box for mouse collisions
+            uiTextureGameObject.AddComponent(new ButtonCollider2D(uiTextureGameObject,
+                spriteRenderer, new EventData(EventCategoryType.Menu, EventActionType.OnExit)));
 
             //add to scene2D
             mainMenuScene.Add(uiTextureGameObject);

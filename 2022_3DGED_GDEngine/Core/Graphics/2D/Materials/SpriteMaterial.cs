@@ -35,6 +35,16 @@ namespace GD.Engine
 
         #region Constructors
 
+        public SpriteMaterial(Texture2D diffuse, Color color, float layerDepth)
+     : this(diffuse, color, layerDepth, Vector2.Zero, SpriteEffects.None, new Rectangle(0, 0, diffuse.Width, diffuse.Height))
+        {
+        }
+
+        public SpriteMaterial(Texture2D diffuse, Color color, float layerDepth, Vector2 origin)
+       : this(diffuse, color, layerDepth, origin, SpriteEffects.None, new Rectangle(0, 0, diffuse.Width, diffuse.Height))
+        {
+        }
+
         public SpriteMaterial(Texture2D diffuse, Color color)
         : this(diffuse, color, 0, Vector2.Zero, SpriteEffects.None, new Rectangle(0, 0, diffuse.Width, diffuse.Height))
         {
