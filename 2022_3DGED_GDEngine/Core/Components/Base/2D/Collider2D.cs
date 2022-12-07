@@ -18,16 +18,15 @@ namespace GD.Engine
 
         #endregion Properties
 
-        public Collider2D(GameObject gameObject, SpriteRenderer spriteRenderer)
+        public Collider2D(GameObject gameObject, Renderer2D renderer2D)
         {
-            var width = spriteRenderer.Material.Diffuse.Width;
-            var height = spriteRenderer.Material.Diffuse.Height;
+            var scaledDimensions = gameObject.Transform.Scale.To2D() * renderer2D.Material.UnscaledDimensions;
 
             bounds = new Rectangle(
               (int)gameObject.Transform.Translation.X,
               (int)gameObject.Transform.Translation.Y,
-             (int)(width * gameObject.Transform.Scale.X),
-              (int)(height * gameObject.Transform.Scale.Y));
+              (int)scaledDimensions.X,
+              (int)scaledDimensions.Y);
         }
 
         public override void Update(GameTime gameTime)
@@ -40,8 +39,14 @@ namespace GD.Engine
         {
             if (bounds.Intersects(Input.Mouse.Bounds))
             {
-                //check for over
-                HandleMouseOver();
+                //check for hover
+                HandleMouseHover();
+
+                //check for scroll
+                var scrollDelta = Input.Mouse.GetDeltaFromScrollWheel();
+                if (scrollDelta != 0)
+                    HandleMouseScroll(scrollDelta);
+
                 //check for clicks
                 if (Input.Mouse.WasJustClicked(Inputs.MouseButton.Left))
                     HandleMouseClick(Inputs.MouseButton.Left);
@@ -52,11 +57,15 @@ namespace GD.Engine
             }
         }
 
-        public virtual void HandleMouseClick(MouseButton mouseButton)
+        protected virtual void HandleMouseScroll(int scrollDelta)
         {
         }
 
-        public virtual void HandleMouseOver()
+        protected virtual void HandleMouseClick(MouseButton mouseButton)
+        {
+        }
+
+        protected virtual void HandleMouseHover()
         {
         }
     }

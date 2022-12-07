@@ -12,8 +12,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Collections\ContentDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Collections\GameObjectList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Collections\ObjectList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\ButtonCollider2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Collider2D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Renderers\SpriteRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Renderers\Renderer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Scene2D\Scene2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\3D\Controllers\Camera\CollidableFirstPersonController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\3D\CharacterCollider.cs" />
@@ -42,9 +43,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\GraphicsDeviceManagerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\QuaternionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Texture2DExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\Materials\SpriteMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\Materials\Material2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\Materials\TextureMaterial2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\Materials\TextSpriteMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\2D\UIElements\UIElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Base\TexturedMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Base\WireframeMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Graphics\3D\Meshes\Wireframe\XYZMesh.cs" />

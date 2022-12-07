@@ -153,7 +153,9 @@ This repository contains code for the game engine
 - [ ] Give ICA document - Wk 10
 
 ### To Do - Week 11
-- [ ] Collidable Camera
+- [x] Collidable Camera
+
+### To Do - Week 12
 - [ ] Collect object => Value => Inventory
 - [ ] Pick objects with mouse
 - [ ] Add fully working Audio 3D demo

@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Text;
 using Application = GD.Engine.Globals.Application;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
@@ -197,95 +198,145 @@ namespace GD.App
             //add the player
             //InitializePlayer();
 
-#if DEMO
-            //Raise all the events that I want to happen at the start
-            //object[] parameters = { "epic_soundcue" };
-            //EventDispatcher.Raise(
-            //    new EventData(EventCategoryType.Player,
-            //    EventActionType.OnSpawnObject,
-            //    parameters));
-
-#endif
-
+            //add UI and menu
             InitializeHUD();
             InitializeMenu();
 
+            //send all initial events
+
+            #region Start Events - Menu etc
+
             //start the game paused
-            //   EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
+            EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
             //listen for exit events
-            //  EventDispatcher.Subscribe(EventCategoryType.Menu, HandleExit);
+            EventDispatcher.Subscribe(EventCategoryType.Menu, HandleExit);
+
+            #endregion
         }
 
         private void InitializeMenu()
         {
+            GameObject uiTextureGameObject = null;
+            Material2D material = null;
+            Renderer2D renderer2D = null;
+            Texture2D btnTexture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
+            Texture2D backGroundtexture = Content.Load<Texture2D>("Assets/Textures/Menu/Backgrounds/exitmenuwithtrans");
+            SpriteFont spriteFont = Content.Load<SpriteFont>("Assets/Fonts/menu");
+            Vector2 btnScale = new Vector2(0.8f, 0.8f);
+
+            #region Create new menu scene
+
+            //add new main menu scene
             var mainMenuScene = new Scene2D("main menu");
 
-            GameObject uiTextureGameObject = null;
+            #endregion
 
-            #region Add Background
+            #region Add Background Texture
 
             uiTextureGameObject = new GameObject("background");
-            var texture = Content.Load<Texture2D>("Assets/Textures/Menu/Backgrounds/exitmenuwithtrans");
-            var material = new SpriteMaterial(texture, Color.White);
-
-            var scaleToWindow = new Vector3(((float)_graphics.PreferredBackBufferWidth) / texture.Width,
-                ((float)_graphics.PreferredBackBufferHeight) / texture.Height, 1);
-
+            var scaleToWindow = _graphics.GetScaleFactorForResolution(backGroundtexture, Vector2.Zero);
+            //set transform
             uiTextureGameObject.Transform = new Transform(
-                scaleToWindow, //s
+                new Vector3(scaleToWindow, 1), //s
                 new Vector3(0, 0, 0), //r
                 new Vector3(0, 0, 0)); //t
 
-            var uiElement = new UITextureElement();
-            uiTextureGameObject.AddComponent(new SpriteRenderer(material, uiElement));
+            #region texture
+
+            //material and renderer
+            material = new TextureMaterial2D(backGroundtexture, Color.White, 1);
+            uiTextureGameObject.AddComponent(new Renderer2D(material));
+
+            #endregion
 
             //add to scene2D
             mainMenuScene.Add(uiTextureGameObject);
 
             #endregion
 
-            #region Add Play button
+            #region Add Play button and text
 
             uiTextureGameObject = new GameObject("play");
-            texture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
-            material = new SpriteMaterial(texture, Color.Green, 0);
-
             uiTextureGameObject.Transform = new Transform(
-                new Vector3(0.6f, 0.6f, 1), //s
-                new Vector3(0, 0, 0), //r
-                new Vector3(Application.Screen.ScreenCentre - 0.6f * texture.GetCenter() - new Vector2(0, 30), 0)); //t
+            new Vector3(btnScale, 1), //s
+            new Vector3(0, 0, 0), //r
+            new Vector3(Application.Screen.ScreenCentre - btnScale * btnTexture.GetCenter() - new Vector2(0, 30), 0)); //t
 
-            uiElement = new UITextureElement();
-            var spriteRenderer = new SpriteRenderer(material, uiElement);
-            uiTextureGameObject.AddComponent(spriteRenderer);
+            #region texture
 
-            //add bounding box for mouse collisions
-            uiTextureGameObject.AddComponent(new ButtonCollider2D(uiTextureGameObject,
-                spriteRenderer, new EventData(EventCategoryType.Menu, EventActionType.OnPlay)));
+            //material and renderer
+            material = new TextureMaterial2D(btnTexture, Color.Green, 0.9f);
+            //add renderer to draw the texture
+            renderer2D = new Renderer2D(material);
+            //add renderer as a component
+            uiTextureGameObject.AddComponent(renderer2D);
+
+            #endregion
+
+            #region collider
+
+            //add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
+            var buttonCollider2D = new ButtonCollider2D(uiTextureGameObject, renderer2D);
+            //add any events on MouseButton (e.g. Left, Right, Hover)
+            buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnPlay));
+            uiTextureGameObject.AddComponent(buttonCollider2D);
+
+            #endregion
+
+            #region text
+
+            //material and renderer
+            material = new TextMaterial2D(spriteFont, "Play", new Vector2(70, 5), Color.White, 0.8f);
+            //add renderer to draw the text
+            renderer2D = new Renderer2D(material);
+            uiTextureGameObject.AddComponent(renderer2D);
+
+            #endregion
 
             //add to scene2D
             mainMenuScene.Add(uiTextureGameObject);
 
             #endregion
 
-            #region Add Exit button
+            #region Add Exit button and text
 
             uiTextureGameObject = new GameObject("exit");
-            texture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
-            material = new SpriteMaterial(texture, Color.Red, 0);
 
             uiTextureGameObject.Transform = new Transform(
-                new Vector3(0.6f, 0.6f, 1), //s
+                new Vector3(btnScale, 1), //s
                 new Vector3(0, 0, 0), //r
-                new Vector3(Application.Screen.ScreenCentre - 0.6f * texture.GetCenter() + new Vector2(0, 30), 0)); //t
+                new Vector3(Application.Screen.ScreenCentre - btnScale * btnTexture.GetCenter() + new Vector2(0, 30), 0)); //t
 
-            uiElement = new UITextureElement();
-            spriteRenderer = new SpriteRenderer(material, uiElement);
-            uiTextureGameObject.AddComponent(spriteRenderer);
+            #region texture
 
-            //add bounding box for mouse collisions
-            uiTextureGameObject.AddComponent(new ButtonCollider2D(uiTextureGameObject,
-                spriteRenderer, new EventData(EventCategoryType.Menu, EventActionType.OnExit)));
+            //material and renderer
+            material = new TextureMaterial2D(btnTexture, Color.Red, 0.9f);
+            //add renderer to draw the texture
+            renderer2D = new Renderer2D(material);
+            //add renderer as a component
+            uiTextureGameObject.AddComponent(renderer2D);
+
+            #endregion
+
+            #region collider
+
+            //add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
+            buttonCollider2D = new ButtonCollider2D(uiTextureGameObject, renderer2D);
+            //add any events on MouseButton (e.g. Left, Right, Hover)
+            buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnExit));
+            uiTextureGameObject.AddComponent(buttonCollider2D);
+
+            #endregion
+
+            #region text
+
+            //button material and renderer
+            material = new TextMaterial2D(spriteFont, "Exit", new Vector2(70, 5), Color.White, 0.8f);
+            //add renderer to draw the text
+            renderer2D = new Renderer2D(material);
+            uiTextureGameObject.AddComponent(renderer2D);
+
+            #endregion
 
             //add to scene2D
             mainMenuScene.Add(uiTextureGameObject);
@@ -315,10 +366,8 @@ namespace GD.App
                 new Vector3(0, 0, 45), //r
                 new Vector3(50, 50, 0)); //t
 
-            var material = new SpriteMaterial(Content.Load<Texture2D>("Assets/Textures/UI/white32x32"), Color.Red);
-            var uiElement = new UITextureElement();
-            uiTextureGameObject.AddComponent(
-                new SpriteRenderer(material, uiElement));
+            var material = new TextureMaterial2D(Content.Load<Texture2D>("Assets/Textures/UI/white32x32"), Color.Red);
+            uiTextureGameObject.AddComponent(new Renderer2D(material));
 
             //add to scene2D
             mainHUD.Add(uiTextureGameObject);
