@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace GD.App
+namespace App.Managers
 {
     public enum ItemType : sbyte
     {
@@ -25,13 +25,13 @@ namespace GD.App
     /// <summary>
     /// Countdown/up timer and we need an inventory system
     /// </summary>
-    public class StateManager : GameComponent
+    public class MyStateManager : GameComponent
     {
         private double maxTimeInMS;
         private double totalElapsedTimeMS;
         private List<InventoryItem> inventory;
 
-        public StateManager(Game game, double maxTimeInMS) : base(game)
+        public MyStateManager(Game game, double maxTimeInMS) : base(game)
         {
             this.maxTimeInMS = maxTimeInMS;
             totalElapsedTimeMS = 0;

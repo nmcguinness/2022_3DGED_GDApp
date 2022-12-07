@@ -15,6 +15,7 @@ namespace GD.Engine
 
         protected Texture2D texture;
         protected Rectangle sourceRectangle;
+        protected Rectangle originalSourceRectangle;
 
         #endregion Fields
 
@@ -22,6 +23,16 @@ namespace GD.Engine
 
         public Texture2D Texture { get => texture; set => texture = value; }
         public Rectangle SourceRectangle { get => sourceRectangle; set => sourceRectangle = value; }
+        public int SourceRectangleWidth { get => sourceRectangle.Width; set => sourceRectangle.Width = value; }
+        public int SourceRectangleHeight { get => sourceRectangle.Height; set => sourceRectangle.Height = value; }
+
+        public Rectangle OriginalSourceRectangle
+        {
+            get
+            {
+                return originalSourceRectangle;
+            }
+        }
 
         #endregion Properties
 
@@ -36,6 +47,7 @@ namespace GD.Engine
             : this(texture, color, layerDepth, Vector2.Zero, SpriteEffects.None, new Rectangle(0, 0, texture.Width, texture.Height))
         {
         }
+
         public TextureMaterial2D(Texture2D texture, Color color)
             : this(texture, color, 0, Vector2.Zero, SpriteEffects.None, new Rectangle(0, 0, texture.Width, texture.Height))
         {
@@ -45,7 +57,7 @@ namespace GD.Engine
             : base(color, layerDepth, origin, spriteEffects)
         {
             this.texture = texture;
-            this.sourceRectangle = sourceRectangle;
+            this.sourceRectangle = originalSourceRectangle = sourceRectangle;
 
             //store dimensions for any collider2D bounding box
             unscaledDimensions = new Vector2(texture.Width, texture.Height);

@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Collections\ObjectList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\ButtonCollider2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Collider2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Controllers\UIProgressBarController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Renderers\Renderer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\2D\Scene2D\Scene2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\Base\3D\Controllers\Camera\CollidableFirstPersonController.cs" />
@@ -54,7 +55,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\PhysicsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\PickingManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\Render2DManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Managers\Core\UI\UserInterfaceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Other\Data\Resolutions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableDrawableComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Demo\TestUpdateableOnlyComponent.cs" />

@@ -5,6 +5,7 @@
 
 #endregion
 
+using App.Managers;
 using GD.Core;
 using GD.Engine;
 using GD.Engine.Events;
@@ -18,11 +19,8 @@ using JigLibX.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
-using System.Text;
 using Application = GD.Engine.Globals.Application;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Cue = GD.Engine.Managers.Cue;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
@@ -45,13 +43,9 @@ namespace GD.App
         private EventDispatcher eventDispatcher;
         private GameObject playerGameObject;
         private PickingManager pickingManager;
-        private StateManager stateManager;
-        private GameObject uiTextureGameObject;
-
-        private UserInterfaceManager hudManager;
-        private Render2DManager hudRenderManager;
-        private UserInterfaceManager menuManager;
-        private Render2DManager menuRenderManager;
+        private MyStateManager stateManager;
+        private SceneManager<Scene2D> uiManager;
+        private SceneManager<Scene2D> menuManager;
 
 #if DEMO
 
@@ -156,12 +150,6 @@ namespace GD.App
             base.Initialize();
         }
 
-        private void HandleExit(EventData eventData)
-        {
-            if (eventData.EventActionType == EventActionType.OnExit)
-                this.Exit();
-        }
-
         #endregion Actions - Initialize
 
         #region Actions - Level Specific
@@ -199,7 +187,7 @@ namespace GD.App
             //InitializePlayer();
 
             //add UI and menu
-            InitializeHUD();
+            InitializeUI();
             InitializeMenu();
 
             //send all initial events
@@ -208,15 +196,13 @@ namespace GD.App
 
             //start the game paused
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
-            //listen for exit events
-            EventDispatcher.Subscribe(EventCategoryType.Menu, HandleExit);
 
             #endregion
         }
 
         private void InitializeMenu()
         {
-            GameObject uiTextureGameObject = null;
+            GameObject menuGameObject = null;
             Material2D material = null;
             Renderer2D renderer2D = null;
             Texture2D btnTexture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/genericbtn");
@@ -233,10 +219,10 @@ namespace GD.App
 
             #region Add Background Texture
 
-            uiTextureGameObject = new GameObject("background");
+            menuGameObject = new GameObject("background");
             var scaleToWindow = _graphics.GetScaleFactorForResolution(backGroundtexture, Vector2.Zero);
             //set transform
-            uiTextureGameObject.Transform = new Transform(
+            menuGameObject.Transform = new Transform(
                 new Vector3(scaleToWindow, 1), //s
                 new Vector3(0, 0, 0), //r
                 new Vector3(0, 0, 0)); //t
@@ -245,19 +231,19 @@ namespace GD.App
 
             //material and renderer
             material = new TextureMaterial2D(backGroundtexture, Color.White, 1);
-            uiTextureGameObject.AddComponent(new Renderer2D(material));
+            //  menuGameObject.AddComponent(new Renderer2D(material));
 
             #endregion
 
             //add to scene2D
-            mainMenuScene.Add(uiTextureGameObject);
+            mainMenuScene.Add(menuGameObject);
 
             #endregion
 
             #region Add Play button and text
 
-            uiTextureGameObject = new GameObject("play");
-            uiTextureGameObject.Transform = new Transform(
+            menuGameObject = new GameObject("play");
+            menuGameObject.Transform = new Transform(
             new Vector3(btnScale, 1), //s
             new Vector3(0, 0, 0), //r
             new Vector3(Application.Screen.ScreenCentre - btnScale * btnTexture.GetCenter() - new Vector2(0, 30), 0)); //t
@@ -269,17 +255,17 @@ namespace GD.App
             //add renderer to draw the texture
             renderer2D = new Renderer2D(material);
             //add renderer as a component
-            uiTextureGameObject.AddComponent(renderer2D);
+            menuGameObject.AddComponent(renderer2D);
 
             #endregion
 
             #region collider
 
             //add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
-            var buttonCollider2D = new ButtonCollider2D(uiTextureGameObject, renderer2D);
+            var buttonCollider2D = new ButtonCollider2D(menuGameObject, renderer2D);
             //add any events on MouseButton (e.g. Left, Right, Hover)
             buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnPlay));
-            uiTextureGameObject.AddComponent(buttonCollider2D);
+            menuGameObject.AddComponent(buttonCollider2D);
 
             #endregion
 
@@ -289,20 +275,20 @@ namespace GD.App
             material = new TextMaterial2D(spriteFont, "Play", new Vector2(70, 5), Color.White, 0.8f);
             //add renderer to draw the text
             renderer2D = new Renderer2D(material);
-            uiTextureGameObject.AddComponent(renderer2D);
+            menuGameObject.AddComponent(renderer2D);
 
             #endregion
 
             //add to scene2D
-            mainMenuScene.Add(uiTextureGameObject);
+            mainMenuScene.Add(menuGameObject);
 
             #endregion
 
             #region Add Exit button and text
 
-            uiTextureGameObject = new GameObject("exit");
+            menuGameObject = new GameObject("exit");
 
-            uiTextureGameObject.Transform = new Transform(
+            menuGameObject.Transform = new Transform(
                 new Vector3(btnScale, 1), //s
                 new Vector3(0, 0, 0), //r
                 new Vector3(Application.Screen.ScreenCentre - btnScale * btnTexture.GetCenter() + new Vector2(0, 30), 0)); //t
@@ -314,19 +300,19 @@ namespace GD.App
             //add renderer to draw the texture
             renderer2D = new Renderer2D(material);
             //add renderer as a component
-            uiTextureGameObject.AddComponent(renderer2D);
+            menuGameObject.AddComponent(renderer2D);
 
             #endregion
 
-            #region collider
+            //#region collider
 
-            //add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
-            buttonCollider2D = new ButtonCollider2D(uiTextureGameObject, renderer2D);
-            //add any events on MouseButton (e.g. Left, Right, Hover)
-            buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnExit));
-            uiTextureGameObject.AddComponent(buttonCollider2D);
+            ////add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
+            //buttonCollider2D = new ButtonCollider2D(menuGameObject, renderer2D);
+            ////add any events on MouseButton (e.g. Left, Right, Hover)
+            //buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnExit));
+            //menuGameObject.AddComponent(buttonCollider2D);
 
-            #endregion
+            //#endregion
 
             #region text
 
@@ -334,12 +320,12 @@ namespace GD.App
             material = new TextMaterial2D(spriteFont, "Exit", new Vector2(70, 5), Color.White, 0.8f);
             //add renderer to draw the text
             renderer2D = new Renderer2D(material);
-            uiTextureGameObject.AddComponent(renderer2D);
+            menuGameObject.AddComponent(renderer2D);
 
             #endregion
 
             //add to scene2D
-            mainMenuScene.Add(uiTextureGameObject);
+            mainMenuScene.Add(menuGameObject);
 
             #endregion
 
@@ -354,33 +340,49 @@ namespace GD.App
             #endregion
         }
 
-        private void InitializeHUD()
+        private void InitializeUI()
         {
+            GameObject uiGameObject = null;
+            Material2D material = null;
+            Texture2D texture = Content.Load<Texture2D>("Assets/Textures/Menu/Controls/progress_white");
+
             var mainHUD = new Scene2D("game HUD");
 
-            #region Add HUD Element
+            #region Add UI Element
 
-            uiTextureGameObject = new GameObject("a square");
-            uiTextureGameObject.Transform = new Transform(
+            uiGameObject = new GameObject("progress bar - health - 1");
+            uiGameObject.Transform = new Transform(
                 new Vector3(1, 1, 0), //s
-                new Vector3(0, 0, 45), //r
-                new Vector3(50, 50, 0)); //t
+                new Vector3(0, 0, 0), //r
+                new Vector3(_graphics.PreferredBackBufferWidth - texture.Width - 20,
+                20, 0)); //t
 
-            var material = new TextureMaterial2D(Content.Load<Texture2D>("Assets/Textures/UI/white32x32"), Color.Red);
-            uiTextureGameObject.AddComponent(new Renderer2D(material));
+            #region texture
+
+            //material and renderer
+            material = new TextureMaterial2D(texture, Color.Red);
+            uiGameObject.AddComponent(new Renderer2D(material));
+
+            #endregion
+
+            #region progress controller
+
+            uiGameObject.AddComponent(new UIProgressBarController(5, 10));
+
+            #endregion
 
             //add to scene2D
-            mainHUD.Add(uiTextureGameObject);
+            mainHUD.Add(uiGameObject);
 
             #endregion
 
             #region Add Scene to Manager and Set Active
 
             //add scene2D to manager
-            hudManager.Add(mainHUD.ID, mainHUD);
+            uiManager.Add(mainHUD.ID, mainHUD);
 
             //what ui do i see first?
-            hudManager.SetActiveScene(mainHUD.ID);
+            uiManager.SetActiveScene(mainHUD.ID);
 
             #endregion
         }
@@ -940,7 +942,8 @@ namespace GD.App
             Application.SoundManager = soundManager;
             Application.PhysicsManager = physicsManager;
 
-            Application.UISceneManager = hudManager;
+            Application.UISceneManager = uiManager;
+            Application.MenuSceneManager = menuManager;
         }
 
         private void InitializeInput()
@@ -1037,33 +1040,37 @@ namespace GD.App
             #region Game State
 
             //add state manager for inventory and countdown
-            stateManager = new StateManager(this, AppData.MAX_GAME_TIME_IN_MSECS);
+            stateManager = new MyStateManager(this, AppData.MAX_GAME_TIME_IN_MSECS);
             Components.Add(stateManager);
 
             #endregion
 
             #region UI
 
-            hudManager = new UserInterfaceManager(this);
-            hudManager.StatusType = StatusType.Off;
-            Components.Add(hudManager);
+            uiManager = new SceneManager<Scene2D>(this);
+            uiManager.StatusType = StatusType.Off;
+            uiManager.IsPausedOnPlay = false;
+            Components.Add(uiManager);
 
-            hudRenderManager = new Render2DManager(this, _spriteBatch, hudManager);
-            hudRenderManager.StatusType = StatusType.Off;
-            hudRenderManager.DrawOrder = 2;
-            Components.Add(hudRenderManager);
+            var uiRenderManager = new Render2DManager(this, _spriteBatch, uiManager);
+            uiRenderManager.StatusType = StatusType.Off;
+            uiRenderManager.DrawOrder = 2;
+            uiRenderManager.IsPausedOnPlay = false;
+            Components.Add(uiRenderManager);
 
             #endregion
 
             #region Menu
 
-            menuManager = new UserInterfaceManager(this);
-            menuManager.StatusType = StatusType.Off;
+            menuManager = new SceneManager<Scene2D>(this);
+            menuManager.StatusType = StatusType.Updated;
+            menuManager.IsPausedOnPlay = true;
             Components.Add(menuManager);
 
-            menuRenderManager = new Render2DManager(this, _spriteBatch, menuManager);
-            menuRenderManager.StatusType = StatusType.Off;
+            var menuRenderManager = new Render2DManager(this, _spriteBatch, menuManager);
+            menuRenderManager.StatusType = StatusType.Drawn;
             menuRenderManager.DrawOrder = 3;
+            menuRenderManager.IsPausedOnPlay = true;
             Components.Add(menuRenderManager);
 
             #endregion
@@ -1132,13 +1139,8 @@ namespace GD.App
 
         protected override void Update(GameTime gameTime)
         {
-            //dummy key strokes
-            //Raise
+            #region Menu On/Off with U/P
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-#if DEMO
             if (Input.Keys.WasJustPressed(Keys.P))
             {
                 EventDispatcher.Raise(new EventData(EventCategoryType.Menu,
@@ -1150,6 +1152,27 @@ namespace GD.App
                    EventActionType.OnPlay));
             }
 
+            #endregion
+
+#if DEMO
+
+            #region Demo - UI - progress bar
+
+            if (Input.Keys.WasJustPressed(Keys.Up))
+            {
+                object[] parameters = { "progress bar - health - 1", 1 };
+                EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
+            }
+            else if (Input.Keys.WasJustPressed(Keys.Down))
+            {
+                object[] parameters = { "progress bar - health - 1", -1 };
+                EventDispatcher.Raise(new EventData(EventCategoryType.UI, EventActionType.OnHealthDelta, parameters));
+            }
+
+            #endregion
+
+            #region Demo - sound
+
             if (Input.Keys.WasJustPressed(Keys.B))
             {
                 object[] parameters = { "boom1" };
@@ -1160,6 +1183,8 @@ namespace GD.App
 
                 //    Application.SoundManager.Play2D("boom1");
             }
+
+            #endregion
 
             #region Demo - Camera switching
 

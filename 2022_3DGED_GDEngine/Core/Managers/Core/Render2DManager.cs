@@ -1,5 +1,4 @@
-﻿using GD.Engine.Events;
-using GD.Engine.Managers;
+﻿using GD.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -12,40 +11,26 @@ namespace GD.Engine
         #region Fields
 
         private SpriteBatch spriteBatch;
-        private UserInterfaceManager userInterfaceManager;
+        private SceneManager<Scene2D> sceneManager;
         private SamplerState samplerState;
 
         #endregion Fields
 
         #region Constructors
 
-        public Render2DManager(Game game, SpriteBatch spriteBatch, UserInterfaceManager userInterfaceManager)
+        public Render2DManager(Game game, SpriteBatch spriteBatch,
+            SceneManager<Scene2D> sceneManager)
      : base(game)
         {
             this.spriteBatch = spriteBatch;
-            this.userInterfaceManager = userInterfaceManager;
+            this.sceneManager = sceneManager;
 
             //used when drawing textures
-            this.samplerState = new SamplerState();
-            this.samplerState.Filter = TextureFilter.Linear;
+            samplerState = new SamplerState();
+            samplerState.Filter = TextureFilter.Linear;
         }
 
         #endregion Constructors
-
-        #region Actions - Events
-
-        protected override void HandleEvent(EventData eventData)
-        {
-            if (eventData.EventCategoryType == EventCategoryType.Menu)
-            {
-                if (eventData.EventActionType == EventActionType.OnPlay)
-                    StatusType = StatusType.Off;
-                else if (eventData.EventActionType == EventActionType.OnPause)
-                    StatusType = StatusType.Updated | StatusType.Drawn;
-            }
-        }
-
-        #endregion Actions - Events
 
         #region Actions - Draw
 
@@ -54,11 +39,14 @@ namespace GD.Engine
             if (IsDrawn)
             {
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied, samplerState, null, null, null, null);
-                foreach (GameObject gameObject in userInterfaceManager.ActiveScene.ObjectList)
+                foreach (GameObject gameObject in sceneManager.ActiveScene.ObjectList)
                 {
                     List<Renderer2D> renderers = gameObject.GetComponents<Renderer2D>();
-                    foreach (Renderer2D renderer in renderers)
-                        renderer.Draw(spriteBatch);
+                    if (renderers != null)
+                    {
+                        foreach (Renderer2D renderer in renderers)
+                            renderer.Draw(spriteBatch);
+                    }
                 }
                 spriteBatch.End();
             }
