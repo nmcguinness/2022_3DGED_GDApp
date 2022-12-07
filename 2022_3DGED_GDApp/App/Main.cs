@@ -360,7 +360,7 @@ namespace GD.App
             #region texture
 
             //material and renderer
-            material = new TextureMaterial2D(texture, Color.Red);
+            material = new TextureMaterial2D(texture, Color.White);
             uiGameObject.AddComponent(new Renderer2D(material));
 
             #endregion
@@ -368,6 +368,12 @@ namespace GD.App
             #region progress controller
 
             uiGameObject.AddComponent(new UIProgressBarController(5, 10));
+
+            #endregion
+
+            #region color change behaviour
+
+            uiGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.White, Color.Green, 500));
 
             #endregion
 

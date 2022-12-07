@@ -85,6 +85,7 @@ namespace GD.Engine
 
         public override void Update(GameTime gameTime)
         {
+            //get material to access source rectangle
             if (textureMaterial2D == null)
                 textureMaterial2D = gameObject.GetComponent<Renderer2D>().Material as TextureMaterial2D;
 
