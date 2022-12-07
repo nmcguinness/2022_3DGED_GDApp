@@ -304,15 +304,15 @@ namespace GD.App
 
             #endregion
 
-            //#region collider
+            #region collider
 
-            ////add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
-            //buttonCollider2D = new ButtonCollider2D(menuGameObject, renderer2D);
-            ////add any events on MouseButton (e.g. Left, Right, Hover)
-            //buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnExit));
-            //menuGameObject.AddComponent(buttonCollider2D);
+            //add bounding box for mouse collisions using the renderer for the texture (which will automatically correctly size the bounding box for mouse interactions)
+            buttonCollider2D = new ButtonCollider2D(menuGameObject, renderer2D);
+            //add any events on MouseButton (e.g. Left, Right, Hover)
+            buttonCollider2D.AddEvent(MouseButton.Left, new EventData(EventCategoryType.Menu, EventActionType.OnExit));
+            menuGameObject.AddComponent(buttonCollider2D);
 
-            //#endregion
+            #endregion
 
             #region text
 
@@ -321,6 +321,12 @@ namespace GD.App
             //add renderer to draw the text
             renderer2D = new Renderer2D(material);
             menuGameObject.AddComponent(renderer2D);
+
+            #endregion
+
+            #region demo - color change button
+
+            menuGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.Red, Color.Orange, 500));
 
             #endregion
 
