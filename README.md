@@ -156,6 +156,7 @@ This repository contains code for the game engine
 - [x] Collidable Camera
 
 ### To Do - Week 12
+- [x] Add UI behaviours and controllers - UIProgressBarController, UIColorFlipOnTimeBehaviour, UIScaleBehaviour
 - [ ] Collect object => Value => Inventory
 - [ ] Pick objects with mouse
 - [ ] Add fully working Audio 3D demo
