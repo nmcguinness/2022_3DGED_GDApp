@@ -231,7 +231,7 @@ namespace GD.App
 
             //material and renderer
             material = new TextureMaterial2D(backGroundtexture, Color.White, 1);
-            //  menuGameObject.AddComponent(new Renderer2D(material));
+            menuGameObject.AddComponent(new Renderer2D(material));
 
             #endregion
 
@@ -326,7 +326,7 @@ namespace GD.App
 
             #region demo - color change button
 
-            menuGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.Red, Color.Orange, 500));
+            // menuGameObject.AddComponent(new UIColorFlipOnTimeBehaviour(Color.Red, Color.Orange, 500));
 
             #endregion
 
@@ -1131,6 +1131,7 @@ namespace GD.App
             perfUtility.infoList.Add(new ObjectInfo(_spriteBatch, spriteFont, "Objects:", Color.White, contentScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Hints -----------------------------------", Color.Yellow, headingScale * Vector2.One));
             perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use mouse scroll wheel to change security camera FOV, F1-F4 for camera switch", Color.White, contentScale * Vector2.One));
+            perfUtility.infoList.Add(new TextInfo(_spriteBatch, spriteFont, "Use Up and Down arrow to see progress bar change", Color.White, contentScale * Vector2.One));
 
             //add to the component list otherwise it wont have its Update or Draw called!
             // perfUtility.StatusType = StatusType.Drawn | StatusType.Updated;
